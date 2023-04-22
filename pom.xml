@@ -9,11 +9,11 @@
     <version>1.0-SNAPSHOT</version>
     <packaging>pom</packaging>
     <modules>
-        <module>oauth2-resource-7001</module>
-        <module>oauth2-resource-7002</module>
+        <module>oauth2-resource-server-7001</module>
+        <module>oauth2-resource-server-7002</module>
         <module>common</module>
+        <module>oauth2-authorization-server-9090</module>
         <module>oauth2-client-8080</module>
-        <module>oauth2-server-9090</module>
     </modules>
 
     <properties>
@@ -28,6 +28,8 @@
         <spring.cloud.alibaba.version>2021.0.4.0</spring.cloud.alibaba.version>
         <lombok.version>1.18.24</lombok.version>
         <fastjson2.version>2.0.26</fastjson2.version>
+        <!--  Spring Authorization Server版本      -->
+        <spring.authorization.server.version>0.4.2</spring.authorization.server.version>
     </properties>
 
     <!--    依赖管理  -->

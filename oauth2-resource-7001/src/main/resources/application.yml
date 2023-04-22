@@ -1,6 +1,0 @@
-server:
-  port: 7001
-
-spring:
-  application:
-    name: oauth2-resource-7001

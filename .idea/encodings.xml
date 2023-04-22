@@ -3,12 +3,14 @@
   <component name="Encoding">
     <file url="file://$PROJECT_DIR$/common/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/common/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/oauth2-authorization-server-9090/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/oauth2-authorization-server-9090/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/oauth2-client-8080/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/oauth2-client-8080/src/main/resources" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/oauth2-resource-7001/src/main/java" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/oauth2-resource-7001/src/main/resources" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/oauth2-resource-7002/src/main/java" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/oauth2-resource-7002/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/oauth2-resource-server-7001/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/oauth2-resource-server-7001/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/oauth2-resource-server-7002/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/oauth2-resource-server-7002/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/oauth2-server-9090/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/oauth2-server-9090/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/src/main/java" charset="UTF-8" />
