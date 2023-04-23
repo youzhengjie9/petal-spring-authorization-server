@@ -79,3 +79,21 @@ mybatis-plus:
   configuration:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
   mapper-locations: classpath*:/mapper/**/*.xml
+
+
+
+# 认证服务器配置
+authorization:
+  server:
+    clientId: yzj_client
+    clientPassword: yzj666888
+    redirectUri: http://www.baidu.com
+    scopes:
+      - read
+      - write
+      - all
+    jksPath: myjks.jks
+    jksAlias: myjks
+    jksPassword: 123456
+    oauth2TokenUrl: http://127.0.0.1:${server.port}/oauth2/token
+

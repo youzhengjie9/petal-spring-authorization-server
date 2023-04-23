@@ -1,10 +1,12 @@
 package com.auth.server.security;
 
+import com.auth.server.security.properties.AuthorizationServerProperties;
 import com.nimbusds.jose.jwk.JWKSet;
 import com.nimbusds.jose.jwk.RSAKey;
 import com.nimbusds.jose.jwk.source.JWKSource;
 import com.nimbusds.jose.proc.SecurityContext;
 import lombok.SneakyThrows;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.Ordered;
@@ -12,6 +14,8 @@ import org.springframework.core.annotation.Order;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.oauth2.core.AuthorizationGrantType;
 import org.springframework.security.oauth2.core.ClientAuthenticationMethod;
 import org.springframework.security.oauth2.server.authorization.JdbcOAuth2AuthorizationConsentService;
@@ -30,7 +34,9 @@ import org.springframework.security.web.util.matcher.RequestMatcher;
 
 import java.security.KeyStore;
 import java.time.Duration;
+import java.util.Set;
 import java.util.UUID;
+import java.util.function.Consumer;
 
 /**
  * Spring Authorization Server认证服务器配置
@@ -41,10 +47,17 @@ import java.util.UUID;
 @Configuration(proxyBeanMethods = false)
 public class AuthorizationServerConfig {
 
+    private AuthorizationServerProperties authorizationServerProperties;
+
     /**
      * 自定义oauth2授权页面跳转接口（也可以使用oauth2自带的）
      */
     private static final String CUSTOM_CONSENT_PAGE_URI = "/oauth2/consent";
+
+    @Autowired
+    public void setAuthorizationServerProperties(AuthorizationServerProperties authorizationServerProperties) {
+        this.authorizationServerProperties = authorizationServerProperties;
+    }
 
     /**
      * Spring Authorization Server 授权配置
@@ -101,12 +114,11 @@ public class AuthorizationServerConfig {
          client_name：客户端的名称，可以省略
          client_secret：密码
          */
-        String clientId = "yzj_client";
         // 查询客户端是否存在
-        RegisteredClient registeredClient = registeredClientRepository.findByClientId(clientId);
+        RegisteredClient registeredClient = registeredClientRepository.findByClientId(authorizationServerProperties.getClientId());
         // 数据库中没有该记录（说明该客户端没有被注册），则进行注册
         if (registeredClient == null) {
-            registeredClient = this.registeredClientAuthorizationCode(clientId);
+            registeredClient = this.registeredClientAuthorizationCode(authorizationServerProperties.getClientId());
             registeredClientRepository.save(registeredClient);
         }
         // 返回客户端仓库
@@ -133,16 +145,14 @@ public class AuthorizationServerConfig {
         ClientSettings clientSettings = ClientSettings.builder()
                 // 是否需要用户授权确认
                 .requireAuthorizationConsent(true)
-//                .requireAuthorizationConsent(false)
                 .build();
-        return RegisteredClient
+        RegisteredClient.Builder registeredClientBuilder = RegisteredClient
                 // 客户端ID和密码
                 .withId(UUID.randomUUID().toString())
                 // Spring Security将使用它来识别哪个客户端正在尝试访问资源
                 .clientId(clientId)
                 // 客户端和服务器都知道的一个密码，它提供了两者之间的信任
-//                .clientSecret(PasswordEncoderFactories.createDelegatingPasswordEncoder().encode("123456"))
-                .clientSecret("{noop}yzj666888")
+                .clientSecret(new BCryptPasswordEncoder().encode(authorizationServerProperties.getClientPassword()))
                 // 授权方法
                 .clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_BASIC)
                 // 授权模式: 授权码模式
@@ -154,15 +164,19 @@ public class AuthorizationServerConfig {
                  * 不在此列的地址将被拒绝；
                  * 只能使用IP或域名，不能使用localhost
                  */
-                .redirectUri("http://www.baidu.com")
-                // 授权范围（当前客户端的授权范围）
-                .scope("read")
-                .scope("write")
+                .redirectUri(authorizationServerProperties.getRedirectUri())
                 // JWT（Json Web Token）配置项
                 .tokenSettings(tokenSettings)
                 // 客户端配置项
-                .clientSettings(clientSettings)
-                .build();
+                .clientSettings(clientSettings);
+        Set<String> scopes = authorizationServerProperties.getScopes();
+        if(scopes != null && scopes.size()>0){
+            for (String scope : scopes) {
+                // 授权范围（当前客户端的授权范围）
+                registeredClientBuilder.scope(scope);
+            }
+        }
+        return registeredClientBuilder.build();
     }
 
     /**
@@ -203,19 +217,12 @@ public class AuthorizationServerConfig {
     @SneakyThrows
     @Bean
     public JWKSource<SecurityContext> jwkSource() {
-        // 证书的路径
-        String path = "myjks.jks";
-        // 证书别名
-        String alias = "myjks";
-        // keystore 密码
-        String pass = "123456";
 
-        ClassPathResource resource = new ClassPathResource(path);
+        ClassPathResource resource = new ClassPathResource(authorizationServerProperties.getJksPath());
         KeyStore jks = KeyStore.getInstance("jks");
-        char[] pin = pass.toCharArray();
+        char[] pin = authorizationServerProperties.getJksPassword().toCharArray();
         jks.load(resource.getInputStream(), pin);
-        RSAKey rsaKey = RSAKey.load(jks, alias, pin);
-
+        RSAKey rsaKey = RSAKey.load(jks, authorizationServerProperties.getJksAlias(), pin);
         JWKSet jwkSet = new JWKSet(rsaKey);
         return (jwkSelector, securityContext) -> jwkSelector.select(jwkSet);
     }
