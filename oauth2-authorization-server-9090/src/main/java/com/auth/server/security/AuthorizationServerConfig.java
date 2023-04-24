@@ -15,7 +15,6 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.oauth2.core.AuthorizationGrantType;
 import org.springframework.security.oauth2.core.ClientAuthenticationMethod;
 import org.springframework.security.oauth2.server.authorization.JdbcOAuth2AuthorizationConsentService;
@@ -33,10 +32,8 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.util.matcher.RequestMatcher;
 
 import java.security.KeyStore;
-import java.time.Duration;
 import java.util.Set;
 import java.util.UUID;
-import java.util.function.Consumer;
 
 /**
  * Spring Authorization Server认证服务器配置
@@ -77,7 +74,6 @@ public class AuthorizationServerConfig {
         http
                 // 拦截对 授权服务器 相关端点的请求
                 .requestMatcher(requestMatcher)
-//                .userDetailsService(securityUserDetailsService)
                 // 拦载到的请求需要认证确认（登录）
                 .authorizeRequests(authorizeRequests ->
                         authorizeRequests.anyRequest().authenticated()
@@ -105,15 +101,6 @@ public class AuthorizationServerConfig {
     RegisteredClientRepository registeredClientRepository(JdbcTemplate jdbcTemplate) {
         // Jdbc
         JdbcRegisteredClientRepository registeredClientRepository = new JdbcRegisteredClientRepository(jdbcTemplate);
-
-        /*
-         客户端在数据库中的几个记录字段的说明
-         ------------------------------------------
-         id：仅表示客户端在数据库中的这个记录
-         client_id：唯一标示客户端；请求token时，以此作为客户端的账号
-         client_name：客户端的名称，可以省略
-         client_secret：密码
-         */
         // 查询客户端是否存在
         RegisteredClient registeredClient = registeredClientRepository.findByClientId(authorizationServerProperties.getClientId());
         // 数据库中没有该记录（说明该客户端没有被注册），则进行注册
@@ -135,11 +122,11 @@ public class AuthorizationServerConfig {
         // jwtToken配置
         TokenSettings tokenSettings = TokenSettings.builder()
                 // accessToken过期时间：2小时
-                .accessTokenTimeToLive(Duration.ofHours(2))
+                .accessTokenTimeToLive(authorizationServerProperties.getAccessTokenTimeToLive())
                 // 是否启动refreshToken
                 .reuseRefreshTokens(true)
                 // refreshToken过期时间：7天（7天内当accessToken过期时，可以用refreshToken重新申请新的accessToken，不需要再认证）
-                .refreshTokenTimeToLive(Duration.ofDays(7))
+                .refreshTokenTimeToLive(authorizationServerProperties.getRefreshTokenTimeToLive())
                 .build();
         // 客户端相关配置
         ClientSettings clientSettings = ClientSettings.builder()
@@ -159,11 +146,7 @@ public class AuthorizationServerConfig {
                 .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
                 // refreshToken（授权码模式）
                 .authorizationGrantType(AuthorizationGrantType.REFRESH_TOKEN)
-                /* 回调地址：
-                 * 授权服务器向当前客户端响应时调用下面地址；
-                 * 不在此列的地址将被拒绝；
-                 * 只能使用IP或域名，不能使用localhost
-                 */
+                // 回调地址
                 .redirectUri(authorizationServerProperties.getRedirectUri())
                 // JWT（Json Web Token）配置项
                 .tokenSettings(tokenSettings)

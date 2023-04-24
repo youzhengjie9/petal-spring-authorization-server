@@ -85,15 +85,26 @@ mybatis-plus:
 # 认证服务器配置
 authorization:
   server:
+    # 客户端id
     clientId: yzj_client
+    # 客户端密码
     clientPassword: yzj666888
+    # 认证成功后重定向的uri
     redirectUri: http://www.baidu.com
+    # 授权范围集合
     scopes:
       - read
       - write
       - all
+    # accessToken过期时间为:2h(2小时)
+    access-token-time-to-live: 2h
+    # refreshToken过期时间为:7d(7天)
+    refresh-token-time-to-live: 7d
+    # jks文件路径（默认是resources目录下）
     jksPath: myjks.jks
+    # jks证书别名
     jksAlias: myjks
+    # jks证书的keystore密码
     jksPassword: 123456
+    # 获取accessToken、refreshToken的url（ 格式为: http://认证服务器ip:认证服务器端口号/oauth2/token ）
     oauth2TokenUrl: http://127.0.0.1:${server.port}/oauth2/token
-

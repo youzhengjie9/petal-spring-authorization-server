@@ -4,6 +4,7 @@ import cn.hutool.http.HttpRequest;
 import com.alibaba.fastjson2.JSON;
 import com.auth.server.security.properties.AuthorizationServerProperties;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.oauth2.core.endpoint.OAuth2ParameterNames;
 import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
@@ -32,12 +33,11 @@ public class Oauth2TokenUtil {
      * @return {@link Oauth2TokenResponse}
      */
     public Oauth2TokenResponse getOauth2Token(String authorizationCode){
-
         Map<String,Object> fromDataMap = new HashMap<>();
-        fromDataMap.put("grant_type","authorization_code");
-        fromDataMap.put("redirect_uri",authorizationServerProperties.getRedirectUri());
+        fromDataMap.put(OAuth2ParameterNames.GRANT_TYPE,"authorization_code");
+        fromDataMap.put(OAuth2ParameterNames.REDIRECT_URI,authorizationServerProperties.getRedirectUri());
         //授权码
-        fromDataMap.put("code",authorizationCode);
+        fromDataMap.put(OAuth2ParameterNames.CODE,authorizationCode);
 
         String result = HttpRequest.post(authorizationServerProperties.getOauth2TokenUrl())
                 .basicAuth(

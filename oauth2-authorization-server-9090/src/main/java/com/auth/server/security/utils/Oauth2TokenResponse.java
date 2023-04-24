@@ -12,9 +12,9 @@ import java.io.Serializable;
  * @author youzhengjie
  * @date 2023/04/23 18:14:59
  */
-@Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Data
 public class Oauth2TokenResponse implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -38,5 +38,9 @@ public class Oauth2TokenResponse implements Serializable {
 
     private Long expires_in;
 
+    /**
+     * 异常内容
+     */
+    private String error;
 
 }

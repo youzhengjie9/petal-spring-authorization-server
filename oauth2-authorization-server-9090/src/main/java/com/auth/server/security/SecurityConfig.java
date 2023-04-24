@@ -17,7 +17,7 @@ import java.security.cert.CertificateFactory;
 import java.security.interfaces.RSAPublicKey;
 
 /**
- * SpringSecurity配置
+ * SpringSecurity配置类
  *
  * @author youzhengjie
  * @date 2023/04/21 21:43:17
@@ -30,7 +30,6 @@ public class SecurityConfig {
      */
     @Bean
     public PasswordEncoder passwordEncoder() {
-//        return PasswordEncoderFactories.createDelegatingPasswordEncoder();
         return new BCryptPasswordEncoder();
     }
 

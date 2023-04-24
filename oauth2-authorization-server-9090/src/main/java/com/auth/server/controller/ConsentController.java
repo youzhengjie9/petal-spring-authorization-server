@@ -15,6 +15,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import java.security.Principal;
 import java.util.*;
 
+/**
+ * 授权控制器
+ *
+ * @author youzhengjie
+ * @date 2023/04/24 09:37:43
+ */
 @Controller
 public class ConsentController {
     private RegisteredClientRepository registeredClientRepository;
@@ -29,13 +35,23 @@ public class ConsentController {
     public void setRegisteredClientRepository(RegisteredClientRepository registeredClientRepository) {
         this.registeredClientRepository = registeredClientRepository;
     }
+
+    /**
+     * 跳转到授权页面
+     *
+     * @param principal 主要
+     * @param model     模型
+     * @param clientId  客户机id
+     * @param scope     范围
+     * @param state     状态
+     * @return {@link String}
+     */
     @GetMapping(value = "/oauth2/consent")
     public String consent(Principal principal, Model model,
                           @RequestParam(OAuth2ParameterNames.CLIENT_ID) String clientId,
                           @RequestParam(OAuth2ParameterNames.SCOPE) String scope,
                           @RequestParam(OAuth2ParameterNames.STATE) String state) {
 
-        // Remove scopes that were already approved
         Set<String> scopesToApprove = new HashSet<>();
         Set<String> previouslyApprovedScopes = new HashSet<>();
         RegisteredClient registeredClient = this.registeredClientRepository.findByClientId(clientId);
