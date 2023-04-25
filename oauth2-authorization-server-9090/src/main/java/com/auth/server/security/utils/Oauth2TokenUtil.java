@@ -34,10 +34,39 @@ public class Oauth2TokenUtil {
      */
     public Oauth2TokenResponse getOauth2Token(String authorizationCode){
         Map<String,Object> fromDataMap = new HashMap<>();
+        //指定为授权码模式
         fromDataMap.put(OAuth2ParameterNames.GRANT_TYPE,"authorization_code");
+        //指定回调uri
         fromDataMap.put(OAuth2ParameterNames.REDIRECT_URI,authorizationServerProperties.getRedirectUri());
         //授权码
         fromDataMap.put(OAuth2ParameterNames.CODE,authorizationCode);
+
+        String result = HttpRequest.post(authorizationServerProperties.getOauth2TokenUrl())
+                .basicAuth(
+                        authorizationServerProperties.getClientId(),
+                        authorizationServerProperties.getClientPassword()
+                )
+                .header("Content-Type", "multipart/form-data;charset=UTF-8")
+                //封装form-data内容
+                .form(fromDataMap)
+                .execute().body();
+        return JSON.parseObject(result,Oauth2TokenResponse.class);
+    }
+
+
+    /**
+     * 通过refreshToken重新生成accessToken
+     *
+     * @param refreshToken refreshToken
+     * @return {@link Oauth2TokenResponse}
+     */
+    public Oauth2TokenResponse refreshToken(String refreshToken){
+
+        Map<String,Object> fromDataMap = new HashMap<>();
+        //指定为refreshToken模式
+        fromDataMap.put(OAuth2ParameterNames.GRANT_TYPE,"refresh_token");
+        //指定refreshToken，通过这个refreshToken来刷新token
+        fromDataMap.put(OAuth2ParameterNames.REFRESH_TOKEN,refreshToken);
 
         String result = HttpRequest.post(authorizationServerProperties.getOauth2TokenUrl())
                 .basicAuth(

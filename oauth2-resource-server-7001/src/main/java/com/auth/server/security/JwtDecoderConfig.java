@@ -1,4 +1,4 @@
-package com.auth.server.config;
+package com.auth.server.security;
 
 import com.auth.server.properties.JwtProperties;
 import com.nimbusds.jose.jwk.RSAKey;
@@ -12,15 +12,14 @@ import org.springframework.context.annotation.Primary;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.security.oauth2.core.DelegatingOAuth2TokenValidator;
 import org.springframework.security.oauth2.core.OAuth2TokenValidator;
-import org.springframework.security.oauth2.jwt.Jwt;
-import org.springframework.security.oauth2.jwt.JwtDecoder;
-import org.springframework.security.oauth2.jwt.JwtIssuerValidator;
-import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
+import org.springframework.security.oauth2.jwt.*;
 
 import java.io.InputStream;
 import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
 import java.security.interfaces.RSAPublicKey;
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.Collection;
 
 /**
@@ -32,7 +31,7 @@ import java.util.Collection;
  */
 @EnableConfigurationProperties(JwtProperties.class)
 @Configuration(proxyBeanMethods = false)
-public class JwtDecoderConfiguration {
+public class JwtDecoderConfig {
 
     private JwtProperties jwtProperties;
 
@@ -60,6 +59,16 @@ public class JwtDecoderConfiguration {
     @Bean({"delegatingTokenValidator"})
     public DelegatingOAuth2TokenValidator<Jwt> delegatingTokenValidator(Collection<OAuth2TokenValidator<Jwt>> tokenValidators) {
         return new DelegatingOAuth2TokenValidator<>(tokenValidators);
+    }
+
+    /**
+     * 作用: 校验jwt是否过期，如果该jwt过期了则会进入DefaultAuthenticationEntryPoint类，也就是认证失败（此时这个token访问不了受保护的接口）
+     *
+     * @return the jwt timestamp validator
+     */
+    @Bean
+    public JwtTimestampValidator jwtTimestampValidator() {
+        return new JwtTimestampValidator(Duration.ofSeconds(0L));
     }
 
     /**

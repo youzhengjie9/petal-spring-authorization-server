@@ -80,4 +80,4 @@ jwt:
     public-key-location: myjks.cer
   claims:
     # 令牌的鉴发方：即认证服务器的地址
-    issuer: http://os.com:9090
+    issuer: http://127.0.0.1:9090

@@ -31,7 +31,6 @@ public class JwtProperties {
          * 发证方
          */
         private String issuer;
-
     }
 
     @Data
