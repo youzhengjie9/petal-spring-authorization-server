@@ -5,15 +5,15 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.auth.server</groupId>
-    <artifactId>spring-authorization-server-demo</artifactId>
+    <artifactId>petal-spring-authorization-server</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>pom</packaging>
     <modules>
-        <module>oauth2-resource-server-7001</module>
-        <module>oauth2-resource-server-7002</module>
-        <module>common</module>
-        <module>oauth2-authorization-server-9090</module>
-        <module>oauth2-client-8080</module>
+        <module>petal-oauth2-resource-server-7001</module>
+        <module>petal-oauth2-resource-server-7002</module>
+        <module>petal-oauth2-common</module>
+        <module>petal-oauth2-authorization-server-9090</module>
+        <module>petal-oauth2-client-8080</module>
     </modules>
 
     <properties>
