@@ -31,10 +31,16 @@ public class AuthorizationServerProperties {
     private String clientPassword;
 
     /**
+     * 客户端服务器的ip地址
+     */
+    private String clientIpAddr;
+
+    /**
+     * 重定向地址集合。
      * 认证成功后重定向的uri,不在这的地址将被拒绝。
      * 注意: 只能使用IP或域名，不能使用localhost
      */
-    private String redirectUri;
+    private Set<String> redirectUris;
 
     /**
      * 授权范围集合
@@ -70,5 +76,10 @@ public class AuthorizationServerProperties {
      * 获取accessToken、refreshToken的url（格式为: http://认证服务器ip:认证服务器端口号/oauth2/token ）
      */
     private String oauth2TokenUrl;
+
+    /**
+     * 认证服务器地址
+     */
+    private String issuerUri;
 
 }

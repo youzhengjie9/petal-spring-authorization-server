@@ -13,7 +13,7 @@
         <module>petal-oauth2-resource-server-7002</module>
         <module>petal-oauth2-common</module>
         <module>petal-oauth2-authorization-server-9090</module>
-        <module>petal-oauth2-client-8080</module>
+        <module>petal-oauth2-client-8300</module>
     </modules>
 
     <properties>

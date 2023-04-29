@@ -10,10 +10,10 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * @date 2023/04/26 09:02:36
  */
 @SpringBootApplication
-public class Oauth2ClientApplication8080 {
+public class Oauth2ClientApplication8300 {
 
     public static void main(String[] args) {
-        SpringApplication.run(Oauth2ClientApplication8080.class,args);
+        SpringApplication.run(Oauth2ClientApplication8300.class,args);
     }
 
 }

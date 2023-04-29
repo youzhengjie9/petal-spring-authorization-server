@@ -1,5 +1,7 @@
-package com.auth.server.handler;
+package com.auth.server.security.handler;
 
+import com.auth.server.enums.ResponseType;
+import com.auth.server.utils.ResponseResult;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
@@ -25,15 +27,14 @@ public class DefaultAccessDeniedHandler implements AccessDeniedHandler {
     public void handle(HttpServletRequest request,
                        HttpServletResponse response,
                        AccessDeniedException accessDeniedException) {
-        //todo your business
-        HashMap<String, String> map = new HashMap<>(2);
-        map.put("uri", request.getRequestURI());
-        map.put("msg", "拒绝访问");
+
+        ResponseResult<Object> responseResult = ResponseResult.build(ResponseType.FORBIDDEN);
         response.setStatus(HttpServletResponse.SC_FORBIDDEN);
         response.setCharacterEncoding("utf-8");
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
         ObjectMapper objectMapper = new ObjectMapper();
-        String resBody = objectMapper.writeValueAsString(map);
+        //序列化成json
+        String resBody = objectMapper.writeValueAsString(responseResult);
         PrintWriter printWriter = response.getWriter();
         printWriter.print(resBody);
         printWriter.flush();

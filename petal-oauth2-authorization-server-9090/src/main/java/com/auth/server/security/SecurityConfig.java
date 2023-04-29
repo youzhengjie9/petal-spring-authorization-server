@@ -51,11 +51,8 @@ public class SecurityConfig {
                 .formLogin(fromlogin ->
                         fromlogin.loginPage("/login").permitAll()
                 )
-                .logout()
+                .logout().logoutSuccessUrl("http://127.0.0.1:8300")
                 .and()
-//                //关闭csrf
-//                .csrf()
-//                .disable()
                 .oauth2ResourceServer().jwt();
         ;
         return http.build();
@@ -81,9 +78,9 @@ public class SecurityConfig {
      * 作用: 不需要认证就可以访问的端口
      * @return
      */
-    @Bean
-    public WebSecurityCustomizer webSecurityCustomizer() {
-        return web -> web.ignoring().antMatchers("/actuator/health", "/actuator/info");
-    }
+//    @Bean
+//    public WebSecurityCustomizer webSecurityCustomizer() {
+//        return web -> web.ignoring().antMatchers("/actuator/health", "/actuator/info");
+//    }
 
 }

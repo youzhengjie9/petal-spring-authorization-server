@@ -3,4 +3,4 @@ server:
 
 spring:
   application:
-    name: oauth2-resource-server-7002
+    name: petal-oauth2-resource-server-7002

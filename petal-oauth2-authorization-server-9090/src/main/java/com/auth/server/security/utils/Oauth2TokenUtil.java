@@ -37,7 +37,7 @@ public class Oauth2TokenUtil {
         //指定为授权码模式
         fromDataMap.put(OAuth2ParameterNames.GRANT_TYPE,"authorization_code");
         //指定回调uri
-        fromDataMap.put(OAuth2ParameterNames.REDIRECT_URI,authorizationServerProperties.getRedirectUri());
+        fromDataMap.put(OAuth2ParameterNames.REDIRECT_URI,"http://127.0.0.1:8300");
         //授权码
         fromDataMap.put(OAuth2ParameterNames.CODE,authorizationCode);
 

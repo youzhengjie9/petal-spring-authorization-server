@@ -43,9 +43,8 @@ public class SecurityUserDetailsService implements UserDetailsService {
         }
         //模拟该用户权限参数（permission）
         List<SimpleGrantedAuthority> permissions = Arrays.asList(
-                new SimpleGrantedAuthority("sys:user:list"),
-                new SimpleGrantedAuthority("sys:user:add"),
-                new SimpleGrantedAuthority("sys:test3")
+                new SimpleGrantedAuthority("sys:test3"),
+                new SimpleGrantedAuthority("sys:test4")
         );
 
         //这里要用org.springframework.security.core.userdetails.User，而不是自定义的UserDetails，不然会报错。

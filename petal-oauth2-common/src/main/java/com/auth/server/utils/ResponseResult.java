@@ -52,8 +52,37 @@ public class ResponseResult<T> {
         this.data = data;
     }
 
-    //泛型方法。快速封装成功的响应对象
-    public static<D> ResponseResult<D> ok (D data){
+    /**
+     * 构建ResponseResult对象
+     *
+     * @param code 代码
+     * @param msg  味精
+     * @param data 数据
+     * @return {@link ResponseResult}<{@link D}>
+     */
+    public static<D> ResponseResult<D> build(Integer code,String msg,D data){
+
+        return new ResponseResult<D>()
+                .setCode(code)
+                .setMsg(msg)
+                .setData(data);
+    }
+    public static<D> ResponseResult<D> build(ResponseType responseType){
+
+        return new ResponseResult<D>()
+                .setCode(responseType.getCode())
+                .setMsg(responseType.getMessage())
+                .setData(null);
+    }
+    public static<D> ResponseResult<D> build(ResponseType responseType,D data){
+
+        return new ResponseResult<D>()
+                .setCode(responseType.getCode())
+                .setMsg(responseType.getMessage())
+                .setData(data);
+    }
+
+    public static<D> ResponseResult<D> ok(D data){
 
         return new ResponseResult<D>()
                 .setCode(ResponseType.SUCCESS.getCode())
@@ -61,8 +90,16 @@ public class ResponseResult<T> {
                 .setData(data);
     }
 
-    //泛型方法。快速封装失败的响应对象
-    public static<D> ResponseResult<D> fail (D data){
+    public static<D> ResponseResult<D> ok(String msg,D data){
+
+        return new ResponseResult<D>()
+                .setCode(ResponseType.SUCCESS.getCode())
+                .setMsg(msg)
+                .setData(data);
+    }
+
+
+    public static<D> ResponseResult<D> fail(D data){
 
         return new ResponseResult<D>()
                 .setCode(ResponseType.ERROR.getCode())
@@ -70,4 +107,11 @@ public class ResponseResult<T> {
                 .setData(data);
     }
 
+    public static<D> ResponseResult<D> fail(String msg,D data){
+
+        return new ResponseResult<D>()
+                .setCode(ResponseType.ERROR.getCode())
+                .setMsg(msg)
+                .setData(data);
+    }
 }

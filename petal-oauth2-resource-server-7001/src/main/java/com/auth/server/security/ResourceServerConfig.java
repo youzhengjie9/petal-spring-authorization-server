@@ -1,7 +1,7 @@
 package com.auth.server.security;
 
-import com.auth.server.handler.DefaultAccessDeniedHandler;
-import com.auth.server.handler.DefaultAuthenticationEntryPoint;
+import com.auth.server.security.handler.DefaultAccessDeniedHandler;
+import com.auth.server.security.handler.DefaultAuthenticationEntryPoint;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -32,7 +32,8 @@ public class ResourceServerConfig {
      * premit所有
      */
     private static final String[] PERMIT_ALL ={
-            "/res/test0"
+            "/res/test0",
+            "/res/test5"
     };
 
     /**

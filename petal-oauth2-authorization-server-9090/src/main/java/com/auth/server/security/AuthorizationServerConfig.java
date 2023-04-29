@@ -65,6 +65,7 @@ public class AuthorizationServerConfig {
         // 定义授权服务配置器
         OAuth2AuthorizationServerConfigurer authorizationServerConfigurer =
                 new OAuth2AuthorizationServerConfigurer();
+        //配置自定义授权界面
         authorizationServerConfigurer
                 .authorizationEndpoint(authorizationEndpoint ->
                         authorizationEndpoint.consentPage(CUSTOM_CONSENT_PAGE_URI));
@@ -84,7 +85,7 @@ public class AuthorizationServerConfig {
                 )
                 .formLogin()
                 .and()
-                .logout()
+                .logout().logoutSuccessUrl("http://127.0.0.1:8300")
                 .and()
                 // 应用认证服务器的配置
                 .apply(authorizationServerConfigurer);
@@ -133,6 +134,7 @@ public class AuthorizationServerConfig {
                 // 是否需要用户授权确认
                 .requireAuthorizationConsent(true)
                 .build();
+
         RegisteredClient.Builder registeredClientBuilder = RegisteredClient
                 // 客户端ID和密码
                 .withId(UUID.randomUUID().toString())
@@ -147,11 +149,19 @@ public class AuthorizationServerConfig {
                 // refreshToken（授权码模式）
                 .authorizationGrantType(AuthorizationGrantType.REFRESH_TOKEN)
                 // 回调地址
-                .redirectUri(authorizationServerProperties.getRedirectUri())
                 // JWT（Json Web Token）配置项
                 .tokenSettings(tokenSettings)
                 // 客户端配置项
                 .clientSettings(clientSettings);
+        //redirectUris
+        Set<String> redirectUris = authorizationServerProperties.getRedirectUris();
+        if(redirectUris != null && redirectUris.size()>0){
+            for (String redirectUri : redirectUris) {
+                // 授权范围（当前客户端的授权范围）
+                registeredClientBuilder.redirectUri(redirectUri);
+            }
+        }
+        //scopes
         Set<String> scopes = authorizationServerProperties.getScopes();
         if(scopes != null && scopes.size()>0){
             for (String scope : scopes) {
@@ -220,7 +230,7 @@ public class AuthorizationServerConfig {
      */
     @Bean
     public AuthorizationServerSettings authorizationServerSettings() {
-        return AuthorizationServerSettings.builder().issuer("http://127.0.0.1:9090").build();
+        return AuthorizationServerSettings.builder().issuer(authorizationServerProperties.getIssuerUri()).build();
     }
 
 

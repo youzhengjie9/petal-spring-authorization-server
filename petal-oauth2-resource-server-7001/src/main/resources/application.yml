@@ -3,7 +3,7 @@ server:
 
 spring:
   application:
-    name: oauth2-resource-server-7001
+    name: petal-oauth2-resource-server-7001
   main:
     # 防止同时存在多个类型相同的bean导致报错
     allow-bean-definition-overriding: true
@@ -80,4 +80,4 @@ jwt:
     public-key-location: myjks.cer
   claims:
     # 令牌的鉴发方：即认证服务器的地址
-    issuer: http://127.0.0.1:9090
+    issuer: http://petal.oauth2.com:9090

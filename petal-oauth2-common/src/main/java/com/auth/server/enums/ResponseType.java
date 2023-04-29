@@ -15,6 +15,9 @@ public enum ResponseType {
     SUCCESS(200,"接口请求成功"),
     ERROR(500,"接口请求失败"),
 
+    UNAUTHORIZED(401,"认证失败"),
+    FORBIDDEN(403,"拒绝访问")
+
     ;
 
 

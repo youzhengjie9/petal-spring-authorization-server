@@ -27,7 +27,7 @@ public class Oauth2TokenTest {
     public void getOauth2TokenTest() throws JSONException {
 
         // oauth2授权码（授权码会过期，授权码一旦成功生成token就无法再次生成token，也就是说这个授权码是一次性的）
-        String authorizationCode = "KjeHccydEr-u96bhGuujGvd3eGe38qiqdwsyNY5CVVR5Cqf3WzjcQUd4C28sW4mdNNETsJcoIik2wtMMpuL640cHRUE354Zl4kZ5MKnxLer_JiCCsOMC8LYpm493Iugp";
+        String authorizationCode = "YsBbZDT_mbMIOKto3gKAd3qHrusiu3KmnpTwIc9C7ahLcKQoH46Nc0x9r8_SnW6GjuxqmUmqvSd-qG9koB7ADePBRBxsBwoqPzIJ8jn2qFL0tdwquscyXicvA_pNveij&state=BuVNO_Ei4l0J3BsS9ZiP3mtxwluSmlMl6cr8d2iQwlE%3D";
 
         Oauth2TokenResponse oauth2TokenResponse = oauth2TokenUtil.getOauth2Token(authorizationCode);
         //如果没有异常

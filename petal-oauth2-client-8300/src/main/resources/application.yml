@@ -1,0 +1,51 @@
+server:
+  port: 8300
+
+spring:
+  application:
+    # 应用名称
+    name: petal-oauth2-client-8300
+  main:
+    # 防止同时存在多个类型相同的bean导致报错
+    allow-bean-definition-overriding: true
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://192.168.184.100:3308/spring-authorization-server-db?serverTimezone=GMT%2B8&characterEncoding=utf-8&useSSL=false
+    username: root
+    password: 123456
+  security:
+    oauth2:
+      client:
+        registration:
+          # 客户端：下面的所有配置都要和注册时的客户端要保持一致（可以在认证服务器的application.yml找下面的配置）
+          yzjClient:
+            # 客户端id
+            client-id: yzj_client
+            # 客户端密码
+            client-secret: yzj666888
+            # 授权范围集合
+            scope: read,write,all
+            # 类型为: 授权码模式
+            authorization-grant-type: authorization_code
+            # 服务提供者(也就是认证服务器)
+            provider: serverProvider
+            # 认证成功后重定向的uri
+            redirect-uri: '{baseUrl}/{action}/oauth2/code/{registrationId}'
+            # 认证方法
+            client-authentication-method: client_secret_basic
+        # 配置服务提供者(也就是认证服务器)
+        provider:
+          # 服务提供者自定义名称，要和上面指定的 provider: xxx一样。
+          serverProvider:
+            # 认证服务器地址
+            issuer-uri: http://petal.oauth2.com:9090
+            # 获取授权码的地址
+            authorization-uri: ${spring.security.oauth2.client.provider.server-provider.issuer-uri}/oauth2/authorize
+            # 获取accessToken和refreshToken的地址
+            token-uri: ${spring.security.oauth2.client.provider.server-provider.issuer-uri}/oauth2/token
+            # 用户资源地址
+            user-info-uri: ${spring.security.oauth2.client.provider.server-provider.issuer-uri}/oauth2/userinfo
+            # 用户资源返回的一个属性名
+            user-name-attribute: name
+            user-info-authentication-method: GET
