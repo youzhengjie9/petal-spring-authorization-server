@@ -51,8 +51,11 @@ public class SecurityConfig {
                 .formLogin(fromlogin ->
                         fromlogin.loginPage("/login").permitAll()
                 )
-                .logout().logoutSuccessUrl("http://127.0.0.1:8300")
-                .and()
+                //设置退出登录
+                .logout(
+                        logout -> logout.logoutUrl("/logout")
+                                .logoutSuccessUrl("http://127.0.0.1:8300")
+                )
                 .oauth2ResourceServer().jwt();
         ;
         return http.build();

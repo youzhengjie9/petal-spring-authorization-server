@@ -85,7 +85,7 @@ public class AuthorizationServerConfig {
                 )
                 .formLogin()
                 .and()
-                .logout().logoutSuccessUrl("http://127.0.0.1:8300")
+                .logout()
                 .and()
                 // 应用认证服务器的配置
                 .apply(authorizationServerConfigurer);
