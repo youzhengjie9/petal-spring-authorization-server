@@ -1,6 +1,7 @@
 package com.auth.server.utils;
 
 
+import com.alibaba.fastjson2.JSON;
 import com.auth.server.enums.ResponseType;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
@@ -81,7 +82,13 @@ public class ResponseResult<T> {
                 .setMsg(responseType.getMessage())
                 .setData(data);
     }
+    public static<D> ResponseResult<D> ok(){
 
+        return new ResponseResult<D>()
+                .setCode(ResponseType.SUCCESS.getCode())
+                .setMsg(ResponseType.SUCCESS.getMessage())
+                .setData(null);
+    }
     public static<D> ResponseResult<D> ok(D data){
 
         return new ResponseResult<D>()
@@ -114,4 +121,14 @@ public class ResponseResult<T> {
                 .setMsg(msg)
                 .setData(data);
     }
+
+    /**
+     * 把当前对象序列化成JSON
+     *
+     * @return {@link String}
+     */
+    public String toJSONString(){
+        return JSON.toJSONString(this);
+    }
+
 }

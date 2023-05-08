@@ -3,8 +3,10 @@
   <component name="Encoding">
     <file url="file://$PROJECT_DIR$/oauth2-server-9090/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/oauth2-server-9090/src/main/resources" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/petal-oauth2-authorization-server-9090/src/main/java" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/petal-oauth2-authorization-server-9090/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/petal-oauth2-auth-9000/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/petal-oauth2-auth-9000/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/petal-oauth2-auth-alipay-9090/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/petal-oauth2-auth-alipay-9090/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/petal-oauth2-client-8300/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/petal-oauth2-client-8300/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/petal-oauth2-common/src/main/java" charset="UTF-8" />

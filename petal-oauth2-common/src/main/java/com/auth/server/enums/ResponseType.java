@@ -16,8 +16,27 @@ public enum ResponseType {
     ERROR(500,"接口请求失败"),
 
     UNAUTHORIZED(401,"认证失败"),
-    FORBIDDEN(403,"拒绝访问")
-
+    FORBIDDEN(403,"拒绝访问"),
+    /**
+     * 用户状态
+     */
+    NOT_LOGIN(401,"用户未登录，请重新登录"),
+    NOT_PERMISSION(403,"用户没有权限"),
+    /**
+     * 登录状态
+     */
+    LOGIN_SUCCESS(600,"用户登录成功！"),
+    USERNAME_PASSWORD_ERROR(601,"用户名或者密码不正确"),
+    CODE_ERROR(602,"验证码错误"),
+    ACCOUNT_NOT_EXIST(603,"账号不存在"),
+    ACCOUNT_LOCKED(604,"账号被锁定"),
+    ACCOUNT_CREDENTIAL_EXPIRED(605,"用户凭证已失效"),
+    ACCOUNT_DISABLE(606,"账号已被禁用"),
+    /**
+     * 用户退出状态
+     */
+    LOGOUT_SUCCESS(800,"退出登录成功"),
+    LOGOUT_ERROR(801,"退出登录失败"),
     ;
 
 

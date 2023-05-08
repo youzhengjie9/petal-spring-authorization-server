@@ -10,10 +10,10 @@
     <packaging>pom</packaging>
     <modules>
         <module>petal-oauth2-resource-server-7001</module>
-        <module>petal-oauth2-resource-server-7002</module>
         <module>petal-oauth2-common</module>
-        <module>petal-oauth2-authorization-server-9090</module>
+        <module>petal-oauth2-auth-alipay-9090</module>
         <module>petal-oauth2-client-8300</module>
+        <module>petal-oauth2-auth-9000</module>
     </modules>
 
     <properties>
@@ -30,6 +30,9 @@
         <fastjson2.version>2.0.26</fastjson2.version>
         <!--  Spring Authorization Server版本      -->
         <spring.authorization.server.version>0.4.2</spring.authorization.server.version>
+        <hutool.version>5.8.17</hutool.version>
+        <druid.version>1.2.15</druid.version>
+        <mybatis-plus.version>3.5.2</mybatis-plus.version>
     </properties>
 
     <!--    依赖管理  -->

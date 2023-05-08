@@ -36,7 +36,7 @@
         <dependency>
             <groupId>com.baomidou</groupId>
             <artifactId>mybatis-plus-extension</artifactId>
-            <version>3.5.2</version>
+            <version>${mybatis-plus.version}</version>
         </dependency>
         <!--        单元测试-->
         <dependency>
@@ -61,14 +61,20 @@
         <dependency>
             <groupId>com.alibaba</groupId>
             <artifactId>druid-spring-boot-starter</artifactId>
-            <version>1.2.15</version>
+            <version>${druid.version}</version>
         </dependency>
 
         <!--        hutool  -->
         <dependency>
             <groupId>cn.hutool</groupId>
             <artifactId>hutool-all</artifactId>
-            <version>5.8.17</version>
+            <version>${hutool.version}</version>
+        </dependency>
+
+        <!--     hibernate-validator   -->
+        <dependency>
+            <groupId>org.hibernate.validator</groupId>
+            <artifactId>hibernate-validator</artifactId>
         </dependency>
 
         <!--        单元测试  -->

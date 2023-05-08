@@ -2,8 +2,8 @@
 import axios from 'axios'
 
 const service = axios.create({
-  //oauth2客户端的ip地址
-  baseURL: "http://127.0.0.1:8300",
+  //petal-oauth2-auth-9000（本项目的认证服务器（注意: 这不是第三方认证服务器的ip））的ip地址
+  baseURL: "http://127.0.0.1:9000",
   //6s没有响应就算超时
   timeout: 6000
 })
