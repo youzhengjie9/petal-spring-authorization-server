@@ -1,6 +1,6 @@
 package com.auth.server.support.password;
 
-import com.auth.server.support.OAuth2ResourceOwnerBaseAuthenticationProvider;
+import com.auth.server.support.base.OAuth2AuthenticationProvider;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -24,7 +24,7 @@ import java.util.Map;
  * @date 2023/05/08 17:40:33
  */
 public class PasswordAuthenticationProvider
-		extends OAuth2ResourceOwnerBaseAuthenticationProvider<CustomOAuth2PasswordAuthenticationToken> {
+		extends OAuth2AuthenticationProvider<PasswordAuthenticationToken> {
 
 	private static final Logger LOGGER = LogManager.getLogger(PasswordAuthenticationProvider.class);
 
@@ -51,7 +51,7 @@ public class PasswordAuthenticationProvider
 
 	@Override
 	public boolean supports(Class<?> authentication) {
-		boolean supports = CustomOAuth2PasswordAuthenticationToken.class.isAssignableFrom(authentication);
+		boolean supports = PasswordAuthenticationToken.class.isAssignableFrom(authentication);
 		LOGGER.debug("supports authentication=" + authentication + " returning " + supports);
 		return supports;
 	}

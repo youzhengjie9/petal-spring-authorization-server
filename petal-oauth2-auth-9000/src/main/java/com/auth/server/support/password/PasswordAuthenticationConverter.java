@@ -1,6 +1,7 @@
 package com.auth.server.support.password;
 
-import com.auth.server.support.OAuth2ResourceOwnerBaseAuthenticationConverter;
+import com.auth.server.constant.Oauth2Constant;
+import com.auth.server.support.base.OAuth2AuthenticationConverter;
 import com.auth.server.utils.OAuth2EndpointUtils;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.core.AuthorizationGrantType;
@@ -16,12 +17,12 @@ import java.util.Set;
 
 /**
  * 密码登录转换器
- *
+ * 作用: 根据请求中的参数（username、password）和授权类型组装成（密码登录）的授权认证对象（PasswordAuthenticationToken）
  * @author youzhengjie
  * @date 2023/05/08 13:11:58
  */
 public class PasswordAuthenticationConverter
-		extends OAuth2ResourceOwnerBaseAuthenticationConverter<CustomOAuth2PasswordAuthenticationToken> {
+		extends OAuth2AuthenticationConverter<PasswordAuthenticationToken> {
 
 	/**
 	 * 支持密码模式
@@ -33,9 +34,9 @@ public class PasswordAuthenticationConverter
 	}
 
 	@Override
-	public CustomOAuth2PasswordAuthenticationToken buildToken(Authentication clientPrincipal,
-															  Set requestedScopes, Map additionalParameters) {
-		return new CustomOAuth2PasswordAuthenticationToken(AuthorizationGrantType.PASSWORD, clientPrincipal,
+	public PasswordAuthenticationToken buildToken(Authentication clientPrincipal,
+												  Set requestedScopes, Map additionalParameters) {
+		return new PasswordAuthenticationToken(AuthorizationGrantType.PASSWORD, clientPrincipal,
 				requestedScopes, additionalParameters);
 	}
 
@@ -46,15 +47,15 @@ public class PasswordAuthenticationConverter
 	@Override
 	public void checkParams(HttpServletRequest request) {
 		MultiValueMap<String, String> parameters = OAuth2EndpointUtils.getParameters(request);
-		// username (REQUIRED)
-		String username = parameters.getFirst(OAuth2ParameterNames.USERNAME);
+		// 获取username请求参数（必须要有*）
+		String username = parameters.getFirst(Oauth2Constant.USERNAME_PARAMETER_NAME);
 		if (!StringUtils.hasText(username) || parameters.get(OAuth2ParameterNames.USERNAME).size() != 1) {
 			OAuth2EndpointUtils.throwError(OAuth2ErrorCodes.INVALID_REQUEST, OAuth2ParameterNames.USERNAME,
 					OAuth2EndpointUtils.ACCESS_TOKEN_REQUEST_ERROR_URI);
 		}
 
-		// password (REQUIRED)
-		String password = parameters.getFirst(OAuth2ParameterNames.PASSWORD);
+		// 获取password请求参数（必须要有*）
+		String password = parameters.getFirst(Oauth2Constant.PASSWORD_PARAMETER_NAME);
 		if (!StringUtils.hasText(password) || parameters.get(OAuth2ParameterNames.PASSWORD).size() != 1) {
 			OAuth2EndpointUtils.throwError(OAuth2ErrorCodes.INVALID_REQUEST, OAuth2ParameterNames.PASSWORD,
 					OAuth2EndpointUtils.ACCESS_TOKEN_REQUEST_ERROR_URI);

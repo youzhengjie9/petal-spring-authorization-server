@@ -14,6 +14,8 @@
         <module>petal-oauth2-auth-alipay-9090</module>
         <module>petal-oauth2-client-8300</module>
         <module>petal-oauth2-auth-9000</module>
+        <module>petal-oauth2-common/petal-oauth2-common-base</module>
+        <module>petal-oauth2-resource-server-7000</module>
     </modules>
 
     <properties>

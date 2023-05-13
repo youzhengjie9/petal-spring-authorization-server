@@ -1,7 +1,11 @@
 package com.auth.server.endpoint;
 
 import cn.hutool.core.util.StrUtil;
-import com.auth.server.handler.CustomAuthenticationFailureEventHandler;
+import com.auth.server.entity.SysOauthClient;
+import com.auth.server.enums.ResponseType;
+import com.auth.server.exception.OAuthClientException;
+import com.auth.server.feign.SysOauth2ClientFeign;
+import com.auth.server.support.handler.CustomAuthenticationFailureHandler;
 import com.auth.server.utils.OAuth2EndpointUtils;
 import com.auth.server.utils.OAuth2ErrorCodesExpand;
 import com.auth.server.utils.ResponseResult;
@@ -10,6 +14,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -20,9 +25,9 @@ import org.springframework.security.oauth2.core.OAuth2AccessToken;
 import org.springframework.security.oauth2.core.endpoint.OAuth2AccessTokenResponse;
 import org.springframework.security.oauth2.core.endpoint.OAuth2ParameterNames;
 import org.springframework.security.oauth2.core.http.converter.OAuth2AccessTokenResponseHttpMessageConverter;
-import org.springframework.security.oauth2.server.authorization.*;
-import org.springframework.security.oauth2.server.authorization.client.RegisteredClient;
-import org.springframework.security.oauth2.server.authorization.client.RegisteredClientRepository;
+import org.springframework.security.oauth2.server.authorization.OAuth2Authorization;
+import org.springframework.security.oauth2.server.authorization.OAuth2AuthorizationService;
+import org.springframework.security.oauth2.server.authorization.OAuth2TokenType;
 import org.springframework.security.oauth2.server.resource.InvalidBearerTokenException;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.preauth.PreAuthenticatedAuthenticationToken;
@@ -32,7 +37,10 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.security.Principal;
-import java.util.*;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * Token的端点控制器
@@ -49,29 +57,20 @@ public class TokenEndPointController {
             new OAuth2AccessTokenResponseHttpMessageConverter();
 
     private final AuthenticationFailureHandler authenticationFailureHandler =
-            new CustomAuthenticationFailureEventHandler();
+            new CustomAuthenticationFailureHandler();
 
-    private OAuth2AuthorizationService authorizationService;
+    private final OAuth2AuthorizationService authorizationService;
 
-    private RegisteredClientRepository registeredClientRepository;
-    private OAuth2AuthorizationConsentService authorizationConsentService;
+    private final SysOauth2ClientFeign sysOauth2ClientFeign;
 
-
-
-    @Autowired
-    public void setAuthorizationService(OAuth2AuthorizationService authorizationService) {
-        this.authorizationService = authorizationService;
-    }
+    private RedisTemplate redisTemplate;
 
     @Autowired
-    public void setAuthorizationConsentService(OAuth2AuthorizationConsentService authorizationConsentService) {
-        this.authorizationConsentService = authorizationConsentService;
+    public void setRedisTemplate(RedisTemplate redisTemplate) {
+        this.redisTemplate = redisTemplate;
     }
 
-    @Autowired
-    public void setRegisteredClientRepository(RegisteredClientRepository registeredClientRepository) {
-        this.registeredClientRepository = registeredClientRepository;
-    }
+
     /**
      * 认证页面
      *
@@ -101,45 +100,35 @@ public class TokenEndPointController {
                                 @RequestParam(OAuth2ParameterNames.CLIENT_ID) String clientId,
                                 @RequestParam(OAuth2ParameterNames.SCOPE) String scope,
                                 @RequestParam(OAuth2ParameterNames.STATE) String state) {
-        Set<String> scopesToApprove = new HashSet<>();
-        Set<String> previouslyApprovedScopes = new HashSet<>();
-        RegisteredClient registeredClient = this.registeredClientRepository.findByClientId(clientId);
 
-        OAuth2AuthorizationConsent currentAuthorizationConsent =
-                this.authorizationConsentService.findById(registeredClient.getId(), principal.getName());
+        ResponseResult responseResult = sysOauth2ClientFeign.getClientById(clientId);
+        if(responseResult != null){
+            Object data = responseResult.getData();
+            if(data != null){
+                SysOauthClient sysOauthClient = (SysOauthClient) data;
+                Set<String> authorizedScopes = org.springframework.util.StringUtils.commaDelimitedListToSet(sysOauthClient.getScope());
+                modelAndView.addObject("clientId", clientId);
+                modelAndView.addObject("state", state);
+                modelAndView.addObject("scopeList", authorizedScopes);
+                modelAndView.addObject("principalName", principal.getName());
 
-        Set<String> authorizedScopes;
-
-        if (currentAuthorizationConsent != null) {
-            authorizedScopes = currentAuthorizationConsent.getScopes();
-        } else {
-            authorizedScopes = Collections.emptySet();
-        }
-
-        for (String requestedScope : org.springframework.util.StringUtils.delimitedListToStringArray(scope, " ")) {
-            if (authorizedScopes.contains(requestedScope)) {
-                previouslyApprovedScopes.add(requestedScope);
-            } else {
-                scopesToApprove.add(requestedScope);
+                modelAndView.setViewName("consent");
+                return modelAndView;
             }
+            else {
+                throw new OAuthClientException("clientId 不合法");
+            }
+        }else {
+            throw new OAuthClientException("clientId 不合法");
         }
-
-        modelAndView.addObject("clientId", clientId);
-        modelAndView.addObject("state", state);
-        modelAndView.addObject("scopeList", authorizedScopes);
-        modelAndView.addObject("principalName", principal.getName());
-        modelAndView.addObject("scopes", withDescription(scopesToApprove));
-        modelAndView.addObject("previouslyApprovedScopes", withDescription(previouslyApprovedScopes));
-        modelAndView.setViewName("consent");
-        return modelAndView;
     }
 
     /**
-     * 校验token
+     * 检查Token
      * @param token 令牌
      */
     @SneakyThrows
-    @GetMapping("/check_token")
+    @GetMapping("/checkToken")
     public void checkToken(String token, HttpServletResponse response, HttpServletRequest request) {
         ServletServerHttpResponse httpResponse = new ServletServerHttpResponse(response);
 
@@ -167,7 +156,8 @@ public class TokenEndPointController {
     }
 
     /**
-     * 退出并删除token
+     * 退出登录
+     *
      * @param authHeader Authorization
      */
     @DeleteMapping("/logout")
@@ -176,7 +166,7 @@ public class TokenEndPointController {
     {
         //如果authHeader为空则说明早就退出成功了,直接返回即可
         if (StringUtils.isBlank(authHeader)) {
-            return ResponseResult.ok();
+            return ResponseResult.build(ResponseType.LOGOUT_SUCCESS);
         }
         //替换掉Token中的Bearer，取出真正的Token
         String tokenValue = authHeader.replace(OAuth2AccessToken.TokenType.BEARER.getValue(), StrUtil.EMPTY).trim();
@@ -192,55 +182,21 @@ public class TokenEndPointController {
     public ResponseResult<Boolean> removeToken(@PathVariable("token") String token) {
         OAuth2Authorization authorization = authorizationService.findByToken(token, OAuth2TokenType.ACCESS_TOKEN);
         if (authorization == null) {
-            return ResponseResult.ok();
+            return ResponseResult.build(ResponseType.LOGOUT_SUCCESS);
         }
         OAuth2Authorization.Token<OAuth2AccessToken> accessToken = authorization.getAccessToken();
         if (accessToken == null || StrUtil.isBlank(accessToken.getToken().getTokenValue())) {
-            return ResponseResult.ok();
+            return ResponseResult.build(ResponseType.LOGOUT_SUCCESS);
         }
-        // 清空用户信息
+        // TODO: 2023/5/9 清空用户信息
 //        cacheManager.getCache(CacheConstants.USER_DETAILS).evict(authorization.getPrincipalName());
-        // 清空access token
+        // 清空accessToken
         authorizationService.remove(authorization);
         // 处理自定义退出事件，保存相关日志
         SpringContextHolder.publishEvent(new LogoutSuccessEvent(new PreAuthenticatedAuthenticationToken(
                 authorization.getPrincipalName(), authorization.getRegisteredClientId())));
-        return ResponseResult.ok();
+        return ResponseResult.build(ResponseType.LOGOUT_SUCCESS);
     }
 
-    private static Set<ScopeWithDescription> withDescription(Set<String> scopes) {
-        Set<ScopeWithDescription> scopeWithDescriptions = new HashSet<>();
-        for (String scope : scopes) {
-            scopeWithDescriptions.add(new ScopeWithDescription(scope));
 
-        }
-        return scopeWithDescriptions;
-    }
-
-    public static class ScopeWithDescription {
-        private static final String DEFAULT_DESCRIPTION = "未知的权限";
-        private static final Map<String, String> scopeDescriptions = new HashMap<>();
-        static {
-            scopeDescriptions.put(
-                    "read",
-                    "授予read权限"
-            );
-            scopeDescriptions.put(
-                    "write",
-                    "授予write权限"
-            );
-            scopeDescriptions.put(
-                    "other.scope",
-                    "授予其他权限"
-            );
-        }
-
-        public final String scope;
-        public final String description;
-
-        ScopeWithDescription(String scope) {
-            this.scope = scope;
-            this.description = scopeDescriptions.getOrDefault(scope, DEFAULT_DESCRIPTION);
-        }
-    }
 }

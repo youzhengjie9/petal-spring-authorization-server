@@ -9,6 +9,7 @@
     </option>
     <option name="ignoredFiles">
       <set>
+        <option value="$PROJECT_DIR$/petal-oauth2-common-security/pom.xml" />
         <option value="$PROJECT_DIR$/petal-oauth2-resource-server-7002/pom.xml" />
       </set>
     </option>

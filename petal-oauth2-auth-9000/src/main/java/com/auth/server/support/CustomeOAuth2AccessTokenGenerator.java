@@ -44,7 +44,6 @@ public class CustomeOAuth2AccessTokenGenerator implements OAuth2TokenGenerator<O
 		Instant issuedAt = Instant.now();
 		Instant expiresAt = issuedAt.plus(registeredClient.getTokenSettings().getAccessTokenTimeToLive());
 
-		// @formatter:off
         OAuth2TokenClaimsSet.Builder claimsBuilder = OAuth2TokenClaimsSet.builder();
         if (StringUtils.hasText(issuer)) {
             claimsBuilder.issuer(issuer);
@@ -59,10 +58,9 @@ public class CustomeOAuth2AccessTokenGenerator implements OAuth2TokenGenerator<O
         if (!CollectionUtils.isEmpty(context.getAuthorizedScopes())) {
             claimsBuilder.claim(OAuth2ParameterNames.SCOPE, context.getAuthorizedScopes());
         }
-        // @formatter:on
 
 		if (this.accessTokenCustomizer != null) {
-			// @formatter:off
+
             OAuth2TokenClaimsContext.Builder accessTokenContextBuilder = OAuth2TokenClaimsContext.with(claimsBuilder)
                     .registeredClient(context.getRegisteredClient())
                     .principal(context.getPrincipal())
@@ -76,7 +74,6 @@ public class CustomeOAuth2AccessTokenGenerator implements OAuth2TokenGenerator<O
             if (context.getAuthorizationGrant() != null) {
                 accessTokenContextBuilder.authorizationGrant(context.getAuthorizationGrant());
             }
-            // @formatter:on
 
 			OAuth2TokenClaimsContext accessTokenContext = accessTokenContextBuilder.build();
 			this.accessTokenCustomizer.customize(accessTokenContext);
@@ -88,13 +85,6 @@ public class CustomeOAuth2AccessTokenGenerator implements OAuth2TokenGenerator<O
 				context.getAuthorizedScopes(), accessTokenClaimsSet.getClaims());
 	}
 
-	/**
-	 * Sets the {@link OAuth2TokenCustomizer} that customizes the
-	 * {@link OAuth2TokenClaimsContext#getClaims() claims} for the
-	 * {@link OAuth2AccessToken}.
-	 * @param accessTokenCustomizer the {@link OAuth2TokenCustomizer} that customizes the
-	 * claims for the {@code OAuth2AccessToken}
-	 */
 	public void setAccessTokenCustomizer(OAuth2TokenCustomizer<OAuth2TokenClaimsContext> accessTokenCustomizer) {
 		Assert.notNull(accessTokenCustomizer, "accessTokenCustomizer cannot be null");
 		this.accessTokenCustomizer = accessTokenCustomizer;

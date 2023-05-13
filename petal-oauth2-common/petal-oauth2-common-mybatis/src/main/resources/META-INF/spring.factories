@@ -1,0 +1,5 @@
+
+
+org.springframework.boot.autoconfigure.EnableAutoConfiguration = \
+  com.auth.server.autoconfigure.Oauth2CommonMybatisAutoConfiguration
+

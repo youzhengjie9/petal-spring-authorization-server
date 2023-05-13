@@ -18,12 +18,20 @@
     </properties>
 
     <dependencies>
-        <!--        common模块 -->
+
+        <!--        common redis模块-->
         <dependency>
             <groupId>com.auth.server</groupId>
-            <artifactId>petal-oauth2-common</artifactId>
+            <artifactId>petal-oauth2-common-redis</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
+        <!--       common security模块 -->
+        <dependency>
+            <groupId>com.auth.server</groupId>
+            <artifactId>petal-oauth2-common-security</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-thymeleaf</artifactId>
@@ -44,22 +52,7 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
-        <!--  jdbc -->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-jdbc</artifactId>
-        </dependency>
-        <!--        mysql -->
-        <dependency>
-            <groupId>mysql</groupId>
-            <artifactId>mysql-connector-java</artifactId>
-        </dependency>
-        <!--        mybatis-plus-->
-        <dependency>
-            <groupId>com.baomidou</groupId>
-            <artifactId>mybatis-plus-boot-starter</artifactId>
-            <version>${mybatis-plus.version}</version>
-        </dependency>
+
         <!-- lombok  -->
         <dependency>
             <groupId>org.projectlombok</groupId>
@@ -72,32 +65,5 @@
         </dependency>
     </dependencies>
 
-    <build>
-        <resources>
-            <resource>
-                <directory>src/main/resources</directory>
-                <filtering>true</filtering>
-                <excludes>
-                    <exclude>**/*.jks</exclude>
-                    <exclude>**/*.cer</exclude>
-                </excludes>
-            </resource>
-            <resource>
-                <directory>src/main/resources</directory>
-                <filtering>false</filtering>
-                <includes>
-                    <include>**/*.jks</include>
-                    <include>**/*.cer</include>
-                </includes>
-            </resource>
-        </resources>
-        <plugins>
-            <plugin>
-                <!-- 打包插件 -->
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
-            </plugin>
-        </plugins>
-    </build>
 
 </project>

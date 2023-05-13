@@ -1,0 +1,8 @@
+
+# common security autoconfigure
+org.springframework.boot.autoconfigure.EnableAutoConfiguration = \
+  com.auth.server.autoconfigure.Oauth2CommonSecurityAutoConfiguration
+
+
+
+
