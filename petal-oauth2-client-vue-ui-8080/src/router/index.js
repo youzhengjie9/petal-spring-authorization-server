@@ -21,6 +21,10 @@ const router = new VueRouter({
   mode:'history',
   routes: [
     {
+      path:'/',
+      component: () =>import('../views/dashboard/index.vue')
+    },
+    {
       path:'/login',
       component: () =>import('../views/login/index.vue')
     },

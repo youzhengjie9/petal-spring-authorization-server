@@ -12,11 +12,16 @@ import org.springframework.context.annotation.Primary;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
+/**
+ * 帐号密码模式下的UserDetailsService实现类
+ *
+ * @author youzhengjie
+ * @date 2023/05/13 23:49:00
+ */
 @Component
 @Slf4j
 @Primary
-@RequiredArgsConstructor
-public class CustomUserDetailsServiceImpl implements CustomUserDetailsService {
+public class PasswordUserDetailsServiceImpl implements CustomUserDetailsService {
 
 	private SysUserFeign sysUserFeign;
 
@@ -34,17 +39,16 @@ public class CustomUserDetailsServiceImpl implements CustomUserDetailsService {
 	@SneakyThrows
 	public UserDetails loadUserByUsername(String username) {
 
-		SysUser sysUser = sysUserFeign.queryUserByUserName(username);
+		ResponseResult<SysUser> sysUserResponseResult = sysUserFeign.queryUserByUserName(username);
 
 		UserInfo userInfo = new UserInfo();
-		userInfo.setSysUser(sysUser);
+		userInfo.setSysUser(sysUserResponseResult.getData());
 		// TODO: 2023/5/6 模拟权限
 		userInfo.setPermissions(new String[]{"sys:test3","sys:test5"});
 
-		ResponseResult<UserInfo> result = ResponseResult.ok(userInfo);
-		UserDetails userDetails = getUserDetails(result);
+		ResponseResult<UserInfo> userInfoResponseResult = ResponseResult.ok(userInfo);
 
-		return userDetails;
+		return getUserDetails(userInfoResponseResult);
 	}
 
 	@Override

@@ -13,7 +13,7 @@ import java.util.Locale;
  * @date 2023/05/09 23:53:23
  */
 @UtilityClass
-public class MsgUtils {
+public class MsgUtil {
 
 	/**
 	 * 通过code 获取中文错误信息

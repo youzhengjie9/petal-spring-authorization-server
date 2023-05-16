@@ -2,13 +2,15 @@ package com.auth.server;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 
 @SpringBootApplication
-public class Oauth2ResourceServer7000 {
+@EnableDiscoveryClient
+public class Oauth2ResourceServerApplication7000 {
 
     public static void main(String[] args) {
 
-        SpringApplication.run(Oauth2ResourceServer7000.class,args);
+        SpringApplication.run(Oauth2ResourceServerApplication7000.class,args);
 
     }
 

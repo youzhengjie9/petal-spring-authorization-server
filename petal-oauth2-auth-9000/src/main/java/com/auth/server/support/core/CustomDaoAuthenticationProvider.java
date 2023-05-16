@@ -5,7 +5,7 @@ import cn.hutool.extra.servlet.ServletUtil;
 import cn.hutool.extra.spring.SpringUtil;
 import com.auth.server.constant.Oauth2Constant;
 import com.auth.server.service.CustomUserDetailsService;
-import com.auth.server.utils.WebUtils;
+import com.auth.server.utils.WebUtil;
 import lombok.SneakyThrows;
 import org.springframework.core.Ordered;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -95,7 +95,7 @@ public class CustomDaoAuthenticationProvider extends AbstractUserDetailsAuthenti
 	@Override
 	protected final UserDetails retrieveUser(String username, UsernamePasswordAuthenticationToken authentication) {
 		prepareTimingAttackProtection();
-		HttpServletRequest request = WebUtils.getRequest()
+		HttpServletRequest request = WebUtil.getRequest()
 				.orElseThrow(
 						(Supplier<Throwable>) () -> new InternalAuthenticationServiceException("web request is empty"));
 
@@ -155,7 +155,7 @@ public class CustomDaoAuthenticationProvider extends AbstractUserDetailsAuthenti
 			UsernamePasswordAuthenticationToken authentication) throws AuthenticationException {
 
 		// =========如果是SMS_GRANT_TYPE模式则不用校验密码=========
-		String grantType = WebUtils.getRequest().get().getParameter(OAuth2ParameterNames.GRANT_TYPE);
+		String grantType = WebUtil.getRequest().get().getParameter(OAuth2ParameterNames.GRANT_TYPE);
 		if (StrUtil.equals(Oauth2Constant.SMS_GRANT_TYPE, grantType)) {
 			return;
 		}

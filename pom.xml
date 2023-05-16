@@ -16,6 +16,7 @@
         <module>petal-oauth2-auth-9000</module>
         <module>petal-oauth2-common/petal-oauth2-common-base</module>
         <module>petal-oauth2-resource-server-7000</module>
+        <module>petal-oauth2-gateway-6677</module>
     </modules>
 
     <properties>
@@ -35,6 +36,12 @@
         <hutool.version>5.8.17</hutool.version>
         <druid.version>1.2.15</druid.version>
         <mybatis-plus.version>3.5.2</mybatis-plus.version>
+        <oshi.version>6.4.0</oshi.version>
+        <UserAgentUtils.version>1.21</UserAgentUtils.version>
+        <easy-captcha.version>1.6.2</easy-captcha.version>
+        <swagger.version>3.0.0</swagger.version>
+        <knife4j.version>3.0.3</knife4j.version>
+        <springdoc.version>1.7.0</springdoc.version>
     </properties>
 
     <!--    依赖管理  -->

@@ -2,6 +2,7 @@ package com.auth.server.controller;
 
 import com.auth.server.entity.SysUser;
 import com.auth.server.service.SysUserService;
+import com.auth.server.utils.ResponseResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -20,11 +21,15 @@ public class SysUserController {
     }
 
     @GetMapping(path = "/queryUserByUserName/{username}")
-    public SysUser queryUserByUserName(@PathVariable("username") String username){
+    public ResponseResult<SysUser> queryUserByUserName(@PathVariable("username") String username){
 
-        return sysUserService.lambdaQuery().eq(SysUser::getUserName, username).one();
+        return ResponseResult.ok(sysUserService.lambdaQuery().eq(SysUser::getUserName, username).one());
     }
 
+    @GetMapping(path = "/queryUserByPhone/{phone}")
+    public ResponseResult<SysUser> queryUserByPhone(@PathVariable("phone") String phone){
 
+        return ResponseResult.ok(sysUserService.lambdaQuery().eq(SysUser::getPhone, phone).one());
+    }
 
 }

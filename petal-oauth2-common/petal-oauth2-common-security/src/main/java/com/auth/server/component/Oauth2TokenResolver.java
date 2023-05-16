@@ -6,6 +6,7 @@ import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
 import org.springframework.security.oauth2.server.resource.BearerTokenError;
 import org.springframework.security.oauth2.server.resource.BearerTokenErrors;
 import org.springframework.security.oauth2.server.resource.web.BearerTokenResolver;
+import org.springframework.stereotype.Component;
 import org.springframework.util.AntPathMatcher;
 import org.springframework.util.PathMatcher;
 import org.springframework.util.StringUtils;
@@ -22,6 +23,7 @@ import java.util.regex.Pattern;
  * @author youzhengjie
  * @date 2023/05/11 22:39:45
  */
+@Component
 public class Oauth2TokenResolver implements BearerTokenResolver {
 
 	/**

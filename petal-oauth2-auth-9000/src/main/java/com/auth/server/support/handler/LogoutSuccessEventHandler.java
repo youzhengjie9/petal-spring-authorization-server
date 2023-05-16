@@ -1,10 +1,7 @@
 package com.auth.server.support.handler;
 
-import com.auth.server.utils.SpringContextHolder;
-import com.auth.server.utils.WebUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationListener;
-import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.event.LogoutSuccessEvent;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.preauth.PreAuthenticatedAuthenticationToken;
@@ -47,7 +44,7 @@ public class LogoutSuccessEventHandler implements ApplicationListener<LogoutSucc
 //		logVo.setTime(endTime - startTime);
 //
 //		// 设置对应的token
-//		WebUtils.getRequest().ifPresent(request -> logVo.setParams(request.getHeader(HttpHeaders.AUTHORIZATION)));
+//		WebUtil.getRequest().ifPresent(request -> logVo.setParams(request.getHeader(HttpHeaders.AUTHORIZATION)));
 //
 //		// 这边设置ServiceId
 //		if (authentication instanceof PreAuthenticatedAuthenticationToken) {

@@ -10,6 +10,8 @@ import com.auth.server.utils.OAuth2EndpointUtils;
 import com.auth.server.utils.OAuth2ErrorCodesExpand;
 import com.auth.server.utils.ResponseResult;
 import com.auth.server.utils.SpringContextHolder;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.apache.commons.lang3.StringUtils;
@@ -48,6 +50,7 @@ import java.util.Set;
  * @author youzhengjie
  * @date 2023/04/22 00:25:44
  */
+@Api("Token的端点控制器")
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/token")
@@ -79,6 +82,7 @@ public class TokenEndPointController {
      * @return ModelAndView
      */
     @GetMapping("/login")
+    @ApiOperation("认证页面")
     public ModelAndView login(ModelAndView modelAndView, @RequestParam(required = false) String error) {
         modelAndView.setViewName("login");
         modelAndView.addObject("error", error);

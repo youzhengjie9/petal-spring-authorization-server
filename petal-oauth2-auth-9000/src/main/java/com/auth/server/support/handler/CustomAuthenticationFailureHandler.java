@@ -2,7 +2,7 @@ package com.auth.server.support.handler;
 
 import cn.hutool.core.util.StrUtil;
 import com.auth.server.constant.Oauth2Constant;
-import com.auth.server.utils.MsgUtils;
+import com.auth.server.utils.MsgUtil;
 import com.auth.server.utils.ResponseResult;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
@@ -56,7 +56,7 @@ public class CustomAuthenticationFailureHandler implements AuthenticationFailure
 //			logVo.setTime(endTime - startTime);
 //		}
 //
-//		logVo.setServiceId(WebUtils.getClientId());
+//		logVo.setServiceId(WebUtil.getClientId());
 //		logVo.setCreateBy(username);
 //		logVo.setUpdateBy(username);
 //		SpringContextHolder.publishEvent(new SysLogEvent(logVo));
@@ -83,7 +83,7 @@ public class CustomAuthenticationFailureHandler implements AuthenticationFailure
 		// 手机验证码登录
 		String grantType = request.getParameter(OAuth2ParameterNames.GRANT_TYPE);
 		if (Oauth2Constant.SMS_GRANT_TYPE.equals(grantType)) {
-			errorMessage = MsgUtils.getSecurityMessage("AbstractUserDetailsAuthenticationProvider.smsBadCredentials");
+			errorMessage = MsgUtil.getSecurityMessage("AbstractUserDetailsAuthenticationProvider.smsBadCredentials");
 		}
 
 		this.errorHttpResponseConverter.write(ResponseResult.fail(errorMessage), MediaType.APPLICATION_JSON, httpResponse);

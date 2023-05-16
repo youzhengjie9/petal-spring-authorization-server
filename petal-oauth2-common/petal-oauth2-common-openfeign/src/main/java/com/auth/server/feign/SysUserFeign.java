@@ -1,6 +1,7 @@
 package com.auth.server.feign;
 
 import com.auth.server.entity.SysUser;
+import com.auth.server.utils.ResponseResult;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -9,7 +10,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 public interface SysUserFeign {
 
     @GetMapping(path = "/queryUserByUserName/{username}")
-    public SysUser queryUserByUserName(@PathVariable("username") String username);
+    public ResponseResult<SysUser> queryUserByUserName(@PathVariable("username") String username);
 
+    @GetMapping(path = "/queryUserByPhone/{phone}")
+    public ResponseResult<SysUser> queryUserByPhone(@PathVariable("phone") String phone);
 
 }

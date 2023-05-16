@@ -9,8 +9,10 @@ import org.apache.commons.lang3.StringUtils;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.Ordered;
 import org.springframework.security.access.AccessDeniedException;
+import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -23,10 +25,15 @@ import javax.servlet.http.HttpServletRequest;
  */
 @Slf4j
 @Aspect
-@RequiredArgsConstructor
+@Component
 public class PermitAllAspect implements Ordered {
 
-	private final HttpServletRequest request;
+	private HttpServletRequest request;
+
+	@Autowired
+	public void setRequest(HttpServletRequest request) {
+		this.request = request;
+	}
 
 	@SneakyThrows
 	@Around("@within(permitAll) || @annotation(permitAll)")

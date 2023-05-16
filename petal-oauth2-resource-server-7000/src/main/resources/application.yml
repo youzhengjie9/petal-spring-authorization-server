@@ -14,6 +14,12 @@ spring:
       matching-strategy: ant_path_matcher
   application:
     name: petal-oauth2-resource-server-7000
+  # SpringCloud Alibaba配置
+  cloud:
+    # Nacos配置
+    nacos:
+      # Nacos的ip:端口
+      server-addr: 192.168.184.100:7747
     #这里我们使用的是mysql8.0的配置
   datasource:
     type: com.alibaba.druid.pool.DruidDataSource
@@ -104,6 +110,14 @@ mybatis-plus:
   configuration:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
   mapper-locations: classpath*:/mapper/**/*.xml
+
+# swagger
+springfox:
+  documentation:
+    swagger-ui:
+      # false为关闭swagger-ui界面,但不会关闭knife4j界面
+      enabled: true
+
 
 
 # 开启端点

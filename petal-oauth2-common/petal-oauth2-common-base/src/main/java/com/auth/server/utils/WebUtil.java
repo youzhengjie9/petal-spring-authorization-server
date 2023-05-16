@@ -21,7 +21,7 @@ import java.util.Optional;
 
 @Slf4j
 @UtilityClass
-public class WebUtils extends org.springframework.web.util.WebUtils {
+public class WebUtil extends org.springframework.web.util.WebUtils {
 
 	private final String BASIC_ = "Basic ";
 
@@ -33,7 +33,7 @@ public class WebUtils extends org.springframework.web.util.WebUtils {
 	 * @return 是否ajax请求
 	 */
 	public boolean isBody(HandlerMethod handlerMethod) {
-		ResponseBody responseBody = ClassUtils.getAnnotation(handlerMethod, ResponseBody.class);
+		ResponseBody responseBody = ClassUtil.getAnnotation(handlerMethod, ResponseBody.class);
 		return responseBody != null;
 	}
 
@@ -43,8 +43,8 @@ public class WebUtils extends org.springframework.web.util.WebUtils {
 	 * @return cookie value
 	 */
 	public String getCookieVal(String name) {
-		if (WebUtils.getRequest().isPresent()) {
-			return getCookieVal(WebUtils.getRequest().get(), name);
+		if (WebUtil.getRequest().isPresent()) {
+			return getCookieVal(WebUtil.getRequest().get(), name);
 		}
 		return null;
 	}
@@ -124,8 +124,8 @@ public class WebUtils extends org.springframework.web.util.WebUtils {
 
 	@SneakyThrows
 	public String getClientId() {
-		if (WebUtils.getRequest().isPresent()) {
-			String header = WebUtils.getRequest().get().getHeader(HttpHeaders.AUTHORIZATION);
+		if (WebUtil.getRequest().isPresent()) {
+			String header = WebUtil.getRequest().get().getHeader(HttpHeaders.AUTHORIZATION);
 			return splitClient(header)[0];
 		}
 		return null;

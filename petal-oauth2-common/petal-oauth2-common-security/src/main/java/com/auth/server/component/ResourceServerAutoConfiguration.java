@@ -7,9 +7,11 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.security.oauth2.server.authorization.OAuth2AuthorizationService;
 import org.springframework.security.oauth2.server.resource.introspection.OpaqueTokenIntrospector;
 import org.springframework.security.oauth2.server.resource.web.BearerTokenResolver;
+import org.springframework.stereotype.Component;
 
 
 /**
@@ -18,14 +20,15 @@ import org.springframework.security.oauth2.server.resource.web.BearerTokenResolv
  * @author youzhengjie
  * @date 2023/05/12 15:44:13
  */
-@RequiredArgsConstructor
+
 @EnableConfigurationProperties(IgnoreAuthenticationProperties.class)
+@Configuration
 public class ResourceServerAutoConfiguration {
 
 	/**
 	 * 配置权限判断工具的bean
 	 */
-	@Bean("permissionService")
+	@Bean("pms")
 	public PermissionService permissionService() {
 		return new PermissionService();
 	}

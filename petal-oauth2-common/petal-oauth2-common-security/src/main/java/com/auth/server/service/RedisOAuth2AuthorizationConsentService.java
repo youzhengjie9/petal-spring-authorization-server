@@ -1,19 +1,25 @@
 package com.auth.server.service;
 
-import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.oauth2.server.authorization.OAuth2AuthorizationConsent;
 import org.springframework.security.oauth2.server.authorization.OAuth2AuthorizationConsentService;
+import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
 
 import java.util.concurrent.TimeUnit;
 
-@RequiredArgsConstructor
+@Component
 public class RedisOAuth2AuthorizationConsentService implements OAuth2AuthorizationConsentService {
 
-	private final RedisTemplate<String, Object> redisTemplate;
+	private RedisTemplate redisTemplate;
 
 	private final static Long TIMEOUT = 10L;
+
+	@Autowired
+	public void setRedisTemplate(RedisTemplate redisTemplate) {
+		this.redisTemplate = redisTemplate;
+	}
 
 	@Override
 	public void save(OAuth2AuthorizationConsent authorizationConsent) {

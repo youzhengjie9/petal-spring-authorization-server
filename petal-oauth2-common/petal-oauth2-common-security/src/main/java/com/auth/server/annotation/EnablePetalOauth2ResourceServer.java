@@ -1,6 +1,7 @@
 package com.auth.server.annotation;
 
 import com.auth.server.component.ResourceServerAutoConfiguration;
+import com.auth.server.component.ResourceServerConfiguration;
 import org.springframework.context.annotation.Import;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 

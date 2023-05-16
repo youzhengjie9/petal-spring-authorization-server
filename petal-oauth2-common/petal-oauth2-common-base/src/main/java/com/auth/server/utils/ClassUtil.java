@@ -7,6 +7,7 @@ import org.springframework.core.MethodParameter;
 import org.springframework.core.ParameterNameDiscoverer;
 import org.springframework.core.annotation.AnnotatedElementUtils;
 import org.springframework.core.annotation.SynthesizingMethodParameter;
+import org.springframework.util.ClassUtils;
 import org.springframework.web.method.HandlerMethod;
 
 import java.lang.annotation.Annotation;
@@ -15,7 +16,7 @@ import java.lang.reflect.Method;
 
 
 @UtilityClass
-public class ClassUtils extends org.springframework.util.ClassUtils {
+public class ClassUtil extends org.springframework.util.ClassUtils {
 
 	private final ParameterNameDiscoverer PARAMETERNAMEDISCOVERER = new DefaultParameterNameDiscoverer();
 

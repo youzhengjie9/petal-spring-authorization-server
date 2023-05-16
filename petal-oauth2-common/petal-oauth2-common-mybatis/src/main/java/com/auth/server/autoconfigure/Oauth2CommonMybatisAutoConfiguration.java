@@ -1,7 +1,6 @@
 package com.auth.server.autoconfigure;
 
 import com.auth.server.config.DataSourceConfig;
-import com.auth.server.config.RemoveDruidAdConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -13,10 +12,10 @@ public class Oauth2CommonMybatisAutoConfiguration {
         return new DataSourceConfig();
     }
 
-    @Bean
-    public RemoveDruidAdConfiguration removeDruidAdConfiguration(){
-        return new RemoveDruidAdConfiguration();
-    }
+//    @Bean
+//    public RemoveDruidAdConfiguration removeDruidAdConfiguration(){
+//        return new RemoveDruidAdConfiguration();
+//    }
 
 
 }

@@ -6,6 +6,7 @@ import com.auth.server.service.CustomUserDetailsService;
 import com.auth.server.service.SecurityOauth2User;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.Ordered;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.AuthorityUtils;
@@ -19,6 +20,7 @@ import org.springframework.security.oauth2.server.authorization.OAuth2Authorizat
 import org.springframework.security.oauth2.server.authorization.OAuth2TokenType;
 import org.springframework.security.oauth2.server.resource.InvalidBearerTokenException;
 import org.springframework.security.oauth2.server.resource.introspection.OpaqueTokenIntrospector;
+import org.springframework.stereotype.Component;
 
 import java.security.Principal;
 import java.util.Comparator;
@@ -36,10 +38,14 @@ import java.util.Optional;
  * @date 2023/05/12 12:18:11
  */
 @Slf4j
-@RequiredArgsConstructor
+@Component
 public class CustomOpaqueTokenIntrospector implements OpaqueTokenIntrospector {
 
 	private final OAuth2AuthorizationService authorizationService;
+
+	public CustomOpaqueTokenIntrospector(OAuth2AuthorizationService authorizationService) {
+		this.authorizationService = authorizationService;
+	}
 
 	@Override
 	public OAuth2AuthenticatedPrincipal introspect(String token) {

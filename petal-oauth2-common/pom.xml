@@ -17,6 +17,7 @@
         <module>petal-oauth2-common-openfeign</module>
         <module>petal-oauth2-common-mybatis</module>
         <module>petal-oauth2-common-base</module>
+        <module>petal-oauth2-common-swagger</module>
     </modules>
 
     <properties>

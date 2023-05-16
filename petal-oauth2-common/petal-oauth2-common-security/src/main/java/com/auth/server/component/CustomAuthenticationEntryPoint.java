@@ -12,6 +12,7 @@ import org.springframework.security.authentication.InsufficientAuthenticationExc
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.oauth2.server.resource.InvalidBearerTokenException;
 import org.springframework.security.web.AuthenticationEntryPoint;
+import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -24,12 +25,18 @@ import java.io.PrintWriter;
  * @author youzhengjie
  * @date 2023/05/12 18:16:08
  */
-@RequiredArgsConstructor
+
+@Component
 public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint {
 
 	private final ObjectMapper objectMapper;
 
 	private final MessageSource messageSource;
+
+	public CustomAuthenticationEntryPoint(ObjectMapper objectMapper, MessageSource messageSource) {
+		this.objectMapper = objectMapper;
+		this.messageSource = messageSource;
+	}
 
 	@Override
 	@SneakyThrows

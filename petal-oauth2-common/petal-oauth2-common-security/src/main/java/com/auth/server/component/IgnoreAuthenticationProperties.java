@@ -10,6 +10,7 @@ import org.apache.ibatis.javassist.runtime.Inner;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.core.annotation.AnnotationUtils;
+import org.springframework.stereotype.Component;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.mvc.method.RequestMappingInfo;
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;
@@ -27,6 +28,7 @@ import java.util.regex.Pattern;
  */
 @Slf4j
 @ConfigurationProperties(prefix = "security.oauth2.ignore")
+@Component
 public class IgnoreAuthenticationProperties implements InitializingBean {
 
 	private static final Pattern PATTERN = Pattern.compile("\\{(.*?)\\}");

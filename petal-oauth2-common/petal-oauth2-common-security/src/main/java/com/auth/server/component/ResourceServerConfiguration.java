@@ -3,7 +3,9 @@ package com.auth.server.component;
 import cn.hutool.core.util.ArrayUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -20,16 +22,36 @@ import org.springframework.security.web.SecurityFilterChain;
  */
 @Slf4j
 @EnableWebSecurity
-@RequiredArgsConstructor
+@Configuration
 public class ResourceServerConfiguration {
 
-	protected final CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
+	protected CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
 
-	private final IgnoreAuthenticationProperties ignoreAuthenticationProperties;
+	private IgnoreAuthenticationProperties ignoreAuthenticationProperties;
 
-	private final Oauth2TokenResolver oauth2TokenResolver;
+	private Oauth2TokenResolver oauth2TokenResolver;
 
-	private final OpaqueTokenIntrospector customOpaqueTokenIntrospector;
+	private OpaqueTokenIntrospector customOpaqueTokenIntrospector;
+
+	@Autowired
+	public void setCustomAuthenticationEntryPoint(CustomAuthenticationEntryPoint customAuthenticationEntryPoint) {
+		this.customAuthenticationEntryPoint = customAuthenticationEntryPoint;
+	}
+
+	@Autowired
+	public void setIgnoreAuthenticationProperties(IgnoreAuthenticationProperties ignoreAuthenticationProperties) {
+		this.ignoreAuthenticationProperties = ignoreAuthenticationProperties;
+	}
+
+	@Autowired
+	public void setOauth2TokenResolver(Oauth2TokenResolver oauth2TokenResolver) {
+		this.oauth2TokenResolver = oauth2TokenResolver;
+	}
+
+	@Autowired
+	public void setCustomOpaqueTokenIntrospector(OpaqueTokenIntrospector customOpaqueTokenIntrospector) {
+		this.customOpaqueTokenIntrospector = customOpaqueTokenIntrospector;
+	}
 
 	@Bean
 	@Order(Ordered.HIGHEST_PRECEDENCE)

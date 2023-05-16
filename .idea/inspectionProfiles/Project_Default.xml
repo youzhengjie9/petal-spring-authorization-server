@@ -16,6 +16,7 @@
           <option value="org.springframework.security:spring-security-oauth2-authorization-server" />
           <option value="com.baomidou:mybatis-plus-boot-starter" />
           <option value="com.baomidou:mybatis-plus-boot-starter" />
+          <option value="com.pig4cloud.plugin:captcha-spring-boot-starter" />
         </list>
       </option>
     </inspection_tool>

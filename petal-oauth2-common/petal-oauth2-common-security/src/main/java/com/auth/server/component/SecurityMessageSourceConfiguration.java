@@ -3,7 +3,9 @@ package com.auth.server.component;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
+import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import java.util.Locale;
@@ -18,9 +20,10 @@ import static org.springframework.boot.autoconfigure.condition.ConditionalOnWebA
  * @date 2023/05/12 23:23:09
  */
 @ConditionalOnWebApplication(type = SERVLET)
+@Configuration
 public class SecurityMessageSourceConfiguration implements WebMvcConfigurer {
 
-	@Bean
+	@Bean("securityMessageSource")
 	public MessageSource securityMessageSource() {
 		ReloadableResourceBundleMessageSource messageSource = new ReloadableResourceBundleMessageSource();
 		messageSource.addBasenames("classpath:i18n/errors/messages");
