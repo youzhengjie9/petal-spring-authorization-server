@@ -1,6 +1,7 @@
 package com.auth.server.endpoint;
 
 import cn.hutool.core.util.StrUtil;
+import com.auth.server.annotation.PermitAll;
 import com.auth.server.entity.SysOauthClient;
 import com.auth.server.enums.ResponseType;
 import com.auth.server.exception.OAuthClientException;
@@ -100,6 +101,7 @@ public class TokenEndPointController {
      * @return {@link ModelAndView}
      */
     @GetMapping("/consent")
+    @ApiOperation("授权")
     public ModelAndView consent(Principal principal, ModelAndView modelAndView,
                                 @RequestParam(OAuth2ParameterNames.CLIENT_ID) String clientId,
                                 @RequestParam(OAuth2ParameterNames.SCOPE) String scope,
@@ -129,10 +131,12 @@ public class TokenEndPointController {
 
     /**
      * 检查Token
+     *
      * @param token 令牌
      */
     @SneakyThrows
     @GetMapping("/checkToken")
+    @ApiOperation("检查Token")
     public void checkToken(String token, HttpServletResponse response, HttpServletRequest request) {
         ServletServerHttpResponse httpResponse = new ServletServerHttpResponse(response);
 
@@ -165,6 +169,7 @@ public class TokenEndPointController {
      * @param authHeader Authorization
      */
     @DeleteMapping("/logout")
+    @ApiOperation("退出登录")
     public ResponseResult<Boolean> logout(
             @RequestHeader(value = HttpHeaders.AUTHORIZATION, required = false) String authHeader)
     {
@@ -179,10 +184,12 @@ public class TokenEndPointController {
 
     /**
      * 移除token
+     *
      * @param token token
      */
-//    @Inner
+    @PermitAll
     @DeleteMapping("/{token}")
+    @ApiOperation("移除token")
     public ResponseResult<Boolean> removeToken(@PathVariable("token") String token) {
         OAuth2Authorization authorization = authorizationService.findByToken(token, OAuth2TokenType.ACCESS_TOKEN);
         if (authorization == null) {

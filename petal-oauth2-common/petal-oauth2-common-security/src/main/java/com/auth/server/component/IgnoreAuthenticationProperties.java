@@ -65,23 +65,31 @@ public class IgnoreAuthenticationProperties implements InitializingBean {
 			PermitAll permitAllMethod = AnnotationUtils.findAnnotation(handlerMethod.getMethod(), PermitAll.class);
 			Optional.ofNullable(permitAllMethod)
 					// info.getPathPatternsCondition().getPatternValues()获取到的就是接口的路径path集合（例如：{/user/getUser,/user/add}等等）
-				.ifPresent(permitAll -> Objects.requireNonNull(info.getPathPatternsCondition())
-					.getPatternValues()
+				.ifPresent(permitAll -> Objects.requireNonNull(info.getPatternsCondition())
+						.getPatterns()
 						// 使用正则表达式把@RequestMapping上每个PathVariable语法（{xxx}）转成（*）
 						// 例如：/user/{username}/{password}
 						// 经过下面代码变成: /user/*/*
-					.forEach(ignoreUrl -> ignoreUrls.add(ReUtil.replaceAll(ignoreUrl, PATTERN, "*"))));
+					.forEach(ignoreUrl -> {
+						ignoreUrls.add(ReUtil.replaceAll(ignoreUrl, PATTERN, "*"));
+						log.info("路径: {} 已加入ignoreUrls,允许所有人访问,服务调用不需要鉴权",ignoreUrl);
+					})
+				);
 
 			// 获取（controller类）上面的@PermitAll注解
 			PermitAll permitAllController = AnnotationUtils.findAnnotation(handlerMethod.getBeanType(), PermitAll.class);
 			Optional.ofNullable(permitAllController)
 					// info.getPathPatternsCondition().getPatternValues()获取到的就是接口的路径path集合（例如：{/user/getUser,/user/add}等等）
-				.ifPresent(permitAll -> Objects.requireNonNull(info.getPathPatternsCondition())
-					.getPatternValues()
+				.ifPresent(permitAll -> Objects.requireNonNull(info.getPatternsCondition())
+						.getPatterns()
 						// 使用正则表达式把@RequestMapping上每个PathVariable语法（{xxx}）转成（*）
 						// 例如：/user/{username}/{password}
 						// 经过下面代码变成: /user/*/*
-					.forEach(ignoreUrl -> ignoreUrls.add(ReUtil.replaceAll(ignoreUrl, PATTERN, "*"))));
+					.forEach(ignoreUrl -> {
+						ignoreUrls.add(ReUtil.replaceAll(ignoreUrl, PATTERN, "*"));
+						log.info("路径: {} 已加入ignoreUrls,允许所有人访问,服务调用不需要鉴权",ignoreUrl);
+					})
+				);
 		});
 	}
 

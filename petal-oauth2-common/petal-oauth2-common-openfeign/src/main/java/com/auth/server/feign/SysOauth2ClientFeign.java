@@ -19,5 +19,4 @@ public interface SysOauth2ClientFeign {
 
 
 
-
 }

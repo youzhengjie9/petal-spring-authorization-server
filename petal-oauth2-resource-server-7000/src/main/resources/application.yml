@@ -111,13 +111,26 @@ mybatis-plus:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
   mapper-locations: classpath*:/mapper/**/*.xml
 
-# swagger
-springfox:
-  documentation:
-    swagger-ui:
-      # false为关闭swagger-ui界面,但不会关闭knife4j界面
-      enabled: true
+## swagger
+#springfox:
+#  documentation:
+#    swagger-ui:
+#      # false为关闭swagger-ui界面,但不会关闭knife4j界面
+#      enabled: true
 
+
+# swagger配置属性
+swagger:
+  # 是否开启 (true=开启,false=隐藏。生产环境建议设置为false)
+  enable: true
+  # 接口文档描述
+  description: 这是我的接口文档
+  # 联系人姓名
+  contactName: youzhengjie
+  # 联系人的网站url
+  contactUrl: https://blog.csdn.net/weixin_50071998?type=blog
+  # 联系人的电子邮件
+  contactEmail: 1550324080@qq.com
 
 
 # 开启端点

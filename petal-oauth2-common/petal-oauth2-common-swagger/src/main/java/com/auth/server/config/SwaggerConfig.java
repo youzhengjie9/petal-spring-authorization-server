@@ -1,8 +1,10 @@
 package com.auth.server.config;
 
+import com.auth.server.properties.SwaggerProperties;
 import com.github.xiaoymin.knife4j.spring.annotations.EnableKnife4j;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.actuate.autoconfigure.endpoint.web.CorsEndpointProperties;
 import org.springframework.boot.actuate.autoconfigure.endpoint.web.WebEndpointProperties;
 import org.springframework.boot.actuate.autoconfigure.web.server.ManagementPortType;
@@ -34,41 +36,65 @@ import java.util.List;
 @Configuration
 @EnableOpenApi //注解启动用Swagger的使用，同时在配置类中对Swagger的通用参数进行配置
 @EnableKnife4j //开启knife4j美化
-public class Swagger3Config implements EnvironmentAware {
+public class SwaggerConfig implements EnvironmentAware {
 
     private String applicationName;
 
-    private String applicationDescription;
+    /**
+     * 文档版本
+     */
+    private static final String DOC_VERSION = "3.2" ;
+
+    private SwaggerProperties swaggerProperties;
+
+    @Autowired
+    public void setSwaggerProperties(SwaggerProperties swaggerProperties) {
+        this.swaggerProperties = swaggerProperties;
+    }
 
     @Bean
     public Docket createRestApi() {
-        //返回文档概要信息
+        //文档概要信息
         return new Docket(DocumentationType.OAS_30)
                 .apiInfo(apiInfo())
+                //是否开启 (true=开启,false=隐藏。生产环境建议设置为false)
+                .enable(swaggerProperties.getEnable())
                 .select()
                 .apis(RequestHandlerSelectors.withMethodAnnotation(ApiOperation.class))
                 .apis(RequestHandlerSelectors.withClassAnnotation(Api.class))
                 .paths(PathSelectors.any())
                 .build()
-//                .globalRequestParameters(getGlobalRequestParameters())
                 .globalResponses(HttpMethod.GET, getGlobalResponseMessage())
                 .globalResponses(HttpMethod.POST, getGlobalResponseMessage());
     }
 
-    /*
-    生成接口信息，包括标题，联系人等
+
+    /**
+     * 生成接口信息，包括标题，联系人等
+     *
+     * @return {@link ApiInfo}
      */
     private ApiInfo apiInfo() {
         return new ApiInfoBuilder()
                 .title(applicationName + "接口文档")
-                .description(applicationDescription)
-                .contact(new Contact("接口文档", "地址", "邮箱"))
-                .version("1.3")
+                .description(swaggerProperties.getDescription())
+                // 本API负责人的联系信息
+                .contact(
+                        new Contact(
+                            swaggerProperties.getContactName(),
+                            swaggerProperties.getContactUrl(),
+                            swaggerProperties.getContactEmail()
+                        )
+                )
+                .version(DOC_VERSION)
                 .build();
     }
 
-    /*
-    封装通用相应信息
+
+    /**
+     * 封装通用相应信息
+     *
+     * @return {@link List}<{@link Response}>
      */
     private List<Response> getGlobalResponseMessage() {
         List<Response> responseList = new ArrayList<>();
@@ -76,6 +102,18 @@ public class Swagger3Config implements EnvironmentAware {
         return responseList;
     }
 
+    /**
+     * 增加如下配置可解决Spring Boot 2.6.x 与Swagger 3.0.0 不兼容问题
+     *
+     * @param webEndpointsSupplier        web端点供应商
+     * @param servletEndpointsSupplier    servlet端点供应商
+     * @param controllerEndpointsSupplier 控制器终端供应商
+     * @param endpointMediaTypes          端点媒体类型
+     * @param corsProperties              歌珥属性
+     * @param webEndpointProperties       web端点属性
+     * @param environment                 环境
+     * @return {@link WebMvcEndpointHandlerMapping}
+     */
     @Bean
     public WebMvcEndpointHandlerMapping webEndpointServletHandlerMapping(
             WebEndpointsSupplier webEndpointsSupplier, ServletEndpointsSupplier servletEndpointsSupplier,
@@ -95,7 +133,6 @@ public class Swagger3Config implements EnvironmentAware {
 
     @Override
     public void setEnvironment(Environment environment) {
-        this.applicationDescription = environment.getProperty("spring.application.description");
         this.applicationName = environment.getProperty("spring.application.name");
     }
 

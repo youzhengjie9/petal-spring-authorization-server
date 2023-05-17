@@ -7,13 +7,12 @@ import lombok.Data;
 import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
 
+
 /**
- * <p>
- * 客户端信息
- * </p>
+ * Oauth2客户端信息
  *
- * @author lengleng
- * @since 2019/2/1
+ * @author youzhengjie
+ * @date 2023/05/16 23:53:27
  */
 @Data
 public class SysOauthClient implements Serializable {
