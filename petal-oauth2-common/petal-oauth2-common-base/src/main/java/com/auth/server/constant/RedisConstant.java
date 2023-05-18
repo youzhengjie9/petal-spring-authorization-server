@@ -8,7 +8,15 @@ package com.auth.server.constant;
  */
 public final class RedisConstant {
 
-    public static final String IMAGE_CAPTCHA_PREFIX = "captcha:";
+    /**
+     * 图片验证码前缀
+     */
+    public static final String IMAGE_CAPTCHA_PREFIX = "captcha:image:";
+
+    /**
+     * 手机短信验证码前缀
+     */
+    public static final String SMS_CAPTCHA_PREFIX = "captcha:sms:";
 
 
 }

@@ -10,6 +10,14 @@ import org.springframework.web.server.ServerWebExchange;
 
 /**
  * swagger网关过滤器工厂
+ * <p>
+ * 自定义filters格式:
+ * 1: 继承AbstractGatewayFilterFactory，
+ * 2: 类名必须以GatewayFilterFactory为结尾
+ * <p>
+ * 例如自定义一个CheckCaptcha的过滤器:
+ * 1: 创建一个名为CheckCaptchaGatewayFilterFactory的类,并继承AbstractGatewayFilterFactory
+ * 2: 在application.yml中的gateway.filters下面配置 CheckCaptcha 即可。
  *
  * @author youzhengjie
  * @date 2023/05/16 22:00:23

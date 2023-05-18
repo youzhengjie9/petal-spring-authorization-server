@@ -37,13 +37,6 @@ spring:
         max-wait: -1
 
 
-## swagger
-#springfox:
-#  documentation:
-#    swagger-ui:
-#      # false为关闭swagger-ui界面,但不会关闭knife4j界面
-#      enabled: true
-
 # swagger配置属性
 swagger:
   # 是否开启 (true=开启,false=隐藏。生产环境建议设置为false)
@@ -91,3 +84,9 @@ authorization:
     oauth2TokenUrl: http://127.0.0.1:${server.port}/oauth2/token
     issuer-uri: http://petal.oauth2.com:9000
 
+# 开启端点
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"

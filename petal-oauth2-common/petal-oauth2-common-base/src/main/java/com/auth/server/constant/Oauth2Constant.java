@@ -51,4 +51,35 @@ public final class Oauth2Constant {
 	 */
 	public static final String ONLY_FEIGN_CALL_HEADER_NAME = "only_feign_call";
 
+	/**
+	 * 默认的登录URL
+	 */
+	public static final String OAUTH_TOKEN_URL = "/oauth2/token";
+
+	/**
+	 * refreshToken的grant_type
+	 */
+	public static final String REFRESH_TOKEN_GRANT_TYPE = "refresh_token";
+
+
+	/**
+	 * 手机号参数名称
+	 */
+	public static final String PHONE_PARAMETER_NAME = "phone";
+
+	/**
+	 * 图片验证码的key的参数名称
+	 */
+	public static final String IMAGE_CAPTCHA_KEY_PARAMETER_NAME = "image_captcha_key";
+
+	/**
+	 * 图片验证码的值的参数名称
+	 */
+	public static final String IMAGE_CAPTCHA_PARAMETER_NAME = "image_captcha";
+
+	/**
+	 * 记录请求开始时间
+	 */
+	public static final String REQUEST_START_TIME = "REQUEST-START-TIME";
+
 }

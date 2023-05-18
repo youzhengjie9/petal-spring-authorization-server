@@ -60,11 +60,11 @@ public class ImageCaptchaHandler implements HandlerFunction<ServerResponse> {
         // 验证码图片的base64编码
         String imageCaptchaBase64 = captcha.toBase64();
         // 随机生成一个验证码id作为key，返回给前端，前端可以通过这个验证码key在redis中找到正确的验证码
-        String key = RedisConstant.IMAGE_CAPTCHA_PREFIX+UUID.randomUUID().toString().replaceAll("-","");
+        String imageCaptchaKey = RedisConstant.IMAGE_CAPTCHA_PREFIX+UUID.randomUUID().toString().replaceAll("-","");
         // 将验证码存入Redis中,并设置有效期30分钟
-        redisTemplate.opsForValue().set(key,code,30, TimeUnit.MINUTES);
+        redisTemplate.opsForValue().set(imageCaptchaKey,code,30, TimeUnit.MINUTES);
         Map<Object, Object> map = new ConcurrentHashMap<>();
-        map.put("key",key);
+        map.put("imageCaptchaKey",imageCaptchaKey);
         map.put("imageCaptchaBase64",imageCaptchaBase64);
 
         ResponseResult<Map<Object, Object>> responseResult =

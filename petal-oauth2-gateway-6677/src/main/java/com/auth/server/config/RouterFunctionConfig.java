@@ -29,16 +29,16 @@ public class RouterFunctionConfig {
 	}
 
 	/**
-	 * 生成验证码的接口
+	 * 生成图片验证码的接口
 	 * <p>
 	 * 下面这个方法相当于 @GetMapping(path="/captcha") 注解
 	 *
 	 * @return {@link RouterFunction}<{@link ServerResponse}>
 	 */
 	@Bean
-	public RouterFunction<ServerResponse> captchaRouterFunction() {
+	public RouterFunction<ServerResponse> imageCaptchaRouterFunction() {
 		return RouterFunctions.route(
-				RequestPredicates.GET("/captcha"),
+				RequestPredicates.GET("/image/captcha"),
 				imageCaptchaHandler);
 	}
 

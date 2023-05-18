@@ -26,10 +26,10 @@
             <version>1.0-SNAPSHOT</version>
         </dependency>
 
-        <!--       spring-data-redis-->
+        <!--       spring-data-redis-reactive 内置了 spring-boot-starter-data-redis -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-data-redis</artifactId>
+            <artifactId>spring-boot-starter-data-redis-reactive</artifactId>
         </dependency>
         <!--        spring-data-redis配置连接池所必须要的依赖。-->
         <dependency>
