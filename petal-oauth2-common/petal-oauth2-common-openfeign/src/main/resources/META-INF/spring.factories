@@ -1,6 +1,6 @@
 
 
 org.springframework.boot.autoconfigure.EnableAutoConfiguration = \
-  com.auth.server.autoconfigure.Oauth2CommonOpenFeignAutoConfiguration
+  com.petal.oauth2.common.openfeign.autoconfigure.Oauth2CommonOpenFeignAutoConfiguration
 
 

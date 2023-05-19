@@ -79,6 +79,11 @@
             <artifactId>UserAgentUtils</artifactId>
             <version>${UserAgentUtils.version}</version>
         </dependency>
+        <!--json模块-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-json</artifactId>
+        </dependency>
     </dependencies>
 
 </project>
