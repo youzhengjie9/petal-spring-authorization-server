@@ -2,9 +2,6 @@ package com.petal.oauth2.common.security.autoconfigure;
 
 import com.petal.oauth2.common.security.component.PermitAllAspect;
 import com.petal.oauth2.common.security.component.SecurityMessageSourceConfiguration;
-import com.auth.server.service.*;
-import com.petal.oauth2.alipay.auth.service.*;
-import com.petal.oauth2.auth.service.*;
 import com.petal.oauth2.common.security.service.*;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -50,11 +47,16 @@ public class Oauth2CommonSecurityAutoConfiguration {
         return new PermitAllAspect();
     }
 
-    @Bean
-    public SecurityMessageSourceConfiguration securityMessageSourceConfiguration(){
-
-        return new SecurityMessageSourceConfiguration();
-    }
+    /**
+     * 如果在这里配置会报错 Method authorizationServerSecurityFilterChain in com.petal.oauth2.auth.config.AuthorizationServerConfig required a bean named 'securityMessageSource' that could not be found.
+     * 解决: 配置到META-INF下面的spring.factories就不会报错
+     * @return
+     */
+//    @Bean
+//    public SecurityMessageSourceConfiguration securityMessageSourceConfiguration(){
+//
+//        return new SecurityMessageSourceConfiguration();
+//    }
 
     @Bean
     public RegisteredClientRepository registeredClientRepository(){

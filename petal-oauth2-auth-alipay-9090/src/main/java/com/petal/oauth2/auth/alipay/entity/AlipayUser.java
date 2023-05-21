@@ -1,4 +1,4 @@
-package com.petal.oauth2.alipay.auth.entity;
+package com.petal.oauth2.auth.alipay.entity;
 
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;

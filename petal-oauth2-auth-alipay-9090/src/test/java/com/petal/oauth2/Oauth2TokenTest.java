@@ -1,7 +1,7 @@
 package com.petal.oauth2;
 
-import com.petal.oauth2.alipay.auth.utils.Oauth2TokenResponse;
-import com.petal.oauth2.alipay.auth.utils.Oauth2TokenUtil;
+import com.petal.oauth2.auth.alipay.utils.Oauth2TokenResponse;
+import com.petal.oauth2.auth.alipay.utils.Oauth2TokenUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.json.JSONException;
 import org.junit.Test;

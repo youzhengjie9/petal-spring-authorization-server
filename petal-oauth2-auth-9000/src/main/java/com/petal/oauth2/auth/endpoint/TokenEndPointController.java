@@ -1,19 +1,18 @@
 package com.petal.oauth2.auth.endpoint;
 
 import cn.hutool.core.util.StrUtil;
-import com.petal.oauth2.common.base.enums.ResponseType;
-import com.petal.oauth2.common.security.exception.OAuthClientException;
 import com.petal.oauth2.auth.support.handler.CustomAuthenticationFailureHandler;
-import com.petal.oauth2.common.security.utils.OAuth2EndpointUtils;
-import com.petal.oauth2.common.security.utils.OAuth2ErrorCodesExpand;
+import com.petal.oauth2.common.base.entity.SysOauth2Client;
+import com.petal.oauth2.common.base.enums.ResponseType;
 import com.petal.oauth2.common.base.utils.ResponseResult;
 import com.petal.oauth2.common.base.utils.SpringContextHolder;
-import com.petal.oauth2.common.security.annotation.PermitAll;
-import com.petal.oauth2.common.base.entity.SysOauth2Client;
 import com.petal.oauth2.common.openfeign.feign.SysOauth2ClientFeign;
+import com.petal.oauth2.common.security.annotation.PermitAll;
+import com.petal.oauth2.common.security.exception.OAuthClientException;
+import com.petal.oauth2.common.security.utils.OAuth2EndpointUtils;
+import com.petal.oauth2.common.security.utils.OAuth2ErrorCodesExpand;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,7 +50,6 @@ import java.util.Set;
  */
 @Api("Token的端点控制器")
 @RestController
-@RequiredArgsConstructor
 @RequestMapping("/token")
 public class TokenEndPointController {
 
@@ -61,11 +59,21 @@ public class TokenEndPointController {
     private final AuthenticationFailureHandler authenticationFailureHandler =
             new CustomAuthenticationFailureHandler();
 
-    private final OAuth2AuthorizationService authorizationService;
+    private OAuth2AuthorizationService authorizationService;
 
-    private final SysOauth2ClientFeign sysOauth2ClientFeign;
+    private SysOauth2ClientFeign sysOauth2ClientFeign;
 
     private RedisTemplate redisTemplate;
+
+    @Autowired
+    public void setAuthorizationService(OAuth2AuthorizationService authorizationService) {
+        this.authorizationService = authorizationService;
+    }
+
+    @Autowired
+    public void setSysOauth2ClientFeign(SysOauth2ClientFeign sysOauth2ClientFeign) {
+        this.sysOauth2ClientFeign = sysOauth2ClientFeign;
+    }
 
     @Autowired
     public void setRedisTemplate(RedisTemplate redisTemplate) {

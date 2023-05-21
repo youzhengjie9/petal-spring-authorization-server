@@ -38,7 +38,6 @@ import java.util.Arrays;
  * @date 2023-05-05 09:31:53
  */
 @Configuration
-@RequiredArgsConstructor
 public class AuthorizationServerConfig {
 
     private OAuth2AuthorizationService authorizationService;

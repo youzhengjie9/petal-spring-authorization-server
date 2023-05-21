@@ -1,4 +1,4 @@
-package com.petal.oauth2.alipay.auth.service;
+package com.petal.oauth2.auth.alipay.service;
 
 import com.auth.server.mapper.UserMapper;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;

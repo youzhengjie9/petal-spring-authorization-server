@@ -1,6 +1,6 @@
-package com.petal.oauth2.gateway.config;
+package com.petal.oauth2.auth.alipay.config;
 
-import com.petal.oauth2.gateway.properties.AlipayAuthorizationServerProperties;
+import com.petal.oauth2.auth.alipay.properties.AlipayAuthorizationServerProperties;
 import com.nimbusds.jose.jwk.JWKSet;
 import com.nimbusds.jose.jwk.RSAKey;
 import com.nimbusds.jose.jwk.source.JWKSource;

@@ -1,3 +1,3 @@
 #
-#org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-#    autoconfigure.com.petal.oauth2.auth.SwaggerAutoConfiguration
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+    com.petal.oauth2.common.swagger.autoconfigure.SwaggerAutoConfiguration

@@ -1,4 +1,4 @@
-package com.petal.oauth2.gateway.config;
+package com.petal.oauth2.auth.alipay.config;
 
 import lombok.SneakyThrows;
 import org.springframework.context.annotation.Bean;

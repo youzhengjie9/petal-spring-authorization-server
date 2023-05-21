@@ -11,7 +11,7 @@ import org.springframework.context.annotation.Configuration;
  */
 @Configuration
 @EnableFeignClients(basePackages = {
-        "com.auth.server.feign"
+        "com.petal.oauth2.common.openfeign.feign"
 })
 public class Oauth2CommonOpenFeignAutoConfiguration {
 

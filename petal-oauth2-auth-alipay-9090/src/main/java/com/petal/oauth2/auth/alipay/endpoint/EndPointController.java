@@ -1,4 +1,4 @@
-package com.petal.oauth2.alipay.auth.endpoint;
+package com.petal.oauth2.auth.alipay.endpoint;
 
 import com.auth.server.utils.ResponseResult;
 import org.springframework.security.core.Authentication;

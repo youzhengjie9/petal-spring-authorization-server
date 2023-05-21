@@ -1,5 +1,6 @@
 package com.petal.oauth2.gateway;
 
+import com.petal.oauth2.common.swagger.autoconfigure.SwaggerAutoConfiguration;
 import com.petal.oauth2.common.swagger.config.SwaggerConfig;
 import com.petal.oauth2.common.swagger.config.WebMvcConfig;
 import com.petal.oauth2.gateway.properties.GatewayConfigProperties;
@@ -10,11 +11,11 @@ import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.FilterType;
 
-@SpringBootApplication
+@SpringBootApplication(exclude = {SwaggerAutoConfiguration.class})
 @EnableDiscoveryClient
-@ComponentScan(value = "com.auth.server",excludeFilters = {@ComponentScan.Filter(
-        type = FilterType.ASSIGNABLE_TYPE,classes = {SwaggerConfig.class, WebMvcConfig.class}
-)})
+//@ComponentScan(value = "com.auth.server",excludeFilters = {@ComponentScan.Filter(
+//        type = FilterType.ASSIGNABLE_TYPE,classes = {SwaggerConfig.class, WebMvcConfig.class}
+//)})
 @EnableConfigurationProperties(GatewayConfigProperties.class)
 public class Oauth2GatewayApplication6677 {
 

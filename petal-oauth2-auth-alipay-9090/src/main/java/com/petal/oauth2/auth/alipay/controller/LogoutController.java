@@ -1,4 +1,4 @@
-package com.petal.oauth2.alipay.auth.controller;
+package com.petal.oauth2.auth.alipay.controller;
 
 import com.auth.server.enums.ResponseType;
 import com.auth.server.utils.ResponseResult;

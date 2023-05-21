@@ -1,4 +1,4 @@
-package com.petal.oauth2.alipay.auth;
+package com.petal.oauth2.auth.alipay;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

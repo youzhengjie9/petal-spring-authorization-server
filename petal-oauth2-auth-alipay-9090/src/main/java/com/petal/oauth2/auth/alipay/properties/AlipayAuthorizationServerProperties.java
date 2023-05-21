@@ -1,4 +1,4 @@
-package com.petal.oauth2.gateway.properties;
+package com.petal.oauth2.auth.alipay.properties;
 
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;

@@ -1,4 +1,4 @@
-package com.petal.oauth2.alipay.auth.utils;
+package com.petal.oauth2.auth.alipay.utils;
 
 import cn.hutool.http.HttpRequest;
 import com.alibaba.fastjson2.JSON;

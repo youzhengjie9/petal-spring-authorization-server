@@ -1,4 +1,4 @@
-package com.petal.oauth2.alipay.auth.utils;
+package com.petal.oauth2.auth.alipay.utils;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

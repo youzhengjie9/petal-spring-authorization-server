@@ -1,4 +1,4 @@
-package com.petal.oauth2.alipay.auth.controller;
+package com.petal.oauth2.auth.alipay.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.oauth2.core.endpoint.OAuth2ParameterNames;
