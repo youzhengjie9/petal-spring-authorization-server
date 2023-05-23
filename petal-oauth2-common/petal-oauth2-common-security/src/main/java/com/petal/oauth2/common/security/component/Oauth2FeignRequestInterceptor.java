@@ -8,6 +8,7 @@ import feign.RequestInterceptor;
 import feign.RequestTemplate;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.oauth2.core.OAuth2AccessToken;
 import org.springframework.security.oauth2.server.resource.web.BearerTokenResolver;
@@ -45,8 +46,6 @@ public class Oauth2FeignRequestInterceptor implements RequestInterceptor {
 
 			return;
 		}
-		// 如果没有onlyFeignCall请求头
-		template.header(Oauth2Constant.ONLY_FEIGN_CALL_HEADER_NAME, "yzj666888");
 
 		// 不是web请求直接放行
 		if (!WebUtil.getRequest().isPresent()) {
@@ -64,7 +63,6 @@ public class Oauth2FeignRequestInterceptor implements RequestInterceptor {
 		String accessToken = String.format("%s %s", OAuth2AccessToken.TokenType.BEARER.getValue(), token);
 		// 在feign请求发送之前,把accessToken放到请求头的Authorization中,只有这样我们这个feign请求才携带了accessToken
 		template.header(HttpHeaders.AUTHORIZATION, accessToken);
-
 	}
 
 }

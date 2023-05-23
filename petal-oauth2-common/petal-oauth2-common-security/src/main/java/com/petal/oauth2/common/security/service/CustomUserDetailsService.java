@@ -44,7 +44,6 @@ public interface CustomUserDetailsService extends UserDetailsService, Ordered {
 	 * @return UserDetails
 	 */
 	default UserDetails getUserDetails(ResponseResult<UserInfo> result) {
-
 		UserInfo info ;
 
 		if(Objects.isNull(result) || Objects.isNull(result.getData())){
@@ -73,6 +72,7 @@ public interface CustomUserDetailsService extends UserDetailsService, Ordered {
 		return new SecurityOauth2User(user.getId(), user.getUserName(),
 				"{bcrypt}" + user.getPassword(), user.getPhone(), true, true, true,
 				true, authorities);
+
 	}
 
 	/**

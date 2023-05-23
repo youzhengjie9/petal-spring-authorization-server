@@ -6,8 +6,10 @@ import com.baomidou.mybatisplus.annotation.TableLogic;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 
 import java.io.Serializable;
@@ -21,6 +23,8 @@ import java.time.LocalDateTime;
  * @date 2023-05-05 09:31:48
  */
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 @TableName("sys_user")
 @Builder
 @Accessors(chain = true)

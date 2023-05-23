@@ -2,6 +2,7 @@ package com.petal.oauth2.common.security.component;
 
 import com.petal.oauth2.common.base.constant.Oauth2Constant;
 import com.petal.oauth2.common.security.annotation.PermitAll;
+import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -24,15 +25,10 @@ import javax.servlet.http.HttpServletRequest;
  */
 @Slf4j
 @Aspect
-@Component
+@RequiredArgsConstructor
 public class PermitAllAspect implements Ordered {
 
-	private HttpServletRequest request;
-
-	@Autowired
-	public void setRequest(HttpServletRequest request) {
-		this.request = request;
-	}
+	private final HttpServletRequest request;
 
 	@SneakyThrows
 	@Around("@within(permitAll) || @annotation(permitAll)")

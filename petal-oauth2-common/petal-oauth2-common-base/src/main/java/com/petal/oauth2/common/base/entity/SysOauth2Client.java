@@ -3,7 +3,9 @@ package com.petal.oauth2.common.base.entity;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
@@ -16,6 +18,8 @@ import java.io.Serializable;
  * @date 2023/05/16 23:53:27
  */
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 @TableName("sys_oauth2_client")
 public class SysOauth2Client implements Serializable {
 

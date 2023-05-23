@@ -1,5 +1,6 @@
 package com.petal.oauth2.common.security.service;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.serializer.RedisSerializer;
@@ -27,19 +28,15 @@ import java.util.concurrent.TimeUnit;
  * @author youzhengjie
  * @date 2023/05/10 09:49:35
  */
-@Service
+@RequiredArgsConstructor
 public class RedisOAuth2AuthorizationService implements OAuth2AuthorizationService {
 
 	private final static Long TIMEOUT = 10L;
 
 	private static final String AUTHORIZATION = "token";
 
-	private RedisTemplate redisTemplate;
+	private final RedisTemplate redisTemplate;
 
-	@Autowired
-	public void setRedisTemplate(RedisTemplate redisTemplate) {
-		this.redisTemplate = redisTemplate;
-	}
 
 	@Override
 	public void save(OAuth2Authorization authorization) {

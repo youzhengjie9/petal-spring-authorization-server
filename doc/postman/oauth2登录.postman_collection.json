@@ -1,0 +1,74 @@
+{
+	"info": {
+		"_postman_id": "6ea0f5f1-b631-40c6-894a-4110ceedf798",
+		"name": "oauth2登录",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "http://127.0.0.1:6677/petal-oauth2-auth-9000/oauth2/token?username=admin&password=YehdBPev&grant_type=password&scope=server",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Basic cGlnOnBpZw==",
+						"type": "default"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "username",
+							"value": "root",
+							"type": "default",
+							"disabled": true
+						},
+						{
+							"key": "password",
+							"value": "123456",
+							"type": "default",
+							"disabled": true
+						}
+					]
+				},
+				"url": {
+					"raw": "http://127.0.0.1:6677/petal-oauth2-auth-9000/oauth2/token?username=admin&password=123456&grant_type=password&scope=server",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "6677",
+					"path": [
+						"petal-oauth2-auth-9000",
+						"oauth2",
+						"token"
+					],
+					"query": [
+						{
+							"key": "username",
+							"value": "admin"
+						},
+						{
+							"key": "password",
+							"value": "123456"
+						},
+						{
+							"key": "grant_type",
+							"value": "password"
+						},
+						{
+							"key": "scope",
+							"value": "server"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

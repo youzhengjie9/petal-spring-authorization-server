@@ -3,6 +3,7 @@ package com.petal.oauth2.common.security.component;
 import com.petal.oauth2.common.security.utils.PermissionService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import feign.RequestInterceptor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
@@ -17,7 +18,7 @@ import org.springframework.security.oauth2.server.resource.web.BearerTokenResolv
  * @author youzhengjie
  * @date 2023/05/12 15:44:13
  */
-
+@RequiredArgsConstructor
 @EnableConfigurationProperties(IgnoreAuthenticationProperties.class)
 public class ResourceServerAutoConfiguration {
 

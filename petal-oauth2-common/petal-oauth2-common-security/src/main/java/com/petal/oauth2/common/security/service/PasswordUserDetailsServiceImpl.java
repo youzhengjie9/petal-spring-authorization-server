@@ -1,15 +1,14 @@
 package com.petal.oauth2.common.security.service;
 
-import com.petal.oauth2.common.security.dto.UserInfo;
 import com.petal.oauth2.common.base.entity.SysUser;
-import com.petal.oauth2.common.openfeign.feign.SysUserFeign;
 import com.petal.oauth2.common.base.utils.ResponseResult;
+import com.petal.oauth2.common.openfeign.feign.SysUserFeign;
+import com.petal.oauth2.common.security.dto.UserInfo;
+import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.stereotype.Component;
 
 /**
  * 帐号密码模式下的UserDetailsService实现类
@@ -17,17 +16,12 @@ import org.springframework.stereotype.Component;
  * @author youzhengjie
  * @date 2023/05/13 23:49:00
  */
-@Component
 @Slf4j
 @Primary
+@RequiredArgsConstructor
 public class PasswordUserDetailsServiceImpl implements CustomUserDetailsService {
 
-	private SysUserFeign sysUserFeign;
-
-	@Autowired
-	public void setSysUserFeign(SysUserFeign sysUserFeign) {
-		this.sysUserFeign = sysUserFeign;
-	}
+	private final SysUserFeign sysUserFeign;
 
 	/**
 	 * 用户名密码登录
@@ -38,16 +32,14 @@ public class PasswordUserDetailsServiceImpl implements CustomUserDetailsService 
 	@SneakyThrows
 	public UserDetails loadUserByUsername(String username) {
 
-		ResponseResult<SysUser> sysUserResponseResult = sysUserFeign.queryUserByUserName(username);
+		ResponseResult<SysUser> sysUserResponseResult = sysUserFeign.queryUserByUserName(username,"123");
 
 		UserInfo userInfo = new UserInfo();
 		userInfo.setSysUser(sysUserResponseResult.getData());
 		// TODO: 2023/5/6 模拟权限
 		userInfo.setPermissions(new String[]{"sys:test3","sys:test5"});
 
-		ResponseResult<UserInfo> userInfoResponseResult = ResponseResult.ok(userInfo);
-
-		return getUserDetails(userInfoResponseResult);
+		return getUserDetails(ResponseResult.ok(userInfo));
 	}
 
 	@Override

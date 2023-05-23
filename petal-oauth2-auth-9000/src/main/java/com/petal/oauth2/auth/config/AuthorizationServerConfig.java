@@ -38,9 +38,10 @@ import java.util.Arrays;
  * @date 2023-05-05 09:31:53
  */
 @Configuration
+@RequiredArgsConstructor
 public class AuthorizationServerConfig {
 
-    private OAuth2AuthorizationService authorizationService;
+    private final OAuth2AuthorizationService authorizationService;
 
     /**
      * 自定义oauth2授权页面跳转接口（也可以使用oauth2自带的）
@@ -48,11 +49,6 @@ public class AuthorizationServerConfig {
     private static final String CUSTOM_CONSENT_PAGE_URI = "/oauth2/consent";
 
     private static final String ISSUER = "http://petal.oauth2.com:9000";
-
-    @Autowired
-    public void setAuthorizationService(OAuth2AuthorizationService authorizationService) {
-        this.authorizationService = authorizationService;
-    }
 
     /**
      * Spring Authorization Server 授权配置

@@ -2,6 +2,7 @@ package com.petal.oauth2.resource7000.controller;
 
 import com.petal.oauth2.common.base.entity.SysUser;
 import com.petal.oauth2.common.base.utils.ResponseResult;
+import com.petal.oauth2.common.security.annotation.PermitAll;
 import com.petal.oauth2.resource7000.service.SysUserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -35,6 +36,7 @@ public class SysUserController {
      * @param username 用户名
      * @return {@link ResponseResult}<{@link SysUser}>
      */
+    @PermitAll
     @GetMapping(path = "/queryUserByUserName/{username}")
     @ApiOperation("根据用户名查询用户信息")
     public ResponseResult<SysUser> queryUserByUserName(@PathVariable("username") String username){

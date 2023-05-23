@@ -22,7 +22,7 @@ import static org.springframework.boot.autoconfigure.condition.ConditionalOnWebA
 @ConditionalOnWebApplication(type = SERVLET)
 public class SecurityMessageSourceConfiguration implements WebMvcConfigurer {
 
-	@Bean("securityMessageSource")
+	@Bean
 	public MessageSource securityMessageSource() {
 		ReloadableResourceBundleMessageSource messageSource = new ReloadableResourceBundleMessageSource();
 		messageSource.addBasenames("classpath:i18n/errors/messages");

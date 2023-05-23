@@ -87,6 +87,7 @@ public class IgnoreAuthenticationProperties implements InitializingBean {
 						log.info("路径: {} 已加入ignoreUrls,允许所有人访问,服务调用不需要鉴权",ignoreUrl);
 					})
 				);
+
 		});
 	}
 

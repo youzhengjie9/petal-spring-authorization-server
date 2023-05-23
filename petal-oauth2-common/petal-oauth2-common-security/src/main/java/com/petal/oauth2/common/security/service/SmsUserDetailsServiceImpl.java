@@ -1,15 +1,14 @@
 package com.petal.oauth2.common.security.service;
 
 import com.petal.oauth2.common.base.constant.Oauth2Constant;
-import com.petal.oauth2.common.security.dto.UserInfo;
 import com.petal.oauth2.common.base.entity.SysUser;
-import com.petal.oauth2.common.openfeign.feign.SysUserFeign;
 import com.petal.oauth2.common.base.utils.ResponseResult;
+import com.petal.oauth2.common.openfeign.feign.SysUserFeign;
+import com.petal.oauth2.common.security.dto.UserInfo;
+import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.stereotype.Component;
 
 /**
  * 手机验证码模式下的UserDetailsService实现类
@@ -18,15 +17,10 @@ import org.springframework.stereotype.Component;
  * @date 2023/05/13 00:23:44
  */
 @Slf4j
-@Component
+@RequiredArgsConstructor
 public class SmsUserDetailsServiceImpl implements CustomUserDetailsService {
 
-	private SysUserFeign sysUserFeign;
-
-	@Autowired
-	public void setSysUserFeign(SysUserFeign sysUserFeign) {
-		this.sysUserFeign = sysUserFeign;
-	}
+	private final SysUserFeign sysUserFeign;
 
 	/**
 	 * 手机号登录
@@ -44,9 +38,7 @@ public class SmsUserDetailsServiceImpl implements CustomUserDetailsService {
 		// TODO: 2023/5/14 模拟权限
 		userInfo.setPermissions(new String[]{"sys:test3"});
 
-		ResponseResult<UserInfo> userInfoResponseResult = ResponseResult.ok(userInfo);
-
-		return getUserDetails(userInfoResponseResult);
+		return getUserDetails(ResponseResult.ok(userInfo));
 	}
 
 

@@ -2,7 +2,13 @@
 # common security autoconfigure
 org.springframework.boot.autoconfigure.EnableAutoConfiguration = \
   com.petal.oauth2.common.security.autoconfigure.Oauth2CommonSecurityAutoConfiguration,\
-  com.petal.oauth2.common.security.component.SecurityMessageSourceConfiguration
+  com.petal.oauth2.common.security.component.SecurityMessageSourceConfiguration,\
+  com.petal.oauth2.common.security.service.PasswordUserDetailsServiceImpl,\
+  com.petal.oauth2.common.security.service.SmsUserDetailsServiceImpl,\
+  com.petal.oauth2.common.security.service.RedisOAuth2AuthorizationService,\
+  com.petal.oauth2.common.security.service.RedisOAuth2AuthorizationConsentService,\
+  com.petal.oauth2.common.security.component.PermitAllAspect,\
+  com.petal.oauth2.common.security.service.CustomRemoteRegisteredClientRepository
 
 
 

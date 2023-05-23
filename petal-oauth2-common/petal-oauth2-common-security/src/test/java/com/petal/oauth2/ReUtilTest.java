@@ -13,7 +13,6 @@ public class ReUtilTest {
 
     @Test
     public void test(){
-1
         String result = ReUtil.
                 replaceAll("/user/{username}/{password}", PATTERN, "*");
         System.out.println(result);

@@ -55,36 +55,13 @@ public class CustomDaoAuthenticationProvider extends AbstractUserDetailsAuthenti
 
 	private UserDetailsPasswordService userDetailsPasswordService;
 
-
 	public CustomDaoAuthenticationProvider() {
 		setMessageSource(SpringUtil.getBean("securityMessageSource"));
 		setPasswordEncoder(PasswordEncoderFactories.createDelegatingPasswordEncoder());
 	}
 
-	public void setPasswordEncoder(PasswordEncoder passwordEncoder) {
-		Assert.notNull(passwordEncoder, "passwordEncoder cannot be null");
-		this.passwordEncoder = passwordEncoder;
-		this.userNotFoundEncodedPassword = null;
-	}
-
-	protected PasswordEncoder getPasswordEncoder() {
-		return this.passwordEncoder;
-	}
-
-	public void setUserDetailsService(UserDetailsService userDetailsService) {
-		this.userDetailsService = userDetailsService;
-	}
-
-	protected UserDetailsService getUserDetailsService() {
-		return this.userDetailsService;
-	}
-
-	public void setUserDetailsPasswordService(UserDetailsPasswordService userDetailsPasswordService) {
-		this.userDetailsPasswordService = userDetailsPasswordService;
-	}
-
 	/**
-	 * =============第 1 个执行=============
+	 * =============(被AbstractUserDetailsAuthenticationProvider类第 1 个执行)=============
 	 * 在这个方法中调用了loadUserByUsername方法拿到用户信息(UserDetails)
 	 *
 	 * @param username       用户名
@@ -142,7 +119,7 @@ public class CustomDaoAuthenticationProvider extends AbstractUserDetailsAuthenti
 	}
 
 	/**
-	 * =============第 2 个执行=============
+	 *  =============(被AbstractUserDetailsAuthenticationProvider类第 2 个执行)=============
 	 * 自定义验证（比如手机短信验证、帐号密码验证等，可以自行添加新的验证模式）
 	 *
 	 * @param userDetails    userDetails是UserDetailsServiceImpl从数据库里面获取的数据（也就是该用户正确的帐号密码）
@@ -161,8 +138,9 @@ public class CustomDaoAuthenticationProvider extends AbstractUserDetailsAuthenti
 		}
 		// ==========如果不是SMS_GRANT_TYPE模式============
 
+		//如果密码为空
 		if (authentication.getCredentials() == null) {
-			this.logger.debug("Failed to authenticate since no credentials provided");
+			this.logger.error("输入的密码为空");
 			throw new BadCredentialsException(this.messages
 				.getMessage("AbstractUserDetailsAuthenticationProvider.badCredentials", "Bad credentials"));
 		}
@@ -172,7 +150,7 @@ public class CustomDaoAuthenticationProvider extends AbstractUserDetailsAuthenti
 		String correctPassword = userDetails.getPassword();
 		//如果校验密码失败
 		if (!this.passwordEncoder.matches(userInputPassword, correctPassword)) {
-			this.logger.debug("密码不正确...");
+			this.logger.error("密码不正确...");
 			throw new BadCredentialsException(this.messages
 				.getMessage("AbstractUserDetailsAuthenticationProvider.badCredentials", "Bad credentials"));
 		}
@@ -203,6 +181,34 @@ public class CustomDaoAuthenticationProvider extends AbstractUserDetailsAuthenti
 			String presentedPassword = authentication.getCredentials().toString();
 			this.passwordEncoder.matches(presentedPassword, this.userNotFoundEncodedPassword);
 		}
+	}
+	/**
+	 * Sets the PasswordEncoder instance to be used to encode and validate passwords. If
+	 * not set, the password will be compared using
+	 * {@link PasswordEncoderFactories#createDelegatingPasswordEncoder()}
+	 * @param passwordEncoder must be an instance of one of the {@code PasswordEncoder}
+	 * types.
+	 */
+	public void setPasswordEncoder(PasswordEncoder passwordEncoder) {
+		Assert.notNull(passwordEncoder, "passwordEncoder cannot be null");
+		this.passwordEncoder = passwordEncoder;
+		this.userNotFoundEncodedPassword = null;
+	}
+
+	protected PasswordEncoder getPasswordEncoder() {
+		return this.passwordEncoder;
+	}
+
+	public void setUserDetailsService(UserDetailsService userDetailsService) {
+		this.userDetailsService = userDetailsService;
+	}
+
+	protected UserDetailsService getUserDetailsService() {
+		return this.userDetailsService;
+	}
+
+	public void setUserDetailsPasswordService(UserDetailsPasswordService userDetailsPasswordService) {
+		this.userDetailsPasswordService = userDetailsPasswordService;
 	}
 
 }

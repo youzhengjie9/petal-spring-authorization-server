@@ -23,7 +23,6 @@ import java.util.regex.Pattern;
  * @author youzhengjie
  * @date 2023/05/11 22:39:45
  */
-@RequiredArgsConstructor
 public class Oauth2TokenResolver implements BearerTokenResolver {
 
 	/**
@@ -41,6 +40,10 @@ public class Oauth2TokenResolver implements BearerTokenResolver {
 	private final PathMatcher pathMatcher = new AntPathMatcher();
 
 	private final IgnoreAuthenticationProperties ignoreAuthenticationProperties;
+
+	public Oauth2TokenResolver(IgnoreAuthenticationProperties ignoreAuthenticationProperties) {
+		this.ignoreAuthenticationProperties = ignoreAuthenticationProperties;
+	}
 
 	/**
 	 * 解析request

@@ -2,6 +2,8 @@ package com.petal.oauth2.auth.endpoint;
 
 import cn.hutool.core.util.StrUtil;
 import com.petal.oauth2.auth.support.handler.CustomAuthenticationFailureHandler;
+import com.petal.oauth2.common.base.constant.CacheConstants;
+import com.petal.oauth2.common.base.constant.Oauth2Constant;
 import com.petal.oauth2.common.base.entity.SysOauth2Client;
 import com.petal.oauth2.common.base.enums.ResponseType;
 import com.petal.oauth2.common.base.utils.ResponseResult;
@@ -13,10 +15,10 @@ import com.petal.oauth2.common.security.utils.OAuth2EndpointUtils;
 import com.petal.oauth2.common.security.utils.OAuth2ErrorCodesExpand;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
-import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.redis.core.RedisTemplate;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -49,37 +51,21 @@ import java.util.Set;
  * @date 2023/04/22 00:25:44
  */
 @Api("Token的端点控制器")
+@Slf4j
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/token")
 public class TokenEndPointController {
 
-    private final HttpMessageConverter<OAuth2AccessTokenResponse> accessTokenHttpResponseConverter =
-            new OAuth2AccessTokenResponseHttpMessageConverter();
+    private final HttpMessageConverter<OAuth2AccessTokenResponse> accessTokenHttpResponseConverter = new OAuth2AccessTokenResponseHttpMessageConverter();
 
-    private final AuthenticationFailureHandler authenticationFailureHandler =
-            new CustomAuthenticationFailureHandler();
+    private final AuthenticationFailureHandler authenticationFailureHandler = new CustomAuthenticationFailureHandler();
 
-    private OAuth2AuthorizationService authorizationService;
+    private final OAuth2AuthorizationService authorizationService;
 
-    private SysOauth2ClientFeign sysOauth2ClientFeign;
+    private final SysOauth2ClientFeign sysOauth2ClientFeign;
 
-    private RedisTemplate redisTemplate;
-
-    @Autowired
-    public void setAuthorizationService(OAuth2AuthorizationService authorizationService) {
-        this.authorizationService = authorizationService;
-    }
-
-    @Autowired
-    public void setSysOauth2ClientFeign(SysOauth2ClientFeign sysOauth2ClientFeign) {
-        this.sysOauth2ClientFeign = sysOauth2ClientFeign;
-    }
-
-    @Autowired
-    public void setRedisTemplate(RedisTemplate redisTemplate) {
-        this.redisTemplate = redisTemplate;
-    }
-
+//    private final RedisTemplate redisTemplate;
 
     /**
      * 认证页面
@@ -113,7 +99,8 @@ public class TokenEndPointController {
                                 @RequestParam(OAuth2ParameterNames.SCOPE) String scope,
                                 @RequestParam(OAuth2ParameterNames.STATE) String state) {
 
-        ResponseResult responseResult = sysOauth2ClientFeign.getClientById(clientId);
+        ResponseResult responseResult = sysOauth2ClientFeign.getClientById(clientId,"123");
+
         if(responseResult != null){
             Object data = responseResult.getData();
             if(data != null){
@@ -206,7 +193,7 @@ public class TokenEndPointController {
             return ResponseResult.build(ResponseType.LOGOUT_SUCCESS);
         }
         // TODO: 2023/5/9 清空用户信息
-//        cacheManager.getCache(CacheConstants.USER_DETAILS).evict(authorization.getPrincipalName());
+
         // 清空accessToken
         authorizationService.remove(authorization);
         // 处理自定义退出事件，保存相关日志

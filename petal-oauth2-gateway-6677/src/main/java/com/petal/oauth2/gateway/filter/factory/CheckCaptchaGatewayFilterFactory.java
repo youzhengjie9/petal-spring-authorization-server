@@ -82,6 +82,7 @@ public class CheckCaptchaGatewayFilterFactory extends AbstractGatewayFilterFacto
 
 			// 判断该客户端是否不用检查验证码
 			boolean isIgnoreCheckCaptchaClient = gatewayConfigProperties.getIgnoreCheckCaptchaClients().contains(WebUtil.getClientId(request));
+			System.out.println("isIgnoreCheckCaptchaClient="+isIgnoreCheckCaptchaClient);
 			try {
 				// 如果该客户端需要检查验证码（帐号密码登录的验证码、手机号登录的验证码）
 				if (!isIgnoreCheckCaptchaClient) {

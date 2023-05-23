@@ -48,8 +48,9 @@ public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint 
 		if (authException instanceof InvalidBearerTokenException
 				|| authException instanceof InsufficientAuthenticationException) {
 			response.setStatus(HttpStatus.FAILED_DEPENDENCY.value());
-			result.setMsg(this.messageSource.getMessage("OAuth2AuthenticationProvider.tokenExpired",
-					null, LocaleContextHolder.getLocale()));
+//			result.setMsg(this.messageSource.getMessage("OAuth2AuthenticationProvider.tokenExpired",
+//					null, LocaleContextHolder.getLocale()));
+			result.setMsg("令牌过期");
 		}
 		PrintWriter printWriter = response.getWriter();
 		printWriter.append(objectMapper.writeValueAsString(result));

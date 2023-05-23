@@ -17,35 +17,35 @@ import org.springframework.security.oauth2.server.authorization.client.Registere
 @Configuration
 public class Oauth2CommonSecurityAutoConfiguration {
 
-    @Bean
-    public CustomUserDetailsService passwordUserDetailsServiceImpl(){
+//    @Bean
+//    public CustomUserDetailsService passwordUserDetailsServiceImpl(){
+//
+//        return new PasswordUserDetailsServiceImpl();
+//    }
 
-        return new PasswordUserDetailsServiceImpl();
-    }
+//    @Bean
+//    public CustomUserDetailsService smsUserDetailsServiceImpl(){
+//
+//        return new SmsUserDetailsServiceImpl();
+//    }
 
-    @Bean
-    public CustomUserDetailsService smsUserDetailsServiceImpl(){
+//    @Bean
+//    public OAuth2AuthorizationService redisOAuth2AuthorizationService(){
+//
+//        return new RedisOAuth2AuthorizationService();
+//    }
 
-        return new SmsUserDetailsServiceImpl();
-    }
+//    @Bean
+//    public RedisOAuth2AuthorizationConsentService redisOAuth2AuthorizationConsentService(){
+//
+//        return new RedisOAuth2AuthorizationConsentService();
+//    }
 
-    @Bean
-    public OAuth2AuthorizationService redisOAuth2AuthorizationService(){
-
-        return new RedisOAuth2AuthorizationService();
-    }
-
-    @Bean
-    public RedisOAuth2AuthorizationConsentService redisOAuth2AuthorizationConsentService(){
-
-        return new RedisOAuth2AuthorizationConsentService();
-    }
-
-    @Bean
-    public PermitAllAspect permitAllAspect(){
-
-        return new PermitAllAspect();
-    }
+//    @Bean
+//    public PermitAllAspect permitAllAspect(){
+//
+//        return new PermitAllAspect();
+//    }
 
     /**
      * 如果在这里配置会报错 Method authorizationServerSecurityFilterChain in com.petal.oauth2.auth.config.AuthorizationServerConfig required a bean named 'securityMessageSource' that could not be found.
@@ -58,10 +58,10 @@ public class Oauth2CommonSecurityAutoConfiguration {
 //        return new SecurityMessageSourceConfiguration();
 //    }
 
-    @Bean
-    public RegisteredClientRepository registeredClientRepository(){
-
-        return new CustomRemoteRegisteredClientRepository();
-    }
+//    @Bean
+//    public RegisteredClientRepository registeredClientRepository(){
+//
+//        return new CustomRemoteRegisteredClientRepository();
+//    }
 
 }

@@ -10,7 +10,9 @@ import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpHeaders;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,11 +23,10 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/client")
+@SecurityRequirement(name = HttpHeaders.AUTHORIZATION)
 public class SysOauth2ClientController {
 
 	private final SysOauth2ClientService sysOauth2ClientService;
-
-
 
 	/**
 	 * 通过客户端id查询Oauth2客户端信息
