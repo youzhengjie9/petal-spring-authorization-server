@@ -5,6 +5,7 @@ import org.springframework.cloud.gateway.filter.GatewayFilterChain;
 import org.springframework.cloud.gateway.filter.GlobalFilter;
 import org.springframework.core.Ordered;
 import org.springframework.http.server.reactive.ServerHttpRequest;
+import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
@@ -16,25 +17,21 @@ import java.util.stream.Collectors;
 import static org.springframework.cloud.gateway.support.ServerWebExchangeUtils.GATEWAY_REQUEST_URL_ATTR;
 import static org.springframework.cloud.gateway.support.ServerWebExchangeUtils.addOriginalRequestUrl;
 
+
 /**
- * @author lengleng
- * @date 2019/2/1
+ * 请求全局过滤器
  * <p>
- * 全局拦截器，作用所有的微服务
- * <p>
- * 1. 对请求头中参数进行处理 from 参数进行清洗 2. 重写StripPrefix = 1,支持全局
- * <p>
- * 支持swagger添加X-Forwarded-Prefix header （F SR2 已经支持，不需要自己维护）
+ * 作用:
+ * 1. 对请求头中名为only_feign_call的参数进行去除（具体为什么可以看@PermitAll注解）
+ * 2. 代码实现StripPrefix过滤器
+ *
+ * @author youzhengjie
+ * @date 2023/05/24 09:55:46
  */
+@Component // 将全局过滤器放到Spring容器中,使之全局生效
 public class RequestGlobalFilter implements GlobalFilter, Ordered {
 
-	/**
-	 * Process the Web request and (optionally) delegate to the next {@code WebFilter}
-	 * through the given {@link GatewayFilterChain}.
-	 * @param exchange the current server exchange
-	 * @param chain provides a way to delegate to the next filter
-	 * @return {@code Mono<Void>} to indicate when request processing is complete
-	 */
+
 	@Override
 	public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
 		// 把从网关进来的请求的请求头（only_feign_call）去除。

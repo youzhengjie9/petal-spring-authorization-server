@@ -10,6 +10,12 @@ import org.springframework.util.Assert;
 
 import java.util.concurrent.TimeUnit;
 
+/**
+ * redis的oauth2认证授权业务类
+ *
+ * @author youzhengjie
+ * @date 2023/05/23 23:43:30
+ */
 @RequiredArgsConstructor
 public class RedisOAuth2AuthorizationConsentService implements OAuth2AuthorizationConsentService {
 

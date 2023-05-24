@@ -18,16 +18,13 @@ import reactor.core.publisher.Mono;
  * @date 2023/05/15 16:18:06
  */
 @Slf4j
-// 将全局过滤器放到Spring容器中,使之全局生效
-@Component
+@Component // 将全局过滤器放到Spring容器中,使之全局生效
 public class RequestLoggingFilter implements GlobalFilter, Ordered {
 
 	/**
 	 * 统计开始时间的key
 	 */
 	private static final String START_TIME_KEY = "startTime";
-
-	private static final String X_REAL_IP = "X-Real-IP";// nginx需要配置
 
 	@Override
 	public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {

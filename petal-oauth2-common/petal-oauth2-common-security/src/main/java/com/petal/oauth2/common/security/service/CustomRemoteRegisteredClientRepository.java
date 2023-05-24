@@ -3,15 +3,13 @@ package com.petal.oauth2.common.security.service;
 import cn.hutool.core.util.BooleanUtil;
 import cn.hutool.core.util.StrUtil;
 import com.alibaba.fastjson2.JSON;
-import com.petal.oauth2.common.base.constant.CacheConstants;
+import com.petal.oauth2.common.base.constant.CacheConstant;
 import com.petal.oauth2.common.base.entity.SysOauth2Client;
 import com.petal.oauth2.common.openfeign.feign.SysOauth2ClientFeign;
 import com.petal.oauth2.common.base.utils.ResponseResult;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
-import org.springframework.context.annotation.Primary;
 import org.springframework.security.oauth2.core.AuthorizationGrantType;
 import org.springframework.security.oauth2.core.ClientAuthenticationMethod;
 import org.springframework.security.oauth2.core.OAuth2Error;
@@ -21,7 +19,6 @@ import org.springframework.security.oauth2.server.authorization.client.Registere
 import org.springframework.security.oauth2.server.authorization.settings.ClientSettings;
 import org.springframework.security.oauth2.server.authorization.settings.OAuth2TokenFormat;
 import org.springframework.security.oauth2.server.authorization.settings.TokenSettings;
-import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
 import java.time.Duration;
@@ -73,7 +70,6 @@ public class CustomRemoteRegisteredClientRepository implements RegisteredClientR
 	 */
 	@Override
 	@SneakyThrows
-	@Cacheable(value = CacheConstants.CLIENT_DETAILS_KEY, key = "#clientId", unless = "#result == null")
 	public RegisteredClient findByClientId(String clientId) {
 
 		ResponseResult responseResult = sysOauth2ClientFeign.getClientById(clientId,"123");

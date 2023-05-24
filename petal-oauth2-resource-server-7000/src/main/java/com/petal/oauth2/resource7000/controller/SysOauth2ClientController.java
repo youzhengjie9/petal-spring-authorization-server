@@ -41,6 +41,8 @@ public class SysOauth2ClientController {
 		SysOauth2Client sysOauth2Client = sysOauth2ClientService.getOne(
 				Wrappers.<SysOauth2Client>lambdaQuery().eq(SysOauth2Client::getClientId, clientId), false);
 		String json = JSON.toJSONString(sysOauth2Client);
+		System.out.println(clientId);
+		System.out.println(json);
 		return ResponseResult.ok(json);
 	}
 

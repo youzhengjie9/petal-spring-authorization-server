@@ -61,6 +61,7 @@ public class RedisOAuth2AuthorizationService implements OAuth2AuthorizationServi
 						between, TimeUnit.MINUTES);
 		}
 
+		//如果authorization是刷新token
 		if (isRefreshToken(authorization)) {
 			OAuth2RefreshToken refreshToken = authorization.getRefreshToken().getToken();
 			long between = ChronoUnit.SECONDS.between(refreshToken.getIssuedAt(), refreshToken.getExpiresAt());
@@ -70,6 +71,7 @@ public class RedisOAuth2AuthorizationService implements OAuth2AuthorizationServi
 						TimeUnit.SECONDS);
 		}
 
+		//如果authorization是accessToken
 		if (isAccessToken(authorization)) {
 			OAuth2AccessToken accessToken = authorization.getAccessToken().getToken();
 			long between = ChronoUnit.SECONDS.between(accessToken.getIssuedAt(), accessToken.getExpiresAt());
@@ -97,11 +99,13 @@ public class RedisOAuth2AuthorizationService implements OAuth2AuthorizationServi
 			keys.add(buildKey(OAuth2ParameterNames.CODE, authorizationCodeToken.getTokenValue()));
 		}
 
+		//如果authorization是刷新token
 		if (isRefreshToken(authorization)) {
 			OAuth2RefreshToken refreshToken = authorization.getRefreshToken().getToken();
 			keys.add(buildKey(OAuth2ParameterNames.REFRESH_TOKEN, refreshToken.getTokenValue()));
 		}
 
+		//如果authorization是accessToken
 		if (isAccessToken(authorization)) {
 			OAuth2AccessToken accessToken = authorization.getAccessToken().getToken();
 			keys.add(buildKey(OAuth2ParameterNames.ACCESS_TOKEN, accessToken.getTokenValue()));

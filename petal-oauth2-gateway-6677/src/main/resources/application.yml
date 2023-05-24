@@ -39,9 +39,10 @@ spring:
     gateway:
       discovery:
         locator:
-          # 开启从注册中心动态创建路由的功能，利用微服务名进行路由
-          enabled: true
-      # 路由数组(就是当请求满足什么样的条件就跳转到哪个"微服务")
+          # 动态路由。是否开启自动创建路由,这里不开启,我们在下面自己手动配置路由（如果设置为true,下面手动配置的路由会失效！）
+          enabled: false
+#          lowerCaseServiceId: true
+      # 手动创建路由。路由数组(就是当请求满足什么样的条件就跳转到哪个"微服务")
       routes:
         # id是路由的唯一标识
         - id: petal-oauth2-auth-9000-route
@@ -53,11 +54,12 @@ spring:
           # 配置该路由的过滤器。
           filters:
             # swagger过滤器
-            - Swagger
+            - name: Swagger
             # 校验验证码过滤器
-            - CheckCaptcha
-            # 解密前端传来的登录表单的密码
-#            - PasswordDecoder
+#            - name: CheckCaptcha
+#            # 解密前端传来的登录表单的密码
+##           - name: PasswordDecoder
+
 
         # id是路由的唯一标识
         - id: petal-oauth2-resource-server-7000-route
@@ -77,7 +79,7 @@ spring:
                 # 令牌桶的容量，即允许在 1 秒内完成的最大请求数。设置为 0 则表示拒绝所有请求
                 redis-rate-limiter.burstCapacity: 10
             # swagger过滤器
-            - Swagger
+            - name: Swagger
 
         # id是路由的唯一标识
         - id: petal-oauth2-gateway-6677-route
@@ -92,11 +94,11 @@ spring:
 
 
 
-#gateway:
-#  encodeKey: thanks,pig4cloud
-#  ignore-clients:
-#    - test
-#    - client
+gateway:
+  encodeKey: thanks,pig4cloud
+  ignore-check-captcha-clients:
+    - test
+    - client
 
 
 

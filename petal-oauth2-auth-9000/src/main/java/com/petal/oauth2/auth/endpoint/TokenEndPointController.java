@@ -2,8 +2,6 @@ package com.petal.oauth2.auth.endpoint;
 
 import cn.hutool.core.util.StrUtil;
 import com.petal.oauth2.auth.support.handler.CustomAuthenticationFailureHandler;
-import com.petal.oauth2.common.base.constant.CacheConstants;
-import com.petal.oauth2.common.base.constant.Oauth2Constant;
 import com.petal.oauth2.common.base.entity.SysOauth2Client;
 import com.petal.oauth2.common.base.enums.ResponseType;
 import com.petal.oauth2.common.base.utils.ResponseResult;

@@ -2,8 +2,8 @@ package com.petal.oauth2.resource7001.controller;
 
 import com.alibaba.fastjson2.JSON;
 import com.alibaba.fastjson2.JSONObject;
-import com.auth.server.entity.Message;
-import com.auth.server.utils.ResponseResult;
+import com.petal.oauth2.common.base.entity.Message;
+import com.petal.oauth2.common.base.utils.ResponseResult;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;

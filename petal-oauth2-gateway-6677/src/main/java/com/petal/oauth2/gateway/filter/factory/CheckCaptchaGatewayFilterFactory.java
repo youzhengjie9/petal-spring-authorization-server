@@ -66,23 +66,23 @@ public class CheckCaptchaGatewayFilterFactory extends AbstractGatewayFilterFacto
 	public GatewayFilter apply(Object config) {
 		return (exchange, chain) -> {
 			ServerHttpRequest request = exchange.getRequest();
-			boolean isAuthToken = CharSequenceUtil.containsAnyIgnoreCase(request.getURI().getPath(),
+			//判断是否是登录请求（/oauth2/token）
+			boolean isLoginRequest = CharSequenceUtil.containsAnyIgnoreCase(request.getURI().getPath(),
 					Oauth2Constant.OAUTH_TOKEN_URL);
 
-			// 不是登录请求，直接放行
-			if (!isAuthToken) {
+			// 如果不是登录请求,则直接放行
+			if (!isLoginRequest) {
 				return chain.filter(exchange);
 			}
 
-			// 刷新token请求直接放行
+			// 如果是刷新token请求,则直接放行
 			String grantType = request.getQueryParams().getFirst("grant_type");
 			if (StrUtil.equals(Oauth2Constant.REFRESH_TOKEN_GRANT_TYPE, grantType)) {
 				return chain.filter(exchange);
 			}
-
 			// 判断该客户端是否不用检查验证码
 			boolean isIgnoreCheckCaptchaClient = gatewayConfigProperties.getIgnoreCheckCaptchaClients().contains(WebUtil.getClientId(request));
-			System.out.println("isIgnoreCheckCaptchaClient="+isIgnoreCheckCaptchaClient);
+
 			try {
 				// 如果该客户端需要检查验证码（帐号密码登录的验证码、手机号登录的验证码）
 				if (!isIgnoreCheckCaptchaClient) {
@@ -93,11 +93,13 @@ public class CheckCaptchaGatewayFilterFactory extends AbstractGatewayFilterFacto
 				ServerHttpResponse response = exchange.getResponse();
 				response.setStatusCode(HttpStatus.PRECONDITION_REQUIRED);
 				response.getHeaders().setContentType(MediaType.APPLICATION_JSON);
-
+				//抛出的异常信息（比如checkCode方法抛出的异常的信息这里就能获取到）
 				final String errMsg = e.getMessage();
 				return response.writeWith(Mono.create(monoSink -> {
 					try {
-						ResponseResult<Object> responseResult = ResponseResult.build(ResponseType.ERROR.getCode(), errMsg, null);
+						//将抛出的异常转成json并返回给用户
+						ResponseResult<Object> responseResult =
+								ResponseResult.build(ResponseType.ERROR.getCode(), errMsg, null);
 						byte[] bytes = objectMapper.writeValueAsBytes(responseResult);
 						DataBuffer dataBuffer = response.bufferFactory().wrap(bytes);
 						monoSink.success(dataBuffer);

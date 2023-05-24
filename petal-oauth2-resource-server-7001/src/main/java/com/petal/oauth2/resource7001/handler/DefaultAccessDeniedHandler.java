@@ -1,8 +1,8 @@
 package com.petal.oauth2.resource7001.handler;
 
-import com.auth.server.enums.ResponseType;
-import com.auth.server.utils.ResponseResult;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.petal.oauth2.common.base.enums.ResponseType;
+import com.petal.oauth2.common.base.utils.ResponseResult;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;

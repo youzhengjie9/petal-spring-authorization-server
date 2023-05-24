@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <th:block th:include="include :: header('oauth2 登录')"/>
     <link th:href="@{/component/layui/css/layui.css}" type="text/css" rel="stylesheet"/>
     <link th:href="@{/admin/css/other/oauth2login.css}" type="text/css" rel="stylesheet"/>
     <!--[if lt IE 9]>
@@ -118,7 +117,7 @@
         </div>
     </div>
 </div>
-<th:block th:include="include :: footer"/>
+
 <script type="text/javascript">
     var regTop=document.getElementById('reg-top');
     var normal=document.getElementById('normal');

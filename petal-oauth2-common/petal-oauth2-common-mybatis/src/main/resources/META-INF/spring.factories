@@ -1,5 +1,5 @@
 
 
 org.springframework.boot.autoconfigure.EnableAutoConfiguration = \
-  com.petal.oauth2.common.mybatis.autoconfigure.Oauth2CommonMybatisAutoConfiguration
+  com.petal.oauth2.common.mybatis.config.DataSourceConfig
 

@@ -54,7 +54,7 @@ public abstract class OAuth2AuthenticationConverter<T extends OAuth2Authenticati
 	@Override
 	public Authentication convert(HttpServletRequest request) {
 
-		// grant_type (REQUIRED)
+		// 拿到grant_type
 		String grantType = request.getParameter(OAuth2ParameterNames.GRANT_TYPE);
 		// 如果不支持这个grantType，则返回空
 		if (!support(grantType)) {
@@ -62,7 +62,7 @@ public abstract class OAuth2AuthenticationConverter<T extends OAuth2Authenticati
 		}
 
 		MultiValueMap<String, String> parameters = OAuth2EndpointUtils.getParameters(request);
-		// scope (OPTIONAL)
+		// 拿到scope
 		String scope = parameters.getFirst(OAuth2ParameterNames.SCOPE);
 		if (StringUtils.hasText(scope) && parameters.get(OAuth2ParameterNames.SCOPE).size() != 1) {
 			OAuth2EndpointUtils.throwError(OAuth2ErrorCodes.INVALID_REQUEST, OAuth2ParameterNames.SCOPE,
