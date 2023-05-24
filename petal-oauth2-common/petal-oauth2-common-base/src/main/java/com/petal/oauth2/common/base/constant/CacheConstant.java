@@ -6,11 +6,11 @@ public final class CacheConstant {
 	/**
 	 * 用户信息缓存
 	 */
-	String USER_DETAILS = "user_details";
+	public static final String USER_DETAILS = "user_details";
 
 	/**
 	 * oauth客户端信息
 	 */
-	String CLIENT_DETAILS_KEY = "client:details";
+	public static final String CLIENT_DETAILS_KEY = "client:details";
 
 }

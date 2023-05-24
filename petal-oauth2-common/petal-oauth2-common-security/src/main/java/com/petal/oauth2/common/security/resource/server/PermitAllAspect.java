@@ -1,18 +1,15 @@
-package com.petal.oauth2.common.security.component;
+package com.petal.oauth2.common.security.resource.server;
 
 import com.petal.oauth2.common.base.constant.Oauth2Constant;
 import com.petal.oauth2.common.security.annotation.PermitAll;
-import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.Ordered;
 import org.springframework.security.access.AccessDeniedException;
-import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -25,10 +22,13 @@ import javax.servlet.http.HttpServletRequest;
  */
 @Slf4j
 @Aspect
-@RequiredArgsConstructor
 public class PermitAllAspect implements Ordered {
 
 	private final HttpServletRequest request;
+
+	public PermitAllAspect(HttpServletRequest request) {
+		this.request = request;
+	}
 
 	@SneakyThrows
 	@Around("@within(permitAll) || @annotation(permitAll)")

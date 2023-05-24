@@ -1,7 +1,7 @@
 package com.petal.oauth2.common.security.annotation;
 
-import com.petal.oauth2.common.security.component.ResourceServerAutoConfiguration;
-import com.petal.oauth2.common.security.component.ResourceServerConfiguration;
+import com.petal.oauth2.common.security.resource.server.ResourceServerAutoConfiguration;
+import com.petal.oauth2.common.security.resource.server.ResourceServerConfiguration;
 import org.springframework.context.annotation.Import;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 

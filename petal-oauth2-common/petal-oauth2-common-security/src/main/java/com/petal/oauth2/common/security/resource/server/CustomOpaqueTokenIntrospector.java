@@ -1,10 +1,9 @@
-package com.petal.oauth2.common.security.component;
+package com.petal.oauth2.common.security.resource.server;
 
 import cn.hutool.extra.spring.SpringUtil;
 import com.petal.oauth2.common.base.constant.Oauth2Constant;
 import com.petal.oauth2.common.security.service.CustomUserDetailsService;
 import com.petal.oauth2.common.security.service.SecurityOauth2User;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.Ordered;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -36,10 +35,13 @@ import java.util.Optional;
  * @date 2023/05/12 12:18:11
  */
 @Slf4j
-@RequiredArgsConstructor
 public class CustomOpaqueTokenIntrospector implements OpaqueTokenIntrospector {
 
 	private final OAuth2AuthorizationService authorizationService;
+
+	public CustomOpaqueTokenIntrospector(OAuth2AuthorizationService authorizationService) {
+		this.authorizationService = authorizationService;
+	}
 
 	@Override
 	public OAuth2AuthenticatedPrincipal introspect(String token) {

@@ -1,4 +1,4 @@
-package com.petal.oauth2.common.security.utils;
+package com.petal.oauth2.common.security.resource.server;
 
 import cn.hutool.core.util.ArrayUtil;
 import org.springframework.security.core.Authentication;

@@ -1,14 +1,12 @@
-package com.petal.oauth2.common.security.component;
+package com.petal.oauth2.common.security.resource.server;
 
 import cn.hutool.core.collection.CollUtil;
+import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.petal.oauth2.common.base.constant.Oauth2Constant;
 import com.petal.oauth2.common.base.utils.WebUtil;
-import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import feign.RequestInterceptor;
 import feign.RequestTemplate;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.oauth2.core.OAuth2AccessToken;
 import org.springframework.security.oauth2.server.resource.web.BearerTokenResolver;
@@ -26,10 +24,13 @@ import java.util.Collection;
  * @date 2023/05/12 15:14:59
  */
 @Slf4j
-@RequiredArgsConstructor
 public class Oauth2FeignRequestInterceptor implements RequestInterceptor {
 
 	private final BearerTokenResolver tokenResolver;
+
+	public Oauth2FeignRequestInterceptor(BearerTokenResolver tokenResolver) {
+		this.tokenResolver = tokenResolver;
+	}
 
 	/**
 	 * 当feign请求发送之前将会进入这个方法,然后我们就把accessToken放到这个feign请求的请求头的Authorization中,然后才放行

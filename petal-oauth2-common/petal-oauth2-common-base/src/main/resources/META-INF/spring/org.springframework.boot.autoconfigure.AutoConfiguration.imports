@@ -1,4 +1,4 @@
 
-com.petal.oauth2.common.base.config.JacksonConfiguration
+
 com.petal.oauth2.common.base.utils.SpringContextHolder
-com.petal.oauth2.common.base.config.WebMvcConfiguration
+

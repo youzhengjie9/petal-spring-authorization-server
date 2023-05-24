@@ -1,6 +1,6 @@
-package com.petal.oauth2.common.security.component;
+package com.petal.oauth2.common.security.resource.server;
 
-import lombok.RequiredArgsConstructor;
+import com.petal.oauth2.common.security.properties.IgnoreAuthenticationProperties;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
@@ -64,14 +64,15 @@ public class Oauth2TokenResolver implements BearerTokenResolver {
 		if (match) {
 			return null;
 		}
-		//解析token
+		//从请求头解析accessToken
 		final String authorizationHeaderToken = resolveFromAuthorizationHeader(request);
+		//从请求参数解析accessToken
 		final String parameterToken = isParameterTokenSupportedForRequest(request)
 				? resolveFromRequestParameters(request) : null;
 		if (authorizationHeaderToken != null) {
 			if (parameterToken != null) {
 				final BearerTokenError error = BearerTokenErrors
-					.invalidRequest("Found multiple bearer tokens in the request");
+					.invalidRequest("请求中存在多个accessToken");
 				throw new OAuth2AuthenticationException(error);
 			}
 			return authorizationHeaderToken;
@@ -82,7 +83,14 @@ public class Oauth2TokenResolver implements BearerTokenResolver {
 		return null;
 	}
 
+	/**
+	 * 从请求头Authorization中解析accessToken
+	 *
+	 * @param request 请求
+	 * @return {@link String}
+	 */
 	private String resolveFromAuthorizationHeader(HttpServletRequest request) {
+		//从请求头Authorization中解析accessToken
 		String authorization = request.getHeader(this.bearerTokenHeaderName);
 		//如果请求头上的Authorization的token没有以bearer开头则直接返回null，校验失败
 		if (!StringUtils.startsWithIgnoreCase(authorization, "bearer")) {
@@ -92,25 +100,43 @@ public class Oauth2TokenResolver implements BearerTokenResolver {
 		Matcher matcher = authorizationPattern.matcher(authorization);
 		//如果校验token失败，直接抛出异常
 		if (!matcher.matches()) {
-			BearerTokenError error = BearerTokenErrors.invalidToken("Bearer token is malformed");
+			BearerTokenError error = BearerTokenErrors.invalidToken("accessToken格式不正确");
 			throw new OAuth2AuthenticationException(error);
 		}
 		//校验token成功
 		return matcher.group("token");
 	}
 
+	/**
+	 * 从请求参数中解析accessToken
+	 *
+	 * @param request 请求
+	 * @return {@link String}
+	 */
 	private static String resolveFromRequestParameters(HttpServletRequest request) {
+		// 从请求参数中解析accessToken
 		String[] values = request.getParameterValues("access_token");
+		// 没有找到accessToken
 		if (values == null || values.length == 0) {
 			return null;
 		}
+		// 找到一个accessToken
 		if (values.length == 1) {
 			return values[0];
 		}
-		BearerTokenError error = BearerTokenErrors.invalidRequest("Found multiple bearer tokens in the request");
+		// 找到多个accessToken（这里就要抛出异常了）
+		BearerTokenError error = BearerTokenErrors.invalidRequest("请求参数中存在多个accessToken");
 		throw new OAuth2AuthenticationException(error);
 	}
 
+	/**
+	 * 返回true的条件.（满足下面其中一个条件即可返回true）,当这个返回true才会去请求参数中检查是否有accessToken
+	 * 1: 如果是GET请求，
+	 * 2: 如果是POST请求并且content-type为application/x-www-form-urlencoded类型
+	 *
+	 * @param request 请求
+	 * @return boolean
+	 */
 	private boolean isParameterTokenSupportedForRequest(final HttpServletRequest request) {
 		return (("POST".equals(request.getMethod())
 				&& MediaType.APPLICATION_FORM_URLENCODED_VALUE.equals(request.getContentType()))

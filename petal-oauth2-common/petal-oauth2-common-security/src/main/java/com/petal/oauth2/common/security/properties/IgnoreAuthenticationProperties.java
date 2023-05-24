@@ -1,4 +1,4 @@
-package com.petal.oauth2.common.security.component;
+package com.petal.oauth2.common.security.properties;
 
 import cn.hutool.core.util.ReUtil;
 import cn.hutool.extra.spring.SpringUtil;

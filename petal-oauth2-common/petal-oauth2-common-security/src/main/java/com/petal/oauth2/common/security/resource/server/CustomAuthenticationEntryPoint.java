@@ -1,12 +1,9 @@
-package com.petal.oauth2.common.security.component;
+package com.petal.oauth2.common.security.resource.server;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.petal.oauth2.common.base.enums.ResponseType;
 import com.petal.oauth2.common.base.utils.ResponseResult;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
-import org.springframework.context.MessageSource;
-import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.InsufficientAuthenticationException;
 import org.springframework.security.core.AuthenticationException;
@@ -25,12 +22,16 @@ import java.io.PrintWriter;
  * @date 2023/05/12 18:16:08
  */
 
-@RequiredArgsConstructor
 public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint {
 
 	private final ObjectMapper objectMapper;
 
-	private final MessageSource messageSource;
+//	private final MessageSource messageSource;
+
+
+	public CustomAuthenticationEntryPoint(ObjectMapper objectMapper) {
+		this.objectMapper = objectMapper;
+	}
 
 	@Override
 	@SneakyThrows
