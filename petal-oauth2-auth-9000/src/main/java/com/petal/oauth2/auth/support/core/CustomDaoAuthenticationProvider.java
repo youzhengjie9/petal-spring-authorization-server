@@ -56,7 +56,7 @@ public class CustomDaoAuthenticationProvider extends AbstractUserDetailsAuthenti
 	private UserDetailsPasswordService userDetailsPasswordService;
 
 	public CustomDaoAuthenticationProvider() {
-		setMessageSource(SpringUtil.getBean("securityMessageSource"));
+//		setMessageSource(SpringUtil.getBean("securityMessageSource"));
 		setPasswordEncoder(PasswordEncoderFactories.createDelegatingPasswordEncoder());
 	}
 
@@ -74,7 +74,8 @@ public class CustomDaoAuthenticationProvider extends AbstractUserDetailsAuthenti
 		prepareTimingAttackProtection();
 		HttpServletRequest request = WebUtil.getRequest()
 				.orElseThrow(
-						(Supplier<Throwable>) () -> new InternalAuthenticationServiceException("web request is empty"));
+						(Supplier<Throwable>) () ->
+								new InternalAuthenticationServiceException("request不能为空"));
 
 		Map<String, String> paramMap = ServletUtil.getParamMap(request);
 		String grantType = paramMap.get(OAuth2ParameterNames.GRANT_TYPE);
@@ -84,17 +85,17 @@ public class CustomDaoAuthenticationProvider extends AbstractUserDetailsAuthenti
 			clientId = basicConvert.convert(request).getName();
 		}
 
-		Map<String, CustomUserDetailsService> userDetailsServiceMap = SpringUtil
+		Map<String, CustomUserDetailsService> customUserDetailsServiceMap = SpringUtil
 				.getBeansOfType(CustomUserDetailsService.class);
 
 		String finalClientId = clientId;
-		Optional<CustomUserDetailsService> optional = userDetailsServiceMap.values()
+		Optional<CustomUserDetailsService> optional = customUserDetailsServiceMap.values()
 				.stream()
 				.filter(service -> service.support(finalClientId, grantType))
 				.max(Comparator.comparingInt(Ordered::getOrder));
 
 		if (!optional.isPresent()) {
-			throw new InternalAuthenticationServiceException("UserDetailsService error , not register");
+			throw new InternalAuthenticationServiceException("CustomUserDetailsService没有注册到Spring容器中");
 		}
 
 		try {
@@ -102,7 +103,7 @@ public class CustomDaoAuthenticationProvider extends AbstractUserDetailsAuthenti
 			UserDetails loadedUser = optional.get().loadUserByUsername(username);
 			if (loadedUser == null) {
 				throw new InternalAuthenticationServiceException(
-						"UserDetailsService returned null, which is an interface contract violation");
+						"CustomUserDetailsService返回了空值");
 			}
 			return loadedUser;
 		}
@@ -141,20 +142,18 @@ public class CustomDaoAuthenticationProvider extends AbstractUserDetailsAuthenti
 		//如果密码为空
 		if (authentication.getCredentials() == null) {
 			this.logger.error("输入的密码为空");
-			throw new BadCredentialsException(this.messages
-				.getMessage("AbstractUserDetailsAuthenticationProvider.badCredentials", "Bad credentials"));
+			throw new BadCredentialsException("输入的密码为空");
 		}
 		// 用户在表单输入的密码
 		String userInputPassword = authentication.getCredentials().toString();
 		// 该用户在数据库中查询出来的正确的密码
 		String correctPassword = userDetails.getPassword();
-		//如果校验密码失败
+		//如果密码错误
 		if (!this.passwordEncoder.matches(userInputPassword, correctPassword)) {
-			this.logger.error("密码不正确...");
-			throw new BadCredentialsException(this.messages
-				.getMessage("AbstractUserDetailsAuthenticationProvider.badCredentials", "Bad credentials"));
+			this.logger.error("密码错误");
+			throw new BadCredentialsException("密码错误");
 		}
-		this.logger.info("密码正确...");
+		this.logger.info("密码正确");
 	}
 
 	@Override
@@ -190,7 +189,7 @@ public class CustomDaoAuthenticationProvider extends AbstractUserDetailsAuthenti
 	 * types.
 	 */
 	public void setPasswordEncoder(PasswordEncoder passwordEncoder) {
-		Assert.notNull(passwordEncoder, "passwordEncoder cannot be null");
+		Assert.notNull(passwordEncoder, "passwordEncoder不能为空");
 		this.passwordEncoder = passwordEncoder;
 		this.userNotFoundEncodedPassword = null;
 	}

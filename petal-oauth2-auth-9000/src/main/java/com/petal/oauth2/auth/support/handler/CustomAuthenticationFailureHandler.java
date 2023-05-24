@@ -2,7 +2,6 @@ package com.petal.oauth2.auth.support.handler;
 
 import cn.hutool.core.util.StrUtil;
 import com.petal.oauth2.common.base.constant.Oauth2Constant;
-import com.petal.oauth2.common.base.utils.MsgUtil;
 import com.petal.oauth2.common.base.utils.ResponseResult;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
@@ -29,21 +28,16 @@ import java.io.IOException;
 @Slf4j
 public class CustomAuthenticationFailureHandler implements AuthenticationFailureHandler {
 
-	private final MappingJackson2HttpMessageConverter errorHttpResponseConverter = new MappingJackson2HttpMessageConverter();
+	private final MappingJackson2HttpMessageConverter errorHttpResponseConverter =
+			new MappingJackson2HttpMessageConverter();
 
-	/**
-	 * Called when an authentication attempt fails.
-	 * @param request the request during which the authentication attempt occurred.
-	 * @param response the response.
-	 * @param exception the exception which was thrown to reject the authentication
-	 * request.
-	 */
 	@Override
 	@SneakyThrows
 	public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response,
 			AuthenticationException exception) {
 		String username = request.getParameter(OAuth2ParameterNames.USERNAME);
 		log.info("用户：{} 登录失败，异常：{}", username, exception.getLocalizedMessage());
+		// TODO: 2023/5/24 登录失败日志
 //		SysLog logVo = SysLogUtils.getSysLog();
 //		logVo.setTitle("登录失败");
 //		logVo.setType(LogTypeEnum.ERROR.getType());
@@ -80,10 +74,10 @@ public class CustomAuthenticationFailureHandler implements AuthenticationFailure
 			errorMessage = exception.getLocalizedMessage();
 		}
 
-		// 手机验证码登录
+		// 如果是手机验证码登录
 		String grantType = request.getParameter(OAuth2ParameterNames.GRANT_TYPE);
 		if (Oauth2Constant.SMS_GRANT_TYPE.equals(grantType)) {
-			errorMessage = MsgUtil.getSecurityMessage("AbstractUserDetailsAuthenticationProvider.smsBadCredentials");
+			errorMessage = "手机号不存在,登录失败";
 		}
 
 		this.errorHttpResponseConverter.write(ResponseResult.fail(errorMessage), MediaType.APPLICATION_JSON, httpResponse);

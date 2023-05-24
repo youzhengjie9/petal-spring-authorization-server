@@ -51,7 +51,7 @@ public abstract class OAuth2AuthenticationProvider<T extends OAuth2Authenticatio
 
 	private final AuthenticationManager authenticationManager;
 
-	private final MessageSourceAccessor messages;
+//	private final MessageSourceAccessor messages;
 
 	@Deprecated
 	private Supplier<String> refreshTokenGenerator;
@@ -66,19 +66,19 @@ public abstract class OAuth2AuthenticationProvider<T extends OAuth2Authenticatio
 	public OAuth2AuthenticationProvider(AuthenticationManager authenticationManager,
                                                          OAuth2AuthorizationService authorizationService,
                                                          OAuth2TokenGenerator<? extends OAuth2Token> tokenGenerator) {
-		Assert.notNull(authorizationService, "authorizationService cannot be null");
-		Assert.notNull(tokenGenerator, "tokenGenerator cannot be null");
+		Assert.notNull(authorizationService, "authorizationService不能为空");
+		Assert.notNull(tokenGenerator, "tokenGenerator不能为空");
 		this.authenticationManager = authenticationManager;
 		this.authorizationService = authorizationService;
 		this.tokenGenerator = tokenGenerator;
 
 		// 国际化配置
-		this.messages = new MessageSourceAccessor(SpringUtil.getBean("securityMessageSource"), Locale.CHINA);
+//		this.messages = new MessageSourceAccessor(SpringUtil.getBean("securityMessageSource"), Locale.CHINA);
 	}
 
 	@Deprecated
 	public void setRefreshTokenGenerator(Supplier<String> refreshTokenGenerator) {
-		Assert.notNull(refreshTokenGenerator, "refreshTokenGenerator cannot be null");
+		Assert.notNull(refreshTokenGenerator, "refreshTokenGenerator不能为空");
 		this.refreshTokenGenerator = refreshTokenGenerator;
 	}
 
@@ -139,12 +139,11 @@ public abstract class OAuth2AuthenticationProvider<T extends OAuth2Authenticatio
 
 			UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = buildToken(reqParameters);
 
-			LOGGER.debug("got usernamePasswordAuthenticationToken=" + usernamePasswordAuthenticationToken);
+			LOGGER.debug("usernamePasswordAuthenticationToken=" + usernamePasswordAuthenticationToken);
 
-			//交给SpringSecurity进行认证
+			// 交给SpringSecurity进行认证
 			Authentication usernamePasswordAuthentication = authenticationManager
 				.authenticate(usernamePasswordAuthenticationToken);
-
 
 			DefaultOAuth2TokenContext.Builder tokenContextBuilder = DefaultOAuth2TokenContext.builder()
 					.registeredClient(registeredClient)
@@ -166,7 +165,7 @@ public abstract class OAuth2AuthenticationProvider<T extends OAuth2Authenticatio
 			OAuth2Token generatedAccessToken = this.tokenGenerator.generate(tokenContext);
 			if (generatedAccessToken == null) {
 				OAuth2Error error = new OAuth2Error(OAuth2ErrorCodes.SERVER_ERROR,
-						"The token generator failed to generate the access token.", ERROR_URI);
+						"accessToken构建失败", ERROR_URI);
 				throw new OAuth2AuthenticationException(error);
 			}
 			OAuth2AccessToken accessToken = new OAuth2AccessToken(OAuth2AccessToken.TokenType.BEARER,
@@ -199,7 +198,7 @@ public abstract class OAuth2AuthenticationProvider<T extends OAuth2Authenticatio
 					OAuth2Token generatedRefreshToken = this.tokenGenerator.generate(tokenContext);
 					if (!(generatedRefreshToken instanceof OAuth2RefreshToken)) {
 						OAuth2Error error = new OAuth2Error(OAuth2ErrorCodes.SERVER_ERROR,
-								"The token generator failed to generate the refresh token.", ERROR_URI);
+								"refreshToken构建失败", ERROR_URI);
 						throw new OAuth2AuthenticationException(error);
 					}
 					refreshToken = (OAuth2RefreshToken) generatedRefreshToken;
@@ -211,8 +210,6 @@ public abstract class OAuth2AuthenticationProvider<T extends OAuth2Authenticatio
 
 			// 将accessToken和refreshToken存储到数据库中
 			this.authorizationService.save(authorization);
-
-			LOGGER.debug("returning OAuth2AccessTokenAuthenticationToken");
 
 			return new OAuth2AccessTokenAuthenticationToken(registeredClient, clientPrincipal, accessToken,
 					refreshToken, Objects.requireNonNull(authorization.getAccessToken().getClaims()));
@@ -226,6 +223,7 @@ public abstract class OAuth2AuthenticationProvider<T extends OAuth2Authenticatio
 
 	/**
 	 * 登录异常转换为oauth2异常
+	 *
 	 * @param authentication 身份验证
 	 * @param authenticationException 身份验证异常
 	 * @return {@link OAuth2AuthenticationException}
@@ -234,40 +232,42 @@ public abstract class OAuth2AuthenticationProvider<T extends OAuth2Authenticatio
 			AuthenticationException authenticationException) {
 		if (authenticationException instanceof UsernameNotFoundException) {
 			return new OAuth2AuthenticationException(new OAuth2Error(OAuth2ErrorCodesExpand.USERNAME_NOT_FOUND,
-					this.messages.getMessage("JdbcDaoImpl.notFound", new Object[] { authentication.getName() },
-							"Username {0} not found"),
+					"UserDetailsService实现类找不到用户名为 "+authentication.getName()+" 的用户",
 					""));
 		}
 		if (authenticationException instanceof BadCredentialsException) {
-			return new OAuth2AuthenticationException(
-					new OAuth2Error(OAuth2ErrorCodesExpand.BAD_CREDENTIALS, this.messages.getMessage(
-							"AbstractUserDetailsAuthenticationProvider.badCredentials", "Bad credentials"), ""));
+			return new OAuth2AuthenticationException(new OAuth2Error(OAuth2ErrorCodesExpand.BAD_CREDENTIALS,
+					"凭据无效",
+					""));
 		}
 		if (authenticationException instanceof LockedException) {
-			return new OAuth2AuthenticationException(new OAuth2Error(OAuth2ErrorCodesExpand.USER_LOCKED, this.messages
-				.getMessage("AbstractUserDetailsAuthenticationProvider.locked", "User account is locked"), ""));
+			return new OAuth2AuthenticationException(new OAuth2Error(OAuth2ErrorCodesExpand.USER_LOCKED,
+					"用户被锁定了",
+					""));
 		}
 		if (authenticationException instanceof DisabledException) {
 			return new OAuth2AuthenticationException(new OAuth2Error(OAuth2ErrorCodesExpand.USER_DISABLE,
-					this.messages.getMessage("AbstractUserDetailsAuthenticationProvider.disabled", "User is disabled"),
+					"用户被禁用了",
 					""));
 		}
 		if (authenticationException instanceof AccountExpiredException) {
-			return new OAuth2AuthenticationException(new OAuth2Error(OAuth2ErrorCodesExpand.USER_EXPIRED, this.messages
-				.getMessage("AbstractUserDetailsAuthenticationProvider.expired", "User account has expired"), ""));
+			return new OAuth2AuthenticationException(new OAuth2Error(OAuth2ErrorCodesExpand.USER_EXPIRED,
+					"用户过期了",
+					""));
 		}
 		if (authenticationException instanceof CredentialsExpiredException) {
 			return new OAuth2AuthenticationException(new OAuth2Error(OAuth2ErrorCodesExpand.CREDENTIALS_EXPIRED,
-					this.messages.getMessage("AbstractUserDetailsAuthenticationProvider.credentialsExpired",
-							"User credentials have expired"),
+					"帐户凭据过期了",
 					""));
 		}
 		if (authenticationException instanceof ScopeException) {
 			return new OAuth2AuthenticationException(new OAuth2Error(OAuth2ErrorCodes.INVALID_SCOPE,
-					this.messages.getMessage("AbstractAccessDecisionManager.accessDenied", "invalid_scope"), ""));
+					"无效的scope,拒绝访问",
+					""));
 		}
 
 		log.error(authenticationException.getLocalizedMessage());
+		// 用来兜底的异常
 		return new OAuth2AuthenticationException(new OAuth2Error(OAuth2ErrorCodes.SERVER_ERROR),
 				authenticationException.getLocalizedMessage(), authenticationException);
 	}

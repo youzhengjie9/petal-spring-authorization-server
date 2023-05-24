@@ -1,16 +1,15 @@
 package com.petal.oauth2.auth.config;
 
-import com.petal.oauth2.auth.support.sms.SmsAuthenticationConverter;
 import com.petal.oauth2.auth.support.CustomeOAuth2AccessTokenGenerator;
-import com.petal.oauth2.auth.support.handler.CustomAuthenticationFailureHandler;
-import com.petal.oauth2.auth.support.handler.CustomAuthenticationSuccessHandler;
 import com.petal.oauth2.auth.support.core.CustomDaoAuthenticationProvider;
 import com.petal.oauth2.auth.support.core.CustomeOAuth2TokenCustomizer;
 import com.petal.oauth2.auth.support.core.FormIdentityLoginConfigurer;
+import com.petal.oauth2.auth.support.handler.CustomAuthenticationFailureHandler;
+import com.petal.oauth2.auth.support.handler.CustomAuthenticationSuccessHandler;
 import com.petal.oauth2.auth.support.password.PasswordAuthenticationConverter;
 import com.petal.oauth2.auth.support.password.PasswordAuthenticationProvider;
+import com.petal.oauth2.auth.support.sms.SmsAuthenticationConverter;
 import com.petal.oauth2.auth.support.sms.SmsAuthenticationProvider;
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -34,14 +33,14 @@ import java.util.Arrays;
 
 /**
  * Spring Authorization Server认证服务器配置（帐号密码、手机号登录）
+ *
  * @author youzhengjie
  * @date 2023-05-05 09:31:53
  */
 @Configuration
-@RequiredArgsConstructor
 public class AuthorizationServerConfig {
 
-    private final OAuth2AuthorizationService authorizationService;
+    private OAuth2AuthorizationService authorizationService;
 
     /**
      * 自定义oauth2授权页面跳转接口（也可以使用oauth2自带的）
@@ -50,6 +49,11 @@ public class AuthorizationServerConfig {
 
     private static final String ISSUER = "http://petal.oauth2.com:9000";
 
+    @Autowired
+    public void setAuthorizationService(OAuth2AuthorizationService authorizationService) {
+        this.authorizationService = authorizationService;
+    }
+
     /**
      * Spring Authorization Server 授权配置
      */
@@ -57,12 +61,10 @@ public class AuthorizationServerConfig {
     @Order(Ordered.HIGHEST_PRECEDENCE)
     public SecurityFilterChain authorizationServerSecurityFilterChain(HttpSecurity http) throws Exception {
 
-        // OAuth 2.1 默认配置
-        // 缺省配置：authorizeRequests.anyRequest().authenticated()、
-        // csrf.ignoringRequestMatchers(endpointsMatcher) 等等
+        // 应用OAuth2默认配置
         OAuth2AuthorizationServerConfiguration.applyDefaultSecurity(http);
 
-        // 使用 HttpSecurity 获取 OAuth 2.1 配置中的 OAuth2AuthorizationServerConfigurer 对象
+        // 获取OAuth2AuthorizationServerConfigurer对象
         OAuth2AuthorizationServerConfigurer authorizationServerConfigurer = http
                 .getConfigurer(OAuth2AuthorizationServerConfigurer.class);
 
@@ -120,8 +122,8 @@ public class AuthorizationServerConfig {
      * @return DelegatingAuthenticationConverter
      */
     private AuthenticationConverter accessTokenRequestConverter() {
-        //DelegatingAuthenticationConverter在解析请求时会遍历 AuthenticationConverter列表，
-        //当某个 AuthenticationConverter 解析成功时，立即返回，这也能确定此请求是什么认证方式，后续再执行对应的认证逻辑
+        // DelegatingAuthenticationConverter 在解析请求时会遍历 AuthenticationConverter 列表，
+        // 当某个 AuthenticationConverter 解析成功时，立即返回，这也能确定此请求是什么认证方式，后续再执行对应的认证逻辑
         return new DelegatingAuthenticationConverter(Arrays.asList(
                 // 密码登录转换器
                 new PasswordAuthenticationConverter(),
@@ -141,7 +143,7 @@ public class AuthorizationServerConfig {
      * 注入授权模式实现提供方
      * <p>
      * 1. 密码登录模式 </br>
-     * 2. 短信登录模式 </br>
+     * 2. 手机短信登录模式 </br>
      */
     @SuppressWarnings("unchecked")
     private void addCustomOAuth2GrantAuthenticationProvider(HttpSecurity http) {

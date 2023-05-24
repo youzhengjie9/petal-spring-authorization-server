@@ -86,7 +86,7 @@ public class CustomeOAuth2AccessTokenGenerator implements OAuth2TokenGenerator<O
 	}
 
 	public void setAccessTokenCustomizer(OAuth2TokenCustomizer<OAuth2TokenClaimsContext> accessTokenCustomizer) {
-		Assert.notNull(accessTokenCustomizer, "accessTokenCustomizer cannot be null");
+		Assert.notNull(accessTokenCustomizer, "accessTokenCustomizer不能为空");
 		this.accessTokenCustomizer = accessTokenCustomizer;
 	}
 

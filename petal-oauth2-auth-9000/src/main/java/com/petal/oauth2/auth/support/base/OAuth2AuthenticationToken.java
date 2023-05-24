@@ -34,8 +34,8 @@ public abstract class OAuth2AuthenticationToken extends AbstractAuthenticationTo
 									 Authentication clientPrincipal, @Nullable Set<String> scopes,
 									 @Nullable Map<String, Object> additionalParameters) {
 		super(Collections.emptyList());
-		Assert.notNull(authorizationGrantType, "authorizationGrantType cannot be null");
-		Assert.notNull(clientPrincipal, "clientPrincipal cannot be null");
+		Assert.notNull(authorizationGrantType, "authorizationGrantType不能为空");
+		Assert.notNull(clientPrincipal, "clientPrincipal不能为空");
 		this.authorizationGrantType = authorizationGrantType;
 		this.clientPrincipal = clientPrincipal;
 		this.scopes = Collections.unmodifiableSet(scopes != null ? new HashSet<>(scopes) : Collections.emptySet());

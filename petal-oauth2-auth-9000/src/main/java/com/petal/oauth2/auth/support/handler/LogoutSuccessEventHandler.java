@@ -34,7 +34,7 @@ public class LogoutSuccessEventHandler implements ApplicationListener<LogoutSucc
 	public void handle(Authentication authentication) {
 		log.info("用户：{} 退出成功", authentication.getPrincipal());
 
-		// TODO: 2023/5/9 保存日志
+		// TODO: 2023/5/24 保存日志
 
 //		SysLog logVo = SysLogUtils.getSysLog();
 //		logVo.setTitle("退出成功");

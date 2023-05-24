@@ -1,7 +1,7 @@
 
-## common redis autoconfigure
-#org.springframework.boot.autoconfigure.EnableAutoConfiguration = \
-#  com.petal.oauth2.common.redis.config.RedisTemplateConfig
+# common redis autoconfigure
+org.springframework.boot.autoconfigure.EnableAutoConfiguration = \
+  com.petal.oauth2.common.redis.config.RedisTemplateConfig
 
 
 

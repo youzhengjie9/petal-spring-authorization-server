@@ -17,6 +17,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -51,19 +52,28 @@ import java.util.Set;
 @Api("Token的端点控制器")
 @Slf4j
 @RestController
-@RequiredArgsConstructor
 @RequestMapping("/token")
 public class TokenEndPointController {
 
-    private final HttpMessageConverter<OAuth2AccessTokenResponse> accessTokenHttpResponseConverter = new OAuth2AccessTokenResponseHttpMessageConverter();
+    private final HttpMessageConverter<OAuth2AccessTokenResponse> accessTokenHttpResponseConverter =
+            new OAuth2AccessTokenResponseHttpMessageConverter();
 
-    private final AuthenticationFailureHandler authenticationFailureHandler = new CustomAuthenticationFailureHandler();
+    private final AuthenticationFailureHandler authenticationFailureHandler =
+            new CustomAuthenticationFailureHandler();
 
-    private final OAuth2AuthorizationService authorizationService;
+    private OAuth2AuthorizationService authorizationService;
 
-    private final SysOauth2ClientFeign sysOauth2ClientFeign;
+    private SysOauth2ClientFeign sysOauth2ClientFeign;
 
-//    private final RedisTemplate redisTemplate;
+    @Autowired
+    public void setAuthorizationService(OAuth2AuthorizationService authorizationService) {
+        this.authorizationService = authorizationService;
+    }
+
+    @Autowired
+    public void setSysOauth2ClientFeign(SysOauth2ClientFeign sysOauth2ClientFeign) {
+        this.sysOauth2ClientFeign = sysOauth2ClientFeign;
+    }
 
     /**
      * 认证页面

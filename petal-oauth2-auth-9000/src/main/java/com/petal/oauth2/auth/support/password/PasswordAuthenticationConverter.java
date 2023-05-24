@@ -47,14 +47,14 @@ public class PasswordAuthenticationConverter
 	@Override
 	public void checkParams(HttpServletRequest request) {
 		MultiValueMap<String, String> parameters = OAuth2EndpointUtils.getParameters(request);
-		// 获取username请求参数（必须要有*）
+		// 获取username请求参数（必须要有）
 		String username = parameters.getFirst(Oauth2Constant.USERNAME_PARAMETER_NAME);
 		if (!StringUtils.hasText(username) || parameters.get(OAuth2ParameterNames.USERNAME).size() != 1) {
 			OAuth2EndpointUtils.throwError(OAuth2ErrorCodes.INVALID_REQUEST, OAuth2ParameterNames.USERNAME,
 					OAuth2EndpointUtils.ACCESS_TOKEN_REQUEST_ERROR_URI);
 		}
 
-		// 获取password请求参数（必须要有*）
+		// 获取password请求参数（必须要有）
 		String password = parameters.getFirst(Oauth2Constant.PASSWORD_PARAMETER_NAME);
 		if (!StringUtils.hasText(password) || parameters.get(OAuth2ParameterNames.PASSWORD).size() != 1) {
 			OAuth2EndpointUtils.throwError(OAuth2ErrorCodes.INVALID_REQUEST, OAuth2ParameterNames.PASSWORD,

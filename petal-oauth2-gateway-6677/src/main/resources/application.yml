@@ -41,7 +41,6 @@ spring:
         locator:
           # 动态路由。是否开启自动创建路由,这里不开启,我们在下面自己手动配置路由（如果设置为true,下面手动配置的路由会失效！）
           enabled: false
-#          lowerCaseServiceId: true
       # 手动创建路由。路由数组(就是当请求满足什么样的条件就跳转到哪个"微服务")
       routes:
         # id是路由的唯一标识
