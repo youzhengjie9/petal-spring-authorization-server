@@ -28,23 +28,26 @@ import java.util.concurrent.TimeUnit;
  * @author youzhengjie
  * @date 2023/05/10 09:49:35
  */
-@RequiredArgsConstructor
 public class RedisOAuth2AuthorizationService implements OAuth2AuthorizationService {
 
 	private final static Long TIMEOUT = 10L;
 
 	private static final String AUTHORIZATION = "token";
 
-	private final RedisTemplate redisTemplate;
+	private RedisTemplate redisTemplate;
 
+	@Autowired
+	public void setRedisTemplate(RedisTemplate redisTemplate) {
+		this.redisTemplate = redisTemplate;
+	}
 
 	@Override
 	public void save(OAuth2Authorization authorization) {
-		Assert.notNull(authorization, "authorization cannot be null");
+		Assert.notNull(authorization, "authorization不能为空");
 
 		if (isState(authorization)) {
 			String token = authorization.getAttribute(OAuth2ParameterNames.STATE);
-			redisTemplate.setValueSerializer(RedisSerializer.java());
+//			redisTemplate.setValueSerializer(RedisSerializer.java());
 			redisTemplate.opsForValue()
 				.set(buildKey(OAuth2ParameterNames.STATE, token), authorization, TIMEOUT, TimeUnit.MINUTES);
 		}
@@ -55,7 +58,7 @@ public class RedisOAuth2AuthorizationService implements OAuth2AuthorizationServi
 			OAuth2AuthorizationCode authorizationCodeToken = authorizationCode.getToken();
 			long between = ChronoUnit.MINUTES.between(authorizationCodeToken.getIssuedAt(),
 					authorizationCodeToken.getExpiresAt());
-			redisTemplate.setValueSerializer(RedisSerializer.java());
+//			redisTemplate.setValueSerializer(RedisSerializer.java());
 			redisTemplate.opsForValue()
 				.set(buildKey(OAuth2ParameterNames.CODE, authorizationCodeToken.getTokenValue()), authorization,
 						between, TimeUnit.MINUTES);
@@ -65,7 +68,7 @@ public class RedisOAuth2AuthorizationService implements OAuth2AuthorizationServi
 		if (isRefreshToken(authorization)) {
 			OAuth2RefreshToken refreshToken = authorization.getRefreshToken().getToken();
 			long between = ChronoUnit.SECONDS.between(refreshToken.getIssuedAt(), refreshToken.getExpiresAt());
-			redisTemplate.setValueSerializer(RedisSerializer.java());
+//			redisTemplate.setValueSerializer(RedisSerializer.java());
 			redisTemplate.opsForValue()
 				.set(buildKey(OAuth2ParameterNames.REFRESH_TOKEN, refreshToken.getTokenValue()), authorization, between,
 						TimeUnit.SECONDS);
@@ -75,7 +78,7 @@ public class RedisOAuth2AuthorizationService implements OAuth2AuthorizationServi
 		if (isAccessToken(authorization)) {
 			OAuth2AccessToken accessToken = authorization.getAccessToken().getToken();
 			long between = ChronoUnit.SECONDS.between(accessToken.getIssuedAt(), accessToken.getExpiresAt());
-			redisTemplate.setValueSerializer(RedisSerializer.java());
+//			redisTemplate.setValueSerializer(RedisSerializer.java());
 			redisTemplate.opsForValue()
 				.set(buildKey(OAuth2ParameterNames.ACCESS_TOKEN, accessToken.getTokenValue()), authorization, between,
 						TimeUnit.SECONDS);
@@ -84,7 +87,7 @@ public class RedisOAuth2AuthorizationService implements OAuth2AuthorizationServi
 
 	@Override
 	public void remove(OAuth2Authorization authorization) {
-		Assert.notNull(authorization, "authorization cannot be null");
+		Assert.notNull(authorization, "authorization不能为空");
 
 		List<String> keys = new ArrayList<>();
 		if (isState(authorization)) {
@@ -122,9 +125,9 @@ public class RedisOAuth2AuthorizationService implements OAuth2AuthorizationServi
 	@Override
 	@Nullable
 	public OAuth2Authorization findByToken(String token, @Nullable OAuth2TokenType tokenType) {
-		Assert.hasText(token, "token cannot be empty");
-		Assert.notNull(tokenType, "tokenType cannot be empty");
-		redisTemplate.setValueSerializer(RedisSerializer.java());
+		Assert.hasText(token, "token不能为空");
+		Assert.notNull(tokenType, "tokenType不能为空");
+//		redisTemplate.setValueSerializer(RedisSerializer.java());
 		return (OAuth2Authorization) redisTemplate.opsForValue().get(buildKey(tokenType.getValue(), token));
 	}
 

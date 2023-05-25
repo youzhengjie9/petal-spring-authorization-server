@@ -4,7 +4,7 @@ server:
 spring:
   application:
     # 应用名称
-    name: petal-oauth2-client-8300
+    name: petal-oauth2-client
   main:
     # 防止同时存在多个类型相同的bean导致报错
     allow-bean-definition-overriding: true

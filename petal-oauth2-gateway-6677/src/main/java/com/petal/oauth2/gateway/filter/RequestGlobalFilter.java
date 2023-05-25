@@ -45,7 +45,7 @@ public class RequestGlobalFilter implements GlobalFilter, Ordered {
 		}).build();
 
 		// >>>>> 代码实现StripPrefix = 1同样的功能 (这样我们就不需要在application.yml配置filters为StripPrefix = 1了)
-		// （例如访问http://网关ip:网关端口/petal-oauth2-auth-9000/bbb,实际上访问的是http://网关ip:网关端口/bbb ）
+		// （例如访问http://网关ip:网关端口/petal-oauth2-auth/bbb,实际上访问的是http://网关ip:网关端口/bbb ）
 		addOriginalRequestUrl(exchange, request.getURI());
 		String rawPath = request.getURI().getRawPath();
 		String newPath = "/" + Arrays.stream(StringUtils.tokenizeToStringArray(rawPath, "/"))

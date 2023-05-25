@@ -3,13 +3,11 @@ package com.petal.oauth2.common.security.service;
 import cn.hutool.core.util.BooleanUtil;
 import cn.hutool.core.util.StrUtil;
 import com.alibaba.fastjson2.JSON;
-import com.petal.oauth2.common.base.constant.CacheConstant;
 import com.petal.oauth2.common.base.entity.SysOauth2Client;
 import com.petal.oauth2.common.openfeign.feign.SysOauth2ClientFeign;
 import com.petal.oauth2.common.base.utils.ResponseResult;
-import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
-import org.springframework.cache.annotation.Cacheable;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.oauth2.core.AuthorizationGrantType;
 import org.springframework.security.oauth2.core.ClientAuthenticationMethod;
 import org.springframework.security.oauth2.core.OAuth2Error;
@@ -27,15 +25,16 @@ import java.util.Optional;
 
 
 /**
- * 查询客户端相关信息实现
+ * 自定义RegisteredClient存储库
+ *
+ * <p>
  * 作用: 登录请求中会携带 Basic base64(clientId:clientSecret),
  * 那么首先OAuth2ClientAuthenticationFilter会通过调用RegisteredClientRepository类去数据库查询传入的客户端是否正确
  *
  * @author youzhengjie
  * @date 2023/05/10 10:37:37
  */
-@RequiredArgsConstructor
-public class CustomRemoteRegisteredClientRepository implements RegisteredClientRepository {
+public class CustomRegisteredClientRepository implements RegisteredClientRepository {
 
 	/**
 	 * 刷新令牌有效期默认 30 天
@@ -47,7 +46,12 @@ public class CustomRemoteRegisteredClientRepository implements RegisteredClientR
 	 */
 	private final static int accessTokenValiditySeconds = 60 * 60 * 12;
 
-	private final SysOauth2ClientFeign sysOauth2ClientFeign;
+	private SysOauth2ClientFeign sysOauth2ClientFeign;
+
+	@Autowired
+	public void setSysOauth2ClientFeign(SysOauth2ClientFeign sysOauth2ClientFeign) {
+		this.sysOauth2ClientFeign = sysOauth2ClientFeign;
+	}
 
 	/**
 	 * 保存RegisteredClient
@@ -123,7 +127,7 @@ public class CustomRemoteRegisteredClientRepository implements RegisteredClientR
 			}
 		}else {
 			throw new OAuth2AuthorizationCodeRequestAuthenticationException
-					(new OAuth2Error("客户端查询异常，请检查数据库链接"), null);
+					(new OAuth2Error("客户端查询异常,请检查数据库链接"), null);
 		}
 
 	}

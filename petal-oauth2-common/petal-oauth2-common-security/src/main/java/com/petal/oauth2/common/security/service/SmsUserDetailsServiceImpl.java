@@ -8,6 +8,7 @@ import com.petal.oauth2.common.security.dto.UserInfo;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 
 /**
@@ -17,10 +18,14 @@ import org.springframework.security.core.userdetails.UserDetails;
  * @date 2023/05/13 00:23:44
  */
 @Slf4j
-@RequiredArgsConstructor
 public class SmsUserDetailsServiceImpl implements CustomUserDetailsService {
 
-	private final SysUserFeign sysUserFeign;
+	private SysUserFeign sysUserFeign;
+
+	@Autowired
+	public void setSysUserFeign(SysUserFeign sysUserFeign) {
+		this.sysUserFeign = sysUserFeign;
+	}
 
 	/**
 	 * 手机号登录

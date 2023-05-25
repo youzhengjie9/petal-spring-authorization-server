@@ -16,16 +16,20 @@ import java.util.concurrent.TimeUnit;
  * @author youzhengjie
  * @date 2023/05/23 23:43:30
  */
-@RequiredArgsConstructor
 public class RedisOAuth2AuthorizationConsentService implements OAuth2AuthorizationConsentService {
 
-	private final RedisTemplate redisTemplate;
+	private RedisTemplate redisTemplate;
+
+	@Autowired
+	public void setRedisTemplate(RedisTemplate redisTemplate) {
+		this.redisTemplate = redisTemplate;
+	}
 
 	private final static Long TIMEOUT = 10L;
 
 	@Override
 	public void save(OAuth2AuthorizationConsent authorizationConsent) {
-		Assert.notNull(authorizationConsent, "authorizationConsent cannot be null");
+		Assert.notNull(authorizationConsent, "authorizationConsent不能为空");
 
 		redisTemplate.opsForValue()
 			.set(buildKey(authorizationConsent), authorizationConsent, TIMEOUT, TimeUnit.MINUTES);
@@ -34,14 +38,14 @@ public class RedisOAuth2AuthorizationConsentService implements OAuth2Authorizati
 
 	@Override
 	public void remove(OAuth2AuthorizationConsent authorizationConsent) {
-		Assert.notNull(authorizationConsent, "authorizationConsent cannot be null");
+		Assert.notNull(authorizationConsent, "authorizationConsent不能为空");
 		redisTemplate.delete(buildKey(authorizationConsent));
 	}
 
 	@Override
 	public OAuth2AuthorizationConsent findById(String registeredClientId, String principalName) {
-		Assert.hasText(registeredClientId, "registeredClientId cannot be empty");
-		Assert.hasText(principalName, "principalName cannot be empty");
+		Assert.hasText(registeredClientId, "registeredClientId不能为空");
+		Assert.hasText(principalName, "principalName不能为空");
 		return (OAuth2AuthorizationConsent) redisTemplate.opsForValue()
 			.get(buildKey(registeredClientId, principalName));
 	}

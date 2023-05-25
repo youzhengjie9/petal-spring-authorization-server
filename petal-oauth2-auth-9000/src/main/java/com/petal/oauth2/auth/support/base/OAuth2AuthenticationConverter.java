@@ -1,6 +1,6 @@
 package com.petal.oauth2.auth.support.base;
 
-import com.petal.oauth2.common.security.utils.OAuth2EndpointUtils;
+import com.petal.oauth2.common.security.utils.OAuth2EndpointUtil;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.core.OAuth2ErrorCodes;
@@ -61,12 +61,12 @@ public abstract class OAuth2AuthenticationConverter<T extends OAuth2Authenticati
 			return null;
 		}
 
-		MultiValueMap<String, String> parameters = OAuth2EndpointUtils.getParameters(request);
+		MultiValueMap<String, String> parameters = OAuth2EndpointUtil.getParameters(request);
 		// 拿到scope
 		String scope = parameters.getFirst(OAuth2ParameterNames.SCOPE);
 		if (StringUtils.hasText(scope) && parameters.get(OAuth2ParameterNames.SCOPE).size() != 1) {
-			OAuth2EndpointUtils.throwError(OAuth2ErrorCodes.INVALID_REQUEST, OAuth2ParameterNames.SCOPE,
-					OAuth2EndpointUtils.ACCESS_TOKEN_REQUEST_ERROR_URI);
+			OAuth2EndpointUtil.throwError(OAuth2ErrorCodes.INVALID_REQUEST, OAuth2ParameterNames.SCOPE,
+					OAuth2EndpointUtil.ACCESS_TOKEN_REQUEST_ERROR_URI);
 		}
 
 		Set<String> requestedScopes = null;
@@ -80,8 +80,8 @@ public abstract class OAuth2AuthenticationConverter<T extends OAuth2Authenticati
 		// 获取当前已经认证的客户端信息
 		Authentication clientPrincipal = SecurityContextHolder.getContext().getAuthentication();
 		if (clientPrincipal == null) {
-			OAuth2EndpointUtils.throwError(OAuth2ErrorCodes.INVALID_REQUEST, OAuth2ErrorCodes.INVALID_CLIENT,
-					OAuth2EndpointUtils.ACCESS_TOKEN_REQUEST_ERROR_URI);
+			OAuth2EndpointUtil.throwError(OAuth2ErrorCodes.INVALID_REQUEST, OAuth2ErrorCodes.INVALID_CLIENT,
+					OAuth2EndpointUtil.ACCESS_TOKEN_REQUEST_ERROR_URI);
 		}
 
 		// 扩展信息

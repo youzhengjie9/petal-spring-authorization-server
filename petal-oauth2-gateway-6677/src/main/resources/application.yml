@@ -5,7 +5,7 @@ server:
 ##################################################################################
 spring:
   application:
-    name: petal-oauth2-gateway-6677
+    name: petal-oauth2-gateway
   mvc:
     pathmatch:
       # swagger所需要的配置
@@ -44,12 +44,12 @@ spring:
       # 手动创建路由。路由数组(就是当请求满足什么样的条件就跳转到哪个"微服务")
       routes:
         # id是路由的唯一标识
-        - id: petal-oauth2-auth-9000-route
+        - id: petal-oauth2-auth-route
           # lb指的是从Nacos中按照被调用方的spring.application.name获取对应微服务,并进行负载均衡调用（例如: 轮询）
-          uri: lb://petal-oauth2-auth-9000
-          # Path为网关的路由规则。（例如访问 http://网关ip:网关端口/petal-oauth2-auth-9000/bbb 就符合下面的规则）
+          uri: lb://petal-oauth2-auth
+          # Path为网关的路由规则。（例如访问 http://网关ip:网关端口/petal-oauth2-auth/bbb 就符合下面的规则）
           predicates:
-            - Path=/petal-oauth2-auth-9000/**
+            - Path=/petal-oauth2-auth/**
           # 配置该路由的过滤器。
           filters:
             # swagger过滤器
@@ -61,10 +61,10 @@ spring:
 
 
         # id是路由的唯一标识
-        - id: petal-oauth2-resource-server-7000-route
-          uri: lb://petal-oauth2-resource-server-7000
+        - id: petal-oauth2-resource-server-route
+          uri: lb://petal-oauth2-resource-server
           predicates:
-            - Path=/petal-oauth2-resource-server-7000/**
+            - Path=/petal-oauth2-resource-server/**
           # 配置该路由的过滤器。
           filters:
             # 配置请求限流器.
@@ -81,8 +81,8 @@ spring:
             - name: Swagger
 
         # id是路由的唯一标识
-        - id: petal-oauth2-gateway-6677-route
-          uri: lb://petal-oauth2-gateway-6677
+        - id: petal-oauth2-gateway-route
+          uri: lb://petal-oauth2-gateway
           predicates:
             - Path=/v3/api-docs/**
           # 配置该路由的过滤器。

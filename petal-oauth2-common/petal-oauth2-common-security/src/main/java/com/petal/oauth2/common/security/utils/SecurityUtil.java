@@ -9,7 +9,8 @@ import org.springframework.security.oauth2.core.OAuth2AuthenticatedPrincipal;
 public class SecurityUtil {
 
     /**
-     * 获取客户端
+     * 获取客户端id
+     *
      * @return clientId
      */
     private String getClientId() {
@@ -28,6 +29,7 @@ public class SecurityUtil {
 
     /**
      * 获取用户名称
+     *
      * @return username
      */
     private String getUsername() {

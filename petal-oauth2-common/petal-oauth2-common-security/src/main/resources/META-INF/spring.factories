@@ -18,5 +18,5 @@ org.springframework.boot.autoconfigure.EnableAutoConfiguration = \
   com.petal.oauth2.common.security.service.RedisOAuth2AuthorizationService,\
   com.petal.oauth2.common.security.service.RedisOAuth2AuthorizationConsentService,\
   com.petal.oauth2.common.security.resource.server.PermitAllAspect,\
-  com.petal.oauth2.common.security.service.CustomRemoteRegisteredClientRepository
+  com.petal.oauth2.common.security.service.CustomRegisteredClientRepository
 

@@ -13,7 +13,7 @@ spring:
       #swagger所需要的配置
       matching-strategy: ant_path_matcher
   application:
-    name: petal-oauth2-resource-server-7000
+      name: petal-oauth2-resource-server
   # SpringCloud Alibaba配置
   cloud:
     # Nacos配置

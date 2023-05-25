@@ -3,7 +3,7 @@ server:
 
 spring:
   application:
-    name: petal-oauth2-auth-9000
+    name: petal-oauth2-auth
   thymeleaf:
     cache: false
   mvc:

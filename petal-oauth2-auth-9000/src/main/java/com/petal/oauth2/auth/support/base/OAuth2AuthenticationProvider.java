@@ -1,12 +1,10 @@
 package com.petal.oauth2.auth.support.base;
 
-import cn.hutool.extra.spring.SpringUtil;
+import com.petal.oauth2.common.base.constant.OAuth2ErrorCodeConstant;
 import com.petal.oauth2.common.security.exception.ScopeException;
-import com.petal.oauth2.common.security.utils.OAuth2ErrorCodesExpand;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.springframework.context.support.MessageSourceAccessor;
 import org.springframework.security.authentication.*;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
@@ -131,7 +129,7 @@ public abstract class OAuth2AuthenticationProvider<T extends OAuth2Authenticatio
 			authorizedScopes = new LinkedHashSet<>(resourceOwnerBaseAuthentication.getScopes());
 		}
 		else {
-			throw new ScopeException(OAuth2ErrorCodesExpand.SCOPE_IS_EMPTY);
+			throw new ScopeException(OAuth2ErrorCodeConstant.SCOPE_IS_EMPTY);
 		}
 
 		Map<String, Object> reqParameters = resourceOwnerBaseAuthentication.getAdditionalParameters();
@@ -231,32 +229,32 @@ public abstract class OAuth2AuthenticationProvider<T extends OAuth2Authenticatio
 	private OAuth2AuthenticationException oAuth2AuthenticationException(Authentication authentication,
 			AuthenticationException authenticationException) {
 		if (authenticationException instanceof UsernameNotFoundException) {
-			return new OAuth2AuthenticationException(new OAuth2Error(OAuth2ErrorCodesExpand.USERNAME_NOT_FOUND,
+			return new OAuth2AuthenticationException(new OAuth2Error(OAuth2ErrorCodeConstant.USERNAME_NOT_FOUND,
 					"UserDetailsService实现类找不到用户名为 "+authentication.getName()+" 的用户",
 					""));
 		}
 		if (authenticationException instanceof BadCredentialsException) {
-			return new OAuth2AuthenticationException(new OAuth2Error(OAuth2ErrorCodesExpand.BAD_CREDENTIALS,
+			return new OAuth2AuthenticationException(new OAuth2Error(OAuth2ErrorCodeConstant.BAD_CREDENTIALS,
 					"凭据无效",
 					""));
 		}
 		if (authenticationException instanceof LockedException) {
-			return new OAuth2AuthenticationException(new OAuth2Error(OAuth2ErrorCodesExpand.USER_LOCKED,
+			return new OAuth2AuthenticationException(new OAuth2Error(OAuth2ErrorCodeConstant.USER_LOCKED,
 					"用户被锁定了",
 					""));
 		}
 		if (authenticationException instanceof DisabledException) {
-			return new OAuth2AuthenticationException(new OAuth2Error(OAuth2ErrorCodesExpand.USER_DISABLE,
+			return new OAuth2AuthenticationException(new OAuth2Error(OAuth2ErrorCodeConstant.USER_DISABLE,
 					"用户被禁用了",
 					""));
 		}
 		if (authenticationException instanceof AccountExpiredException) {
-			return new OAuth2AuthenticationException(new OAuth2Error(OAuth2ErrorCodesExpand.USER_EXPIRED,
+			return new OAuth2AuthenticationException(new OAuth2Error(OAuth2ErrorCodeConstant.USER_EXPIRED,
 					"用户过期了",
 					""));
 		}
 		if (authenticationException instanceof CredentialsExpiredException) {
-			return new OAuth2AuthenticationException(new OAuth2Error(OAuth2ErrorCodesExpand.CREDENTIALS_EXPIRED,
+			return new OAuth2AuthenticationException(new OAuth2Error(OAuth2ErrorCodeConstant.CREDENTIALS_EXPIRED,
 					"帐户凭据过期了",
 					""));
 		}

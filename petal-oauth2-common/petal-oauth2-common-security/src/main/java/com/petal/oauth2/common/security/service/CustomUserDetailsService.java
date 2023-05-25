@@ -39,7 +39,8 @@ public interface CustomUserDetailsService extends UserDetailsService, Ordered {
 	}
 
 	/**
-	 * 构建userdetails
+	 * 构建 UserDetails 对象
+	 *
 	 * @param result 用户信息
 	 * @return UserDetails
 	 */
@@ -76,7 +77,8 @@ public interface CustomUserDetailsService extends UserDetailsService, Ordered {
 	}
 
 	/**
-	 * 通过SecurityOauth2User查询UserDetails
+	 * 通过 SecurityOauth2User 构建 UserDetails 对象
+	 *
 	 * @param securityOauth2User SecurityOauth2User用户
 	 * @return
 	 */

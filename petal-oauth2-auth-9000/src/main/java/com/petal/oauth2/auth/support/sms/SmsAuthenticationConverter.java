@@ -2,7 +2,7 @@ package com.petal.oauth2.auth.support.sms;
 
 import com.petal.oauth2.common.base.constant.Oauth2Constant;
 import com.petal.oauth2.auth.support.base.OAuth2AuthenticationConverter;
-import com.petal.oauth2.common.security.utils.OAuth2EndpointUtils;
+import com.petal.oauth2.common.security.utils.OAuth2EndpointUtil;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.core.AuthorizationGrantType;
 import org.springframework.security.oauth2.core.OAuth2ErrorCodes;
@@ -46,12 +46,12 @@ public class SmsAuthenticationConverter
 	 */
 	@Override
 	public void checkParams(HttpServletRequest request) {
-		MultiValueMap<String, String> parameters = OAuth2EndpointUtils.getParameters(request);
+		MultiValueMap<String, String> parameters = OAuth2EndpointUtil.getParameters(request);
 		// 获取请求参数sms（必须要有*）
 		String phone = parameters.getFirst(Oauth2Constant.SMS_PARAMETER_NAME);
 		if (!StringUtils.hasText(phone) || parameters.get(Oauth2Constant.SMS_PARAMETER_NAME).size() != 1) {
-			OAuth2EndpointUtils.throwError(OAuth2ErrorCodes.INVALID_REQUEST, Oauth2Constant.SMS_PARAMETER_NAME,
-					OAuth2EndpointUtils.ACCESS_TOKEN_REQUEST_ERROR_URI);
+			OAuth2EndpointUtil.throwError(OAuth2ErrorCodes.INVALID_REQUEST, Oauth2Constant.SMS_PARAMETER_NAME,
+					OAuth2EndpointUtil.ACCESS_TOKEN_REQUEST_ERROR_URI);
 		}
 	}
 

@@ -7,6 +7,7 @@ import com.petal.oauth2.common.security.dto.UserInfo;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -18,13 +19,18 @@ import org.springframework.security.core.userdetails.UserDetails;
  */
 @Slf4j
 @Primary
-@RequiredArgsConstructor
 public class PasswordUserDetailsServiceImpl implements CustomUserDetailsService {
 
-	private final SysUserFeign sysUserFeign;
+	private SysUserFeign sysUserFeign;
+
+	@Autowired
+	public void setSysUserFeign(SysUserFeign sysUserFeign) {
+		this.sysUserFeign = sysUserFeign;
+	}
 
 	/**
-	 * 用户名密码登录
+	 * 通过用户名构建UserDetails对象
+	 *
 	 * @param username 用户名
 	 * @return
 	 */
@@ -32,7 +38,8 @@ public class PasswordUserDetailsServiceImpl implements CustomUserDetailsService 
 	@SneakyThrows
 	public UserDetails loadUserByUsername(String username) {
 
-		ResponseResult<SysUser> sysUserResponseResult = sysUserFeign.queryUserByUserName(username,"123");
+		ResponseResult<SysUser> sysUserResponseResult =
+				sysUserFeign.queryUserByUserName(username,"123");
 
 		UserInfo userInfo = new UserInfo();
 		userInfo.setSysUser(sysUserResponseResult.getData());

@@ -18,12 +18,17 @@ import java.util.Map;
 
 /**
  * 端点工具
+ * <p>
+ * @UtilityClass注解:
+ * 1: 将生成一个《私有》的无参构造;它抛出一个UnsupportedOperationException。（也就是禁止new对象,否则抛出异常）
+ * 2: 类中的所有方法、内部类和字段都被标记为static
+ * 3: 类变成final修饰（禁止被继承）
  *
  * @author youzhengjie
  * @date 2023/05/05 23:40:37
  */
 @UtilityClass
-public class OAuth2EndpointUtils {
+public class OAuth2EndpointUtil {
 
 	public final String ACCESS_TOKEN_REQUEST_ERROR_URI = "https://datatracker.ietf.org/doc/html/rfc6749#section-5.2";
 

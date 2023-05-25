@@ -2,6 +2,7 @@ package com.petal.oauth2.auth.endpoint;
 
 import cn.hutool.core.util.StrUtil;
 import com.petal.oauth2.auth.support.handler.CustomAuthenticationFailureHandler;
+import com.petal.oauth2.common.base.constant.OAuth2ErrorCodeConstant;
 import com.petal.oauth2.common.base.entity.SysOauth2Client;
 import com.petal.oauth2.common.base.enums.ResponseType;
 import com.petal.oauth2.common.base.utils.ResponseResult;
@@ -9,11 +10,9 @@ import com.petal.oauth2.common.base.utils.SpringContextHolder;
 import com.petal.oauth2.common.openfeign.feign.SysOauth2ClientFeign;
 import com.petal.oauth2.common.security.annotation.PermitAll;
 import com.petal.oauth2.common.security.exception.OAuthClientException;
-import com.petal.oauth2.common.security.utils.OAuth2EndpointUtils;
-import com.petal.oauth2.common.security.utils.OAuth2ErrorCodesExpand;
+import com.petal.oauth2.common.security.utils.OAuth2EndpointUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;;
@@ -145,7 +144,7 @@ public class TokenEndPointController {
             httpResponse.setStatusCode(HttpStatus.UNAUTHORIZED);
             //调用认证失败处理
             this.authenticationFailureHandler.onAuthenticationFailure(request, response,
-                    new InvalidBearerTokenException(OAuth2ErrorCodesExpand.TOKEN_MISSING));
+                    new InvalidBearerTokenException(OAuth2ErrorCodeConstant.TOKEN_MISSING));
             return;
         }
         OAuth2Authorization authorization = authorizationService.findByToken(token, OAuth2TokenType.ACCESS_TOKEN);
@@ -154,12 +153,12 @@ public class TokenEndPointController {
         if (authorization == null || authorization.getAccessToken() == null) {
             //调用认证失败处理
             this.authenticationFailureHandler.onAuthenticationFailure(request, response,
-                    new InvalidBearerTokenException(OAuth2ErrorCodesExpand.INVALID_BEARER_TOKEN));
+                    new InvalidBearerTokenException(OAuth2ErrorCodeConstant.INVALID_BEARER_TOKEN));
             return;
         }
 
         Map<String, Object> claims = authorization.getAccessToken().getClaims();
-        OAuth2AccessTokenResponse sendAccessTokenResponse = OAuth2EndpointUtils.sendAccessTokenResponse(authorization,
+        OAuth2AccessTokenResponse sendAccessTokenResponse = OAuth2EndpointUtil.sendAccessTokenResponse(authorization,
                 claims);
         this.accessTokenHttpResponseConverter.write(sendAccessTokenResponse, MediaType.APPLICATION_JSON, httpResponse);
     }
