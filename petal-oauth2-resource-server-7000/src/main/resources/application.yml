@@ -111,6 +111,12 @@ mybatis-plus:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
   mapper-locations: classpath*:/mapper/**/*.xml
 
+# 配置不需要鉴权（也就是不需要accessToken）的接口
+security:
+  oauth2:
+    ignore:
+      ignoreUrls:
+        - /res/test0
 
 # swagger配置属性
 swagger:

@@ -28,7 +28,8 @@ import java.util.Optional;
  * 自定义RegisteredClient存储库
  *
  * <p>
- * 作用: 登录请求中会携带 Basic base64(clientId:clientSecret),
+ * ==========================clientId传递格式=================================
+ * 作用: 登录的Authorization请求头中会携带格式为 Basic base64加密的clientId:clientSecret 的内容
  * 那么首先OAuth2ClientAuthenticationFilter会通过调用RegisteredClientRepository类去数据库查询传入的客户端是否正确
  *
  * @author youzhengjie

@@ -27,7 +27,7 @@ import java.util.Map;
 @Component
 public class CustomRequestRateLimiterGatewayFilterFactory extends AbstractGatewayFilterFactory<CustomRequestRateLimiterGatewayFilterFactory.Config> {
 
-    private static Logger logger = LoggerFactory.getLogger(CustomRequestRateLimiterGatewayFilterFactory.class);
+    private static final Logger logger = LoggerFactory.getLogger(CustomRequestRateLimiterGatewayFilterFactory.class);
     /**
      * Key-Resolver key.
      */

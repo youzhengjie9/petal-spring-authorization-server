@@ -12,6 +12,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -21,12 +22,16 @@ import java.util.List;
 
 @Api("oauth2-client控制器")
 @RestController
-@RequiredArgsConstructor
 @RequestMapping("/client")
-@SecurityRequirement(name = HttpHeaders.AUTHORIZATION)
+//@SecurityRequirement(name = HttpHeaders.AUTHORIZATION)
 public class SysOauth2ClientController {
 
-	private final SysOauth2ClientService sysOauth2ClientService;
+	private SysOauth2ClientService sysOauth2ClientService;
+
+	@Autowired
+	public void setSysOauth2ClientService(SysOauth2ClientService sysOauth2ClientService) {
+		this.sysOauth2ClientService = sysOauth2ClientService;
+	}
 
 	/**
 	 * 通过客户端id查询Oauth2客户端信息
@@ -41,8 +46,6 @@ public class SysOauth2ClientController {
 		SysOauth2Client sysOauth2Client = sysOauth2ClientService.getOne(
 				Wrappers.<SysOauth2Client>lambdaQuery().eq(SysOauth2Client::getClientId, clientId), false);
 		String json = JSON.toJSONString(sysOauth2Client);
-		System.out.println(clientId);
-		System.out.println(json);
 		return ResponseResult.ok(json);
 	}
 

@@ -19,7 +19,7 @@ import java.util.regex.Pattern;
 /**
  * 配置所有需要忽略权限校验的路径
  * <p>
- * 作用: 将会忽略 DEFAULT_IGNORE_URLS所有的路径 + 所有被@PermitAll注解标记的接口或controller类的路径,这里路径允许所有人访问,服务调用不需要鉴权。
+ * 作用: 将会忽略 DEFAULT_IGNORE_URLS所有的路径 + 所有被@PermitAll注解标记的接口或controller类的路径,这里路径允许所有人访问,服务调用不需要鉴权。(也就是不需要accessToken)
  *
  * @author youzhengjie
  * @date 2023/05/11 18:47:26
@@ -31,7 +31,7 @@ public class IgnoreAuthenticationProperties implements InitializingBean {
 	private static final Pattern PATTERN = Pattern.compile("\\{(.*?)\\}");
 
 	/**
-	 * 默认忽略权限校验的url（这些路径允许所有人访问,服务调用不需要鉴权）
+	 * 默认忽略权限校验的url（这些路径允许所有人访问,服务调用不需要鉴权(也就是不需要accessToken)）
 	 */
 	private static final String[] DEFAULT_IGNORE_URLS = new String[] {
 			"/actuator/**",
@@ -40,7 +40,7 @@ public class IgnoreAuthenticationProperties implements InitializingBean {
 	};
 
 	/**
-	 * 这些路径允许所有人访问,服务调用不需要鉴权
+	 * 这些路径允许所有人访问,服务调用不需要鉴权(也就是不需要accessToken)
 	 */
 	@Getter
 	@Setter

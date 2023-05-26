@@ -30,7 +30,7 @@
         <!--        SpringCloud-Alibaba版本   -->
         <spring.cloud.alibaba.version>2021.0.4.0</spring.cloud.alibaba.version>
         <lombok.version>1.18.24</lombok.version>
-        <fastjson2.version>2.0.26</fastjson2.version>
+        <fastjson2.version>2.0.31</fastjson2.version>
         <!--  Spring Authorization Server版本      -->
         <spring.authorization.server.version>0.4.2</spring.authorization.server.version>
         <hutool.version>5.8.17</hutool.version>

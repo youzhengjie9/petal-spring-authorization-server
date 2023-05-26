@@ -1,12 +1,15 @@
 package com.petal.oauth2.auth.support.core;
 
+import cn.hutool.core.codec.Base64;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.extra.servlet.ServletUtil;
 import cn.hutool.extra.spring.SpringUtil;
 import com.petal.oauth2.common.base.constant.Oauth2Constant;
 import com.petal.oauth2.common.base.utils.WebUtil;
 import com.petal.oauth2.common.security.service.CustomUserDetailsService;
+import com.petal.oauth2.common.security.utils.Oauth2ClientUtil;
 import lombok.SneakyThrows;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.Ordered;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.InternalAuthenticationServiceException;
@@ -31,24 +34,22 @@ import java.util.Optional;
 import java.util.function.Supplier;
 
 
+/**
+ * 作用: 拿到用户信息(UserDetails),并手动验证密码是否正确（只有时帐号密码登录才需要校验,手机号登录直接跳过）
+ *
+ * @author youzhengjie
+ * @date 2023/05/25 11:34:04
+ */
+@Slf4j
 public class CustomDaoAuthenticationProvider extends AbstractUserDetailsAuthenticationProvider {
 
-	/**
-	 * The plaintext password used to perform PasswordEncoder#matches(CharSequence,
-	 * String)} on when the user is not found to avoid SEC-2056.
-	 */
 	private static final String USER_NOT_FOUND_PASSWORD = "userNotFoundPassword";
 
 	private final static BasicAuthenticationConverter basicConvert = new BasicAuthenticationConverter();
 
 	private PasswordEncoder passwordEncoder;
 
-	/**
-	 * The password used to perform {@link PasswordEncoder#matches(CharSequence, String)}
-	 * on when the user is not found to avoid SEC-2056. This is necessary, because some
-	 * {@link PasswordEncoder} implementations will short circuit if the password is not
-	 * in a valid format.
-	 */
+
 	private volatile String userNotFoundEncodedPassword;
 
 	private UserDetailsService userDetailsService;
@@ -56,7 +57,6 @@ public class CustomDaoAuthenticationProvider extends AbstractUserDetailsAuthenti
 	private UserDetailsPasswordService userDetailsPasswordService;
 
 	public CustomDaoAuthenticationProvider() {
-//		setMessageSource(SpringUtil.getBean("securityMessageSource"));
 		setPasswordEncoder(PasswordEncoderFactories.createDelegatingPasswordEncoder());
 	}
 
@@ -77,12 +77,16 @@ public class CustomDaoAuthenticationProvider extends AbstractUserDetailsAuthenti
 						(Supplier<Throwable>) () ->
 								new InternalAuthenticationServiceException("request不能为空"));
 
+		//获取请求的参数map
 		Map<String, String> paramMap = ServletUtil.getParamMap(request);
 		String grantType = paramMap.get(OAuth2ParameterNames.GRANT_TYPE);
 		String clientId = paramMap.get(OAuth2ParameterNames.CLIENT_ID);
 
+		// 因为我们的clientId是通过请求头Authorization设置Basic传递的,所以这里一定为空
 		if (StrUtil.isBlank(clientId)) {
+			// 从请求头Authorization中拿到Basic (base64加密的clientId),并解密base64从而获取到真正的clientId
 			clientId = basicConvert.convert(request).getName();
+			log.info("获取到clientId={}",clientId);
 		}
 
 		Map<String, CustomUserDetailsService> customUserDetailsServiceMap = SpringUtil
@@ -121,7 +125,7 @@ public class CustomDaoAuthenticationProvider extends AbstractUserDetailsAuthenti
 
 	/**
 	 *  =============(被AbstractUserDetailsAuthenticationProvider类第 2 个执行)=============
-	 * 自定义验证（比如手机短信验证、帐号密码验证等，可以自行添加新的验证模式）
+	 * 手动验证密码是否正确（只有时帐号密码登录才需要校验,手机号登录直接跳过）
 	 *
 	 * @param userDetails    userDetails是UserDetailsServiceImpl从数据库里面获取的数据（也就是该用户正确的帐号密码）
 	 * @param authentication authentication是用户在表单输入的帐号密码等数据（等待和 userDetails这个正确的内容进行比较）

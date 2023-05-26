@@ -41,7 +41,7 @@ public class SmsUserDetailsServiceImpl implements CustomUserDetailsService {
 		UserInfo userInfo = new UserInfo();
 		userInfo.setSysUser(sysUserResponseResult.getData());
 		// TODO: 2023/5/14 模拟权限
-		userInfo.setPermissions(new String[]{"sys:test3"});
+		userInfo.setPermissions(new String[]{"sys:test4"});
 
 		return getUserDetails(ResponseResult.ok(userInfo));
 	}

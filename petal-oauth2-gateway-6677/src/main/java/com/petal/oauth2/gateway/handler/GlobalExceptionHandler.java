@@ -18,6 +18,8 @@ import reactor.core.publisher.Mono;
 
 
 /**
+ * 全局异常处理。
+ * <p>
  * 网关异常通用处理器，只作用在webflux环境下
  *
  * @author youzhengjie
@@ -47,11 +49,11 @@ public class GlobalExceptionHandler implements ErrorWebExceptionHandler {
 			DataBufferFactory bufferFactory = response.bufferFactory();
 			try {
 				ResponseResult<Object> responseResult = ResponseResult.build(ResponseType.ERROR.getCode(), ex.getMessage(), null);
-				log.warn("Error Spring Cloud Gateway : {} {}", exchange.getRequest().getPath(), ex.getMessage());
+				log.warn("网关异常: {} {}", exchange.getRequest().getPath(), ex.getMessage());
 				return bufferFactory.wrap(objectMapper.writeValueAsBytes(responseResult));
 			}
 			catch (JsonProcessingException e) {
-				log.error("Error writing response", ex);
+				log.error("输出响应异常", ex);
 				return bufferFactory.wrap(new byte[0]);
 			}
 		}));
