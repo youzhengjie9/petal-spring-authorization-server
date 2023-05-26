@@ -50,6 +50,17 @@ public class ResourceServerAutoConfiguration {
 	}
 
 	/**
+	 * 自定义权限不足处理器
+	 *
+	 * @param objectMapper jackson 输出对象
+	 * @return CustomAuthenticationEntryPoint
+	 */
+	@Bean
+	public CustomAccessDeniedHandler customAccessDeniedHandler(ObjectMapper objectMapper) {
+		return new CustomAccessDeniedHandler(objectMapper);
+	}
+
+	/**
 	 * 自定义token自省器
 	 */
 	@Bean

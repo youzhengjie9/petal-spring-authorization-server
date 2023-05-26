@@ -26,6 +26,8 @@ public class ResourceServerConfiguration {
 
 	protected final CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
 
+	protected final CustomAccessDeniedHandler customAccessDeniedHandler;
+
 	private final IgnoreAuthenticationProperties ignoreAuthenticationProperties;
 
 	private final Oauth2TokenResolver oauth2TokenResolver;
@@ -48,6 +50,8 @@ public class ResourceServerConfiguration {
 					oauth2 -> oauth2.opaqueToken(token -> token.introspector(customOpaqueTokenIntrospector))
 							// 配置认证失败处理器
 						.authenticationEntryPoint(customAuthenticationEntryPoint)
+							// 配置权限不足处理器
+						.accessDeniedHandler(customAccessDeniedHandler)
 							// 配置oauth2的Token的解析器
 						.bearerTokenResolver(oauth2TokenResolver)
 			)

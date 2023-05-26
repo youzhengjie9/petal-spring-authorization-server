@@ -74,6 +74,8 @@ public interface CustomUserDetailsService extends UserDetailsService, Ordered {
 				"{bcrypt}" + user.getPassword(), user.getPhone(), true, true, true,
 				true, authorities);
 
+//		user.setPassword("{bcrypt}" + user.getPassword());
+//		return new SecurityOauth2User(user,authorities);
 	}
 
 	/**

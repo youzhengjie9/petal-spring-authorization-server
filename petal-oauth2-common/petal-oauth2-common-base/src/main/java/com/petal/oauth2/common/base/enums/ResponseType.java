@@ -16,7 +16,7 @@ public enum ResponseType {
     ERROR(500,"接口请求失败"),
 
     UNAUTHORIZED(401,"认证失败"),
-    FORBIDDEN(403,"拒绝访问"),
+    FORBIDDEN(403,"权限不足,拒绝访问"),
     /**
      * 用户状态
      */

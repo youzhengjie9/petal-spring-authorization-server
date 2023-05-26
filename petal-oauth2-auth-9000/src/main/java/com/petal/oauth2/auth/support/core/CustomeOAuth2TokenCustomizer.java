@@ -30,6 +30,27 @@ public class CustomeOAuth2TokenCustomizer implements OAuth2TokenCustomizer<OAuth
 		}
 		SecurityOauth2User securityOauth2User = (SecurityOauth2User) context.getPrincipal().getPrincipal();
 
+//		/*
+//			解决,当使用token访问接口时SecurityOauth2User调用super构造时报错: Cannot pass null or empty values to constructor
+//			原因是:
+//			org.springframework.security.core.userdetails.User的构造方法有个password!=null的条件,
+//			而我们存入redis的token信息中password=null,当我们使用token时,security就会去redis中查询这个token的帐号密码等信息,
+//			当发现password为null时则会报错,所以我们不能让password=null,可以让password='想看密码?没门'。
+//		 */
+//
+//		securityOauth2User= new SecurityOauth2User(
+//				securityOauth2User.getId(),
+//				securityOauth2User.getUsername(),
+//				"想看密码?没门",
+//				securityOauth2User.getPhone(),
+//				true,
+//				true,
+//				true,
+//				true,
+//				securityOauth2User.getAuthorities(),
+//				securityOauth2User.getAttributes()
+//		);
+
 		claims.claim(Oauth2Constant.USER_INFO, securityOauth2User);
 	}
 

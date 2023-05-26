@@ -58,8 +58,10 @@ public class ResourceController {
     //----------需要RBAC中的菜单权限（自定义权限）-----------
 
     @GetMapping(path = "/test3")
-    @PreAuthorize("@pms.hasPermission('sys_test3')")
+//    @PreAuthorize("@pms.hasPermission('sys:test3')")
+    @PreAuthorize("hasAnyAuthority('sys:test3')")
     public String test3(){
+        System.out.println("test3");
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("time", LocalDateTime.now());
         jsonObject.put("name","resource-test3");
@@ -67,7 +69,8 @@ public class ResourceController {
     }
 
     @GetMapping(path = "/test4")
-    @PreAuthorize("@pms.hasPermission('sys_test4')")
+//    @PreAuthorize("@pms.hasPermission('sys:test4')")
+    @PreAuthorize("hasAnyAuthority('sys:test4')")
     public String test4(){
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("time", LocalDateTime.now());
