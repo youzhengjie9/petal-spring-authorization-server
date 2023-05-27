@@ -110,6 +110,7 @@ public abstract class OAuth2AuthenticationProvider<T extends OAuth2Authenticatio
 	@Override
 	public Authentication authenticate(Authentication authentication) throws AuthenticationException {
 
+		System.out.println("authenticate");
 		T resourceOwnerBaseAuthentication = (T) authentication;
 
 		OAuth2ClientAuthenticationToken clientPrincipal = getAuthenticatedClientElseThrowInvalidClient(

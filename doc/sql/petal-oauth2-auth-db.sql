@@ -34,9 +34,9 @@ DROP TABLE IF EXISTS `sys_oauth2_client`;
 CREATE TABLE `sys_oauth2_client` (
                                             `client_id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL COMMENT '客户端id',
                                             `resource_ids` varchar(256) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '资源列表',
-                                            `client_secret` varchar(256) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '客户端密钥,作用是和客户端id进行配对',
+                                            `client_secret` varchar(256) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '客户端密钥,作用是和客户端id进行配对（格式为 base64加密clientId:clientSecret）',
                                             `scope` varchar(256) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '域',
-                                            `authorized_grant_types` varchar(256) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '认证类型',
+                                            `authorized_grant_types` varchar(256) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '该client所支持的grant_type类型(例如:密码登录(password)、手机号登录(sms_login)等等),例如想要密码登录,该grant_type就必须包含password类型',
                                             `web_server_redirect_uri` varchar(256) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '重定向地址',
                                             `authorities` varchar(256) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '角色列表',
                                             `access_token_validity` int DEFAULT NULL COMMENT 'token 有效期',
@@ -50,12 +50,10 @@ CREATE TABLE `sys_oauth2_client` (
                                             PRIMARY KEY (`client_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin ROW_FORMAT=DYNAMIC COMMENT='oauth2客户端表';
 
-
-INSERT INTO `sys_oauth2_client` VALUES ('app', NULL, 'app', 'server', 'app,refresh_token', NULL, NULL, NULL, NULL, NULL, 'true', NULL, NULL, NULL, NULL);
-INSERT INTO `sys_oauth2_client` VALUES ('daemon', NULL, 'daemon', 'server', 'password,refresh_token', NULL, NULL, NULL, NULL, NULL, 'true', NULL, NULL, NULL, NULL);
-INSERT INTO `sys_oauth2_client` VALUES ('gen', NULL, 'gen', 'server', 'password,refresh_token', NULL, NULL, NULL, NULL, NULL, 'true', NULL, NULL, NULL, NULL);
-INSERT INTO `sys_oauth2_client` VALUES ('test', NULL, 'test', 'server', 'password,app,refresh_token', NULL, NULL, NULL, NULL, NULL, 'true', NULL, NULL, NULL, NULL);
-INSERT INTO `sys_oauth2_client` VALUES ('client', NULL, 'client', 'server', 'client_credentials', NULL, NULL, NULL, NULL, NULL, 'true', NULL, NULL, NULL, NULL);
+INSERT INTO `sys_oauth2_client` VALUES ('password_login', NULL, 'password_login_secret', 'server', 'password,refresh_token', NULL, NULL, NULL, NULL, NULL, 'true', NULL, NULL, NULL, NULL);
+INSERT INTO `sys_oauth2_client` VALUES ('sms_login', NULL, 'sms_login_secret', 'server', 'sms_login,refresh_token', NULL, NULL, NULL, NULL, NULL, 'true', NULL, NULL, NULL, NULL);
+INSERT INTO `sys_oauth2_client` VALUES ('test', NULL, 'test_secret', 'server', 'password,sms_login,refresh_token', NULL, NULL, NULL, NULL, NULL, 'true', NULL, NULL, NULL, NULL);
+INSERT INTO `sys_oauth2_client` VALUES ('client', NULL, 'client_secret', 'server', 'client_credentials', NULL, NULL, NULL, NULL, NULL, 'true', NULL, NULL, NULL, NULL);
 
 
 

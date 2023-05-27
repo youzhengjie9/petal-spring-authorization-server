@@ -138,6 +138,8 @@ public class CustomDaoAuthenticationProvider extends AbstractUserDetailsAuthenti
 
 		// =========如果是SMS_GRANT_TYPE模式则不用校验密码=========
 		String grantType = WebUtil.getRequest().get().getParameter(OAuth2ParameterNames.GRANT_TYPE);
+		System.out.println("additionalAuthenticationChecks");
+		System.out.println(grantType);
 		if (StrUtil.equals(Oauth2Constant.SMS_GRANT_TYPE, grantType)) {
 			return;
 		}

@@ -37,7 +37,6 @@ public class PasswordUserDetailsServiceImpl implements CustomUserDetailsService 
 	@Override
 	@SneakyThrows
 	public UserDetails loadUserByUsername(String username) {
-
 		ResponseResult<SysUser> sysUserResponseResult =
 				sysUserFeign.queryUserByUserName(username,"123");
 

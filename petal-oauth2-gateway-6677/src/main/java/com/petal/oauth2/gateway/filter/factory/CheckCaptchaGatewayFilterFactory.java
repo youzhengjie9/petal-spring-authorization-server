@@ -155,7 +155,7 @@ public class CheckCaptchaGatewayFilterFactory extends AbstractGatewayFilterFacto
 			//拿到手机验证码的key（通过这个key可以去redis中获取正确的验证码）
 			String smsCaptchaKey = RedisConstant.SMS_CAPTCHA_PREFIX + phone;
 			//从请求中拿到手机短信验证码
-			String smsCaptcha = request.getQueryParams().getFirst(Oauth2Constant.SMS_PARAMETER_NAME);
+			String smsCaptcha = request.getQueryParams().getFirst(Oauth2Constant.SMS_CAPTCHA_PARAMETER_NAME);
 			//如果smsCaptcha为空
 			if (StringUtils.isBlank(smsCaptcha)) {
 				throw new CheckCaptchaException("手机短信验证码不能为空");

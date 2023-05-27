@@ -18,6 +18,8 @@ public interface SysUserFeign {
                                                        String onlyFeignCallHeader);
 
     @GetMapping(path = "/queryUserByPhone/{phone}")
-    public ResponseResult<SysUser> queryUserByPhone(@PathVariable("phone") String phone);
+    public ResponseResult<SysUser> queryUserByPhone(@PathVariable("phone") String phone,
+                                                    @RequestHeader(Oauth2Constant.ONLY_FEIGN_CALL_HEADER_NAME)
+                                                    String onlyFeignCallHeader);
 
 }

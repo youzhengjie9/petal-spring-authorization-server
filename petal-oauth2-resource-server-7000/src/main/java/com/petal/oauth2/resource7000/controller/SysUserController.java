@@ -50,6 +50,7 @@ public class SysUserController {
      * @param phone 电话
      * @return {@link ResponseResult}<{@link SysUser}>
      */
+    @PermitAll
     @GetMapping(path = "/queryUserByPhone/{phone}")
     @ApiOperation("根据手机号查询用户信息")
     public ResponseResult<SysUser> queryUserByPhone(@PathVariable("phone") String phone){

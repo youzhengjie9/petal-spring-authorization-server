@@ -47,10 +47,10 @@ public class SmsAuthenticationConverter
 	@Override
 	public void checkParams(HttpServletRequest request) {
 		MultiValueMap<String, String> parameters = OAuth2EndpointUtil.getParameters(request);
-		// 获取请求参数sms（必须要有*）
-		String phone = parameters.getFirst(Oauth2Constant.SMS_PARAMETER_NAME);
-		if (!StringUtils.hasText(phone) || parameters.get(Oauth2Constant.SMS_PARAMETER_NAME).size() != 1) {
-			OAuth2EndpointUtil.throwError(OAuth2ErrorCodes.INVALID_REQUEST, Oauth2Constant.SMS_PARAMETER_NAME,
+		// 获取请求参数sms（必须要有）
+		String phone = parameters.getFirst(Oauth2Constant.PHONE_PARAMETER_NAME);
+		if (!StringUtils.hasText(phone) || parameters.get(Oauth2Constant.PHONE_PARAMETER_NAME).size() != 1) {
+			OAuth2EndpointUtil.throwError(OAuth2ErrorCodes.INVALID_REQUEST, Oauth2Constant.PHONE_PARAMETER_NAME,
 					OAuth2EndpointUtil.ACCESS_TOKEN_REQUEST_ERROR_URI);
 		}
 	}

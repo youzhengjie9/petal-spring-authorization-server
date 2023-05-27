@@ -35,8 +35,11 @@ public class SmsUserDetailsServiceImpl implements CustomUserDetailsService {
 	@Override
 	@SneakyThrows
 	public UserDetails loadUserByUsername(String phone) {
+		System.out.println("=========");
 
-		ResponseResult<SysUser> sysUserResponseResult = sysUserFeign.queryUserByPhone(phone);
+		ResponseResult<SysUser> sysUserResponseResult = sysUserFeign.queryUserByPhone(phone,"123456");
+
+		System.out.println(sysUserResponseResult.getData());
 
 		UserInfo userInfo = new UserInfo();
 		userInfo.setSysUser(sysUserResponseResult.getData());
