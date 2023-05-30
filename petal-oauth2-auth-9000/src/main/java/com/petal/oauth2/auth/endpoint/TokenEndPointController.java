@@ -15,7 +15,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -41,6 +41,8 @@ import javax.servlet.http.HttpServletResponse;
 import java.security.Principal;
 import java.util.Map;
 import java.util.Set;
+
+;
 
 /**
  * Token的端点控制器
@@ -132,28 +134,28 @@ public class TokenEndPointController {
     /**
      * 检查Token
      *
-     * @param token 令牌
+     * @param accessToken 访问令牌
      */
     @SneakyThrows
     @GetMapping("/checkToken")
-    @ApiOperation("检查Token")
-    public void checkToken(String token, HttpServletResponse response, HttpServletRequest request) {
+    @ApiOperation("检查accessToken")
+    public void checkToken(String accessToken, HttpServletResponse response, HttpServletRequest request) {
         ServletServerHttpResponse httpResponse = new ServletServerHttpResponse(response);
 
-        if (StrUtil.isBlank(token)) {
+        if (StrUtil.isBlank(accessToken)) {
             httpResponse.setStatusCode(HttpStatus.UNAUTHORIZED);
             //调用认证失败处理
             this.authenticationFailureHandler.onAuthenticationFailure(request, response,
-                    new InvalidBearerTokenException(OAuth2ErrorCodeConstant.TOKEN_MISSING));
+                    new InvalidBearerTokenException(OAuth2ErrorCodeConstant.ACCESS_TOKEN_MISSING));
             return;
         }
-        OAuth2Authorization authorization = authorizationService.findByToken(token, OAuth2TokenType.ACCESS_TOKEN);
+        OAuth2Authorization authorization = authorizationService.findByToken(accessToken, OAuth2TokenType.ACCESS_TOKEN);
 
-        // 如果令牌不存在 返回401
+        // 如果accessToken不存在
         if (authorization == null || authorization.getAccessToken() == null) {
             //调用认证失败处理
             this.authenticationFailureHandler.onAuthenticationFailure(request, response,
-                    new InvalidBearerTokenException(OAuth2ErrorCodeConstant.INVALID_BEARER_TOKEN));
+                    new InvalidBearerTokenException(OAuth2ErrorCodeConstant.ACCESS_TOKEN_NOT_EXIST));
             return;
         }
 

@@ -59,6 +59,11 @@ public class RequestGlobalFilter implements GlobalFilter, Ordered {
 		return chain.filter(exchange.mutate().request(newRequest.mutate().build()).build());
 	}
 
+	/**
+	 * 优先级数字越低,越先执行
+	 *
+	 * @return int
+	 */
 	@Override
 	public int getOrder() {
 		return 10;

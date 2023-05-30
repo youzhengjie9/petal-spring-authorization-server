@@ -6,7 +6,7 @@
 	},
 	"item": [
 		{
-			"name": "oauth2帐号密码登录",
+			"name": "oauth2帐号密码模式登录",
 			"request": {
 				"method": "POST",
 				"header": [
@@ -22,19 +22,19 @@
 						{
 							"key": "username",
 							"value": "root",
-							"type": "default",
-							"disabled": true
+							"description": "帐号",
+							"type": "default"
 						},
 						{
 							"key": "password",
-							"value": "123456",
-							"type": "default",
-							"disabled": true
+							"value": "D8z3s1nyDtYpPg+AWX/TLA==",
+							"description": "使用com.petal.oauth2.common.base.utils.AESUtil类的encrypt方法加密过的密码（密钥在项目中有）",
+							"type": "default"
 						}
 					]
 				},
 				"url": {
-					"raw": "http://127.0.0.1:6677/petal-oauth2-auth/oauth2/token?username=root&password=123456&grant_type=password&scope=server",
+					"raw": "http://127.0.0.1:6677/petal-oauth2-auth/oauth2/token?grant_type=password&scope=server",
 					"protocol": "http",
 					"host": [
 						"127",
@@ -49,14 +49,6 @@
 						"token"
 					],
 					"query": [
-						{
-							"key": "username",
-							"value": "root"
-						},
-						{
-							"key": "password",
-							"value": "123456"
-						},
 						{
 							"key": "grant_type",
 							"value": "password"
@@ -81,7 +73,51 @@
 			"response": []
 		},
 		{
-			"name": "oauth2手机号登录",
+			"name": "oauth2客户端凭证模式登录",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Basic Y2xpZW50OmNsaWVudF9zZWNyZXQ=",
+						"type": "default"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": []
+				},
+				"url": {
+					"raw": "http://127.0.0.1:6677/petal-oauth2-auth/oauth2/token?grant_type=client_credentials&scope=server",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "6677",
+					"path": [
+						"petal-oauth2-auth",
+						"oauth2",
+						"token"
+					],
+					"query": [
+						{
+							"key": "grant_type",
+							"value": "client_credentials"
+						},
+						{
+							"key": "scope",
+							"value": "server"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "oauth2短信模式登录",
 			"request": {
 				"method": "POST",
 				"header": [
@@ -162,7 +198,7 @@
 				"header": [
 					{
 						"key": "Authorization",
-						"value": "Bearer 2d83574d-bed3-41a5-81cc-db66fb26f8ca",
+						"value": "Bearer 0275ae6a-db74-4c6a-aad5-2fbf2c4be32a",
 						"type": "default"
 					}
 				],
@@ -180,6 +216,111 @@
 						"petal-oauth2-resource-server",
 						"res",
 						"test4"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "oauth2刷新token",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Basic cGFzc3dvcmRfbG9naW46cGFzc3dvcmRfbG9naW5fc2VjcmV0",
+						"type": "default"
+					}
+				],
+				"url": {
+					"raw": "http://127.0.0.1:6677/petal-oauth2-auth/oauth2/token?grant_type=refresh_token&scope=server&refresh_token=QIcgBLssfSELY_746SvwGTcXouMhXlKkoA9OoincCya8N6G_2DZ7iT0NJjusiKurnHEB4b368EmxBrrhym_rWjoW7HP5DxMFSRBDny5HFA5ARtMjZcnU1V2kKFf-3hzB",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "6677",
+					"path": [
+						"petal-oauth2-auth",
+						"oauth2",
+						"token"
+					],
+					"query": [
+						{
+							"key": "grant_type",
+							"value": "refresh_token"
+						},
+						{
+							"key": "scope",
+							"value": "server"
+						},
+						{
+							"key": "refresh_token",
+							"value": "QIcgBLssfSELY_746SvwGTcXouMhXlKkoA9OoincCya8N6G_2DZ7iT0NJjusiKurnHEB4b368EmxBrrhym_rWjoW7HP5DxMFSRBDny5HFA5ARtMjZcnU1V2kKFf-3hzB"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "检查accessToken",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:6677/petal-oauth2-auth/token/checkToken?accessToken=c9ba7b94-59ea-482f-a1ec-5684c9a2c593",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "6677",
+					"path": [
+						"petal-oauth2-auth",
+						"token",
+						"checkToken"
+					],
+					"query": [
+						{
+							"key": "accessToken",
+							"value": "c9ba7b94-59ea-482f-a1ec-5684c9a2c593"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "获取当前用户信息",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer 0275ae6a-db74-4c6a-aad5-2fbf2c4be32a",
+						"type": "default"
+					}
+				],
+				"url": {
+					"raw": "http://127.0.0.1:6677/petal-oauth2-resource-server/sys/user/getUserInfo",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "6677",
+					"path": [
+						"petal-oauth2-resource-server",
+						"sys",
+						"user",
+						"getUserInfo"
 					]
 				}
 			},

@@ -3,10 +3,13 @@ package com.petal.oauth2.resource7000.controller;
 import com.petal.oauth2.common.base.entity.SysUser;
 import com.petal.oauth2.common.base.utils.ResponseResult;
 import com.petal.oauth2.common.security.annotation.PermitAll;
+import com.petal.oauth2.common.security.utils.SecurityUtil;
 import com.petal.oauth2.resource7000.service.SysUserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -28,6 +31,19 @@ public class SysUserController {
     @Autowired
     public void setSysUserService(SysUserService sysUserService) {
         this.sysUserService = sysUserService;
+    }
+
+    /**
+     * 获取当前用户的信息
+     *
+     * @return {@link String}
+     */
+    @GetMapping(path = "/getUserInfo")
+    public ResponseResult<SysUser> getUserInfo(){
+        // 通过请求头Authorization获取accessToken,从而获取到当前用户的信息
+        String username = SecurityUtil.getUsername();
+        SysUser sysUser = sysUserService.lambdaQuery().eq(SysUser::getUserName, username).one();
+        return ResponseResult.ok(sysUser);
     }
 
     /**

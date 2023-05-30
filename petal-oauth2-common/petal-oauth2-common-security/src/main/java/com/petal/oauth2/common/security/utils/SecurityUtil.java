@@ -10,7 +10,7 @@ public class SecurityUtil {
      *
      * @return username
      */
-    private String getUsername() {
+    public static String getUsername() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication == null) {
             return null;

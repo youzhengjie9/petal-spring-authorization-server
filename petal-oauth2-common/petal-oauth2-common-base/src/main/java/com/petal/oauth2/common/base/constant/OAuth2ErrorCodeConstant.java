@@ -10,37 +10,37 @@ package com.petal.oauth2.common.base.constant;
 public final class OAuth2ErrorCodeConstant {
 
 	/** 用户名未找到 */
-	public static final String USERNAME_NOT_FOUND = "username_not_found";
+	public static final String USERNAME_NOT_FOUND = "用户名未找到";
 
 	/** 错误凭证 */
-	public static final String BAD_CREDENTIALS = "bad_credentials";
+	public static final String BAD_CREDENTIALS = "错误凭证";
 
 	/** 用户被锁 */
-	public static final String USER_LOCKED = "user_locked";
+	public static final String USER_LOCKED = "用户被锁";
 
-	/** 用户禁用 */
-	public static final String USER_DISABLE = "user_disable";
+	/** 用户被禁用 */
+	public static final String USER_DISABLE = "用户被禁用";
 
 	/** 用户过期 */
-	public static final String USER_EXPIRED = "user_expired";
+	public static final String USER_EXPIRED = "用户过期";
 
 	/** 证书过期 */
-	public static final String CREDENTIALS_EXPIRED = "credentials_expired";
+	public static final String CREDENTIALS_EXPIRED = "证书过期";
 
-	/** scope 为空异常 */
-	public static final String SCOPE_IS_EMPTY = "scope_is_empty";
+	/** scope域为空 */
+	public static final String SCOPE_IS_EMPTY = "scope域为空";
 
 	/**
-	 * 令牌不存在
+	 * 没有传递accessToken参数
 	 */
-	public static final String TOKEN_MISSING = "token_missing";
+	public static final String ACCESS_TOKEN_MISSING = "没有传递accessToken参数";
 
 	/** 未知的登录异常 */
-	public static final String UN_KNOW_LOGIN_ERROR = "un_know_login_error";
+	public static final String UN_KNOW_LOGIN_ERROR = "未知的登录异常";
 
 	/**
-	 * 不合法的Token
+	 * 不存在该accessToken
 	 */
-	public static final String INVALID_BEARER_TOKEN = "invalid_bearer_token";
+	public static final String ACCESS_TOKEN_NOT_EXIST = "不存在该accessToken";
 
 }

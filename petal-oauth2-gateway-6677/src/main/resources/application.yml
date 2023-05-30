@@ -56,9 +56,7 @@ spring:
             - name: Swagger
             # 校验验证码过滤器
 #            - name: CheckCaptcha
-#            # 解密前端传来的登录表单的密码
-##           - name: PasswordDecoder
-
+            - name: PasswordDecoder
 
         # id是路由的唯一标识
         - id: petal-oauth2-resource-server-route
