@@ -1,6 +1,5 @@
 package com.petal.oauth2.auth.alipay.endpoint;
 
-import com.auth.server.utils.ResponseResult;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;

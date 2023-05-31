@@ -37,7 +37,7 @@ CREATE TABLE `sys_oauth2_client` (
                                             `client_secret` varchar(256) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '客户端密钥,作用是和客户端id进行配对（格式为 base64加密clientId:clientSecret）',
                                             `scope` varchar(256) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '域',
                                             `authorized_grant_types` varchar(256) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '该client所支持的grant_type类型(例如:密码登录(password)、手机号登录(sms_login)等等),例如想要密码登录,该grant_type就必须包含password类型',
-                                            `web_server_redirect_uri` varchar(256) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '重定向地址',
+                                            `web_server_redirect_uri` varchar(256) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '回调地址(当授权码模式才生效)',
                                             `authorities` varchar(256) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '角色列表',
                                             `access_token_validity` int DEFAULT NULL COMMENT 'token 有效期',
                                             `refresh_token_validity` int DEFAULT NULL COMMENT '刷新令牌有效期',
@@ -50,10 +50,15 @@ CREATE TABLE `sys_oauth2_client` (
                                             PRIMARY KEY (`client_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin ROW_FORMAT=DYNAMIC COMMENT='oauth2客户端表';
 
+-- 模式1: 授权码模式客户端
+INSERT INTO `sys_oauth2_client` VALUES ('authorization_login', NULL, 'authorization_login_secret', 'server', 'authorization_code,refresh_token', 'https://www.baidu.com', NULL, NULL, NULL, NULL, 'true', NULL, NULL, NULL, NULL);
+-- 模式2: 密码模式客户端
 INSERT INTO `sys_oauth2_client` VALUES ('password_login', NULL, 'password_login_secret', 'server', 'password,refresh_token', NULL, NULL, NULL, NULL, NULL, 'true', NULL, NULL, NULL, NULL);
+-- 模式3: 短信登录模式客户端
 INSERT INTO `sys_oauth2_client` VALUES ('sms_login', NULL, 'sms_login_secret', 'server', 'sms_login,refresh_token', NULL, NULL, NULL, NULL, NULL, 'true', NULL, NULL, NULL, NULL);
+-- 模式4: 客户端凭证模式客户端
+INSERT INTO `sys_oauth2_client` VALUES ('client_login', NULL, 'client_login_secret', 'server', 'client_credentials', NULL, NULL, NULL, NULL, NULL, 'true', NULL, NULL, NULL, NULL);
+-- 测试用的客户端
 INSERT INTO `sys_oauth2_client` VALUES ('test', NULL, 'test_secret', 'server', 'password,sms_login,refresh_token', NULL, NULL, NULL, NULL, NULL, 'true', NULL, NULL, NULL, NULL);
-INSERT INTO `sys_oauth2_client` VALUES ('client', NULL, 'client_secret', 'server', 'client_credentials', NULL, NULL, NULL, NULL, NULL, 'true', NULL, NULL, NULL, NULL);
-
 
 

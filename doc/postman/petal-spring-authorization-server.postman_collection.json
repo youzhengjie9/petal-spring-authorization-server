@@ -6,6 +6,55 @@
 	},
 	"item": [
 		{
+			"name": "oauth2授权码模式登录",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Basic YXV0aG9yaXphdGlvbl9sb2dpbjphdXRob3JpemF0aW9uX2xvZ2luX3NlY3JldA==",
+						"type": "default"
+					}
+				],
+				"url": {
+					"raw": "http://127.0.0.1:9000/oauth2/token?grant_type=authorization_code&scope=server&code=c4WEgz_xyUwnc0fcpIIf8E6qbCd0X6ojFOUXfz4mqP2uohfTUpDimUSDMkzsZcacd_mELG7B_ZmCqvzakAmcw9FUZcI9jvKlUJG1gYHw7VZIqOuaL-98ki-wACnlsHvh&redirect_uri=https://www.baidu.com",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "9000",
+					"path": [
+						"oauth2",
+						"token"
+					],
+					"query": [
+						{
+							"key": "grant_type",
+							"value": "authorization_code",
+							"description": "授权类型固定为: authorization_code"
+						},
+						{
+							"key": "scope",
+							"value": "server",
+							"description": "必须和数据库scope定义一致"
+						},
+						{
+							"key": "code",
+							"value": "c4WEgz_xyUwnc0fcpIIf8E6qbCd0X6ojFOUXfz4mqP2uohfTUpDimUSDMkzsZcacd_mELG7B_ZmCqvzakAmcw9FUZcI9jvKlUJG1gYHw7VZIqOuaL-98ki-wACnlsHvh"
+						},
+						{
+							"key": "redirect_uri",
+							"value": "https://www.baidu.com"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "oauth2帐号密码模式登录",
 			"request": {
 				"method": "POST",
@@ -79,7 +128,7 @@
 				"header": [
 					{
 						"key": "Authorization",
-						"value": "Basic Y2xpZW50OmNsaWVudF9zZWNyZXQ=",
+						"value": "Basic Y2xpZW50X2xvZ2luOmNsaWVudF9sb2dpbl9zZWNyZXQ=",
 						"type": "default"
 					}
 				],

@@ -78,7 +78,7 @@
     <div class="login-wrapper">
         <div class="header">支付宝认证系统</div>
         <div class="form-wrapper">
-            <form th:action="@{/login}" method="post" id="loginForm">
+            <form th:action="@{/oauth2/login}" method="post" id="loginForm">
                 <input type="text" name="username" autocomplete="off" placeholder="请输入您在支付宝的用户名" class="input-item">
                 <input type="password" name="password" autocomplete="off" placeholder="请输入您在支付宝的密码" class="input-item">
                 <div class="btn" onclick="document.forms['loginForm'].submit()">登录</div>
@@ -95,9 +95,9 @@
         let origin = window.location.origin;
         let path = href.substring(origin.length,href.length);
 
-        if(path === '/login?error'){
+        if(path === '/oauth2/login?error'){
             alert('用户名或密码错误')
-        }else if(path === '/login?logout'){
+        }else if(path === '/oauth2/login?logout'){
             alert('退出成功')
         }
 

@@ -20,8 +20,8 @@ public final class FormIdentityLoginConfigurer
 		http.formLogin(formLogin -> {
 			// 登录页路径
 			formLogin.loginPage("/token/login");
-			// 登录请求提交到的表单的路径
-			formLogin.loginProcessingUrl("/token/form");
+			// 表单的登录请求要提交到的接口路径（注意）
+			formLogin.loginProcessingUrl("/token/login_form");
 			// 表单登录失败处理器
 			formLogin.failureHandler(new CustomFormAuthenticationFailureHandler());
 
