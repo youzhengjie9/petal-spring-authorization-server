@@ -18,50 +18,6 @@ import java.nio.charset.Charset;
  * @author youzhengjie
  * @date 2023-05-09 00:28:40
  */
-//public class FastJson2RedisSerializer<T> implements RedisSerializer<T>
-//{
-//    public static final Charset DEFAULT_CHARSET = Charset.forName("UTF-8");
-//
-//    private Class<T> clazz;
-//
-//    public FastJson2RedisSerializer(Class<T> clazz)
-//    {
-//        super();
-//        this.clazz = clazz;
-//    }
-//    /*
-//        com.alibaba.fastjson2.JSONException: autoType is not support. org.springframework.security.oauth2.server.authorization.OAuth2Authorization
-//     */
-//
-//    @Override
-//    public byte[] serialize(T t) throws SerializationException
-//    {
-//        if (t == null)
-//        {
-//            return new byte[0];
-//        }
-//        return JSON.toJSONString(t, JSONWriter.Feature.WriteClassName).getBytes(DEFAULT_CHARSET);
-//    }
-//
-//    @Override
-//    public T deserialize(byte[] bytes) throws SerializationException
-//    {
-//        if (bytes == null || bytes.length <= 0)
-//        {
-//            return null;
-//        }
-//        String str = new String(bytes, DEFAULT_CHARSET);
-//
-//        return JSON.parseObject(str, clazz, JSONReader.Feature.SupportAutoType);
-//    }
-//
-//    protected JavaType getJavaType(Class<?> clazz)
-//    {
-//        return TypeFactory.defaultInstance().constructType(clazz);
-//    }
-//}
-
-
 public class FastJson2RedisSerializer<T> implements RedisSerializer<T>
 {
 

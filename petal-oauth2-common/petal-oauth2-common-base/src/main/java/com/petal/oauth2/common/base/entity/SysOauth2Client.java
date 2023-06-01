@@ -33,7 +33,7 @@ public class SysOauth2Client implements Serializable {
 	private String clientId;
 
 	/**
-	 * 客户端密钥
+	 * 客户端密钥,作用是和客户端id进行配对（格式为 base64加密clientId:clientSecret）
 	 */
 	@NotBlank(message = "client_secret 不能为空")
 	private String clientSecret;
@@ -50,12 +50,12 @@ public class SysOauth2Client implements Serializable {
 	private String scope;
 
 	/**
-	 * 授权方式（A,B,C）
+	 * 该client所支持的grant_type类型(例如:密码登录(password)、手机号登录(sms_login)等等),例如想要密码登录,该grant_type就必须包含password类型
 	 */
 	private String authorizedGrantTypes;
 
 	/**
-	 * 回调地址
+	 * 回调地址(当授权码模式才生效)
 	 */
 	private String webServerRedirectUri;
 
